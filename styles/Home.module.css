@@ -1,0 +1,98 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em 0;
+
+  & h1 {
+    font-size: var(--20px);
+    font-weight: 600;
+  }
+
+  & .button {
+    background-color: black;
+    color: white;
+    height: 40px;
+    padding: 0 10px;
+    line-height: 1.3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: var(--16px);
+    font-weight: 600;
+    width: max-content;
+    border-radius: 100px;
+  }
+}
+
+.subHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em 0;
+  gap: 12px;
+
+  & .filter {
+    position: relative;
+    width: 112px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    border: 1px solid var(--gray-700);
+    border-radius: 100px;
+
+    & .filterText {
+      font-size: var(--16px);
+      color: var(--gray-700);
+    }
+
+    & .filterIcon {
+      position: absolute;
+      right: 12px;
+      width: 16px;
+      top: 10px;
+      bottom: 12px;
+    }
+
+    & .filterDropdown {
+      position: absolute;
+      width: 343px;
+      top: 45px;
+      border: 2px solid var(--gray-700);
+      border-radius: 8px;
+      background-color: white;
+      z-index: 100;
+
+      & h3 {
+        font-size: var(--16px);
+      }
+    }
+  }
+
+  & .search {
+    position: relative;
+    flex-grow: 1;
+    height: 40px;
+    padding-left: 40px;
+
+    & .searchIcon {
+      position: absolute;
+      left: 12px;
+      width: 16px;
+      top: 10px;
+      bottom: 12px;
+      z-index: 10;
+    }
+
+    & .searchInput {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--gray-800);
+      border-radius: 100px;
+      padding-left: 40px;
+    }
+  }
+}

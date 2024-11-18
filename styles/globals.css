@@ -50,8 +50,8 @@ body {
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  background-color: var(--gray-100);
-  color: var(--gray-900);
+  background-color: var(--gray-900);
+  color: var(--gray-0);
   font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
   font-size: 16px;
   /* Responsive font-size */

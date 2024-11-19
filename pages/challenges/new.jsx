@@ -1,14 +1,11 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import InputItem from "../components/InputItem";
-import TextareaItem from "../components/TextareaItem";
-import Header from "@/components/Header";
+import InputItem from "@/components/InputItem";
+import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
-import DatePicker from "@/components/DatePicker";
+import CustomDatePicker from "@/components/CustomDatePicker";
 
 function NewChallenge() {
-  const navigate = useNavigate();
   const categories = ["분야1", "분야2", "분야3"];
   const doctypes = ["문서 타입1", "문서 타입2", "문서 타입3"];
 
@@ -37,11 +34,9 @@ function NewChallenge() {
 
   return (
     <>
-      <Header />
-      <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <SectionTitle>신규 챌린지 신청</SectionTitle>
-          <InputSection>
+          <h2>신규 챌린지 신청</h2>
+          <div>
             <Controller
               name="name"
               control={control}
@@ -96,7 +91,7 @@ function NewChallenge() {
               name="deadline"
               control={control}
               render={({ field }) => (
-                <DatePicker placeholder="YY/MM/DD" {...field} />
+                <CustomDatePicker placeholder="YY/MM/DD" {...field} />
               )}
             />
 
@@ -125,8 +120,8 @@ function NewChallenge() {
                 />
               )}
             />
-          </InputSection>
-          <Button
+          </div>
+          <button
             type="submit"
             disabled={
               !allFields.name ||
@@ -139,9 +134,8 @@ function NewChallenge() {
             }
           >
             신청하기
-          </Button>
+          </button>
         </form>
-      </Container>
     </>
   );
 }

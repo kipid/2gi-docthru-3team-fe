@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const DatePicker = ({ placeholder, value, onChange }) => {
+const CustomDatePicker = ({ placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,4 +29,4 @@ const DatePicker = ({ placeholder, value, onChange }) => {
   );
 };
 
-export default DatePicker;
+export default CustomDatePicker;

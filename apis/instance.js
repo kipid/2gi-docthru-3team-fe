@@ -1,9 +1,9 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const instance = axios.create({
-	// baseURL: `https://panda-market-api.vercel.app`,
-	baseURL: `http://localhost:3050`,
-	withCredentials: true,
+	baseURL: `http://localhost:3100/api`,
+	// withCredentials: true,
 });
 
 instance.interceptors.request.use(function (config) {
@@ -29,7 +29,8 @@ instance.interceptors.response.use(res => res, async (error) => {
 			return instance(originalRequest);
 		} else {
 			localStorage.removeItem("user");
-			window.location.href = '/login';
+			const router = useRouter();
+			router.push('/login');
 		}
 	}
 	return Promise.reject(error);

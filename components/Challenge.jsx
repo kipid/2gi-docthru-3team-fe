@@ -4,7 +4,7 @@ import styles from "@/styles/Challenge.module.css";
 import moment from "moment";
 import Image from "next/image";
 
-function Field({ field }) {
+export function Field({ field }) {
 	return (
 		<div className={`${styles.challengeField} ${styles[field]}`}>
 			{FIELD[field]}
@@ -12,7 +12,7 @@ function Field({ field }) {
 	);
 }
 
-function Type({ type }) {
+export function Type({ type }) {
 	return (
 		<div className={`${styles.challengeType} ${styles[type]}`}>
 			{TYPE[type]}

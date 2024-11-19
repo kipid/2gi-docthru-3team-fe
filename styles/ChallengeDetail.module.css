@@ -1,4 +1,28 @@
 .main {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid var(--gray-850);
+
+	& .headContainer {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: .5em;
+
+		& .head {
+			flex-grow: 1;
+		}
+	}
+
+	& h1 {
+		font-size: var(--24px);
+		font-weight: 600;
+		margin-bottom: 1rem;
+	}
+}
+
+.subHead {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: .5em;
 }

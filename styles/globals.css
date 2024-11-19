@@ -100,6 +100,15 @@ img {
   max-width: 100%;
 }
 
+a {
+  color: var(--brand-black);
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--brand-black);
+}
+
 .inline {
   display: inline;
 }

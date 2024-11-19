@@ -3,6 +3,7 @@ import { Field, Type } from "@/components/Challenge.jsx";
 import Loading from "@/components/Loading.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import styles from "@/styles/ChallengeDetail.module.css";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -16,6 +17,7 @@ function ChallengeDetail() {
     queryKey: ["challenges", challengeId],
     queryFn: () => getChallengeWithId(challengeId),
   });
+  console.log(challenge);
 
   if (isPending) return <Loading />;
 
@@ -29,6 +31,7 @@ function ChallengeDetail() {
             <Type type={challenge.docType} />
           </div>
         </div>
+        {/* TODO: user 가 맞을때만 수정/삭제 보이도록... */}
         <div className={styles.kebabMenu}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_kebab_menu.png" alt="Kebab menu" onClick={() => setKebabMenuShown(prev => !prev)} /></div>
       </div>
       <div className={styles.content}>

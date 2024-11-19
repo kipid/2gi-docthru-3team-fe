@@ -40,41 +40,40 @@
   justify-content: flex-start;
   align-items: center;
   gap: .5em;
+}
 
-  & .challengeField {
-    font-size: var(--14px);
-    font-weight: 700;
-    /* height: var(--20px); */
-    padding: var(--3px) var(--12px);
-    border-radius: var(--8px);
+.challengeField {
+  font-size: var(--14px);
+  font-weight: 700;
+  padding: var(--3px) var(--12px);
+  border-radius: var(--8px);
 
-    &.Next {
-      background-color: #79E16A;
-    }
-
-    &.Modern {
-      background-color: #F66E6B;
-    }
-
-    &.API {
-      background-color: #FF905E;
-    }
-
-    &.Web {
-      background-color: #F7Ea5D;
-    }
-
-    &.Career {
-      background-color: #7EB2EE;
-    }
+  &.Next {
+    background-color: #79E16A;
   }
 
-  & .challengeType {
-    font-size: var(--13px);
-    padding: var(--2px) var(--7px);
-    border: 1px solid var(--gray-700);
-    border-radius: var(--8px);
+  &.Modern {
+    background-color: #F66E6B;
   }
+
+  &.API {
+    background-color: #FF905E;
+  }
+
+  &.Web {
+    background-color: #F7Ea5D;
+  }
+
+  &.Career {
+    background-color: #7EB2EE;
+  }
+}
+
+& .challengeType {
+  font-size: var(--13px);
+  padding: var(--2px) var(--7px);
+  border: 1px solid var(--gray-700);
+  border-radius: var(--8px);
 }
 
 .hr {

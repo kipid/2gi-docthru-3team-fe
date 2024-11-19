@@ -3,8 +3,9 @@ import { useViewport } from "@/context/ViewportProvider";
 import styles from "@/styles/Challenge.module.css";
 import moment from "moment";
 import Image from "next/image";
+import Link from "next/link";
 
-function Field({ field }) {
+export function Field({ field }) {
 	return (
 		<div className={`${styles.challengeField} ${styles[field]}`}>
 			{FIELD[field]}
@@ -12,7 +13,7 @@ function Field({ field }) {
 	);
 }
 
-function Type({ type }) {
+export function Type({ type }) {
 	return (
 		<div className={`${styles.challengeType} ${styles[type]}`}>
 			{TYPE[type]}
@@ -33,7 +34,7 @@ function Challenge({ challenge }) {
 				<Image width={viewport.size} height={viewport.size} src="/images/ic_participants.svg" alt="Participants" />
 				<span>모집이 완료된 상태에요.</span>
 			</div>}
-			<h2 className={styles.challengeTitle}>{challenge.title}</h2>
+			<Link href={`/challenges/${challenge.id}`}><h2 className={styles.challengeTitle}>{challenge.title}</h2></Link>
 			<div className={styles.challengeFieldAndType}>
 				<Field field={challenge.field} />
 				<Type type={challenge.docType} />

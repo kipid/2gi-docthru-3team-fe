@@ -47,10 +47,17 @@
       padding: 0 var(--12px);
       border: 1px solid var(--gray-700);
       border-radius: 100px;
+      &.filtered {
+        background-color: var(--brand-black);
+        color: var(--brand-white);
+      }
+      &.unfiltered {
+        background-color: white;
+        color: var(--gray-700);
+      }
 
       & .filterText {
         font-size: var(--16px);
-        color: var(--gray-700);
       }
 
       & .filterIcon {

@@ -24,6 +24,7 @@ export default function Home() {
   const [size, setSize] = useState(16);
   const [search, setSearch] = useState("");
   const [filterShown, setFilterShown] = useState(false);
+  const [filterNum, setFilterNum] = useState(0);
   const [field, setField] = useState(initialFieldState);
   const [type, setType] = useState("");
   const [progress, setProgress] = useState("");
@@ -74,8 +75,8 @@ export default function Home() {
       </div>
       <div className={styles.subHead}>
         <div className={styles.filter}>
-          <div className={styles.filterContainer} onClick={() => setFilterShown(prev => !prev)}>
-            <div className={styles.filterText}>필터</div>
+          <div className={[styles.filterContainer, (filterNum ? styles.filtered : styles.unfiltered)].join(" ")} onClick={() => setFilterShown(prev => !prev)}>
+            <div className={styles.filterText}>필터{filterNum ? `(${filterNum})` : ""}</div>
             <div className={styles.filterIcon}><Image width={size} height={size} src="/images/ic_filter.png" alt="Filter" /></div>
           </div>
           <div className={filterShown ? styles.filterDropdown : `none ${styles.filterDropdown}`}>
@@ -134,22 +135,34 @@ export default function Home() {
                 setType("");
                 setProgress("");
                 setQuery({ page, limit });
+                setFilterNum(0);
               }}>초기화</button>
               <button className={styles.button} type="button" onClick={() => {
                 let fieldKeys = Object.keys(field).filter(key => field[key]);
+                setFilterNum(fieldKeys.length + (type ? 1 : 0) + (progress ? 1 : 0));
                 if (fieldKeys.length) {
                   fieldKeys = fieldKeys.join(",");
                 } else {
                   fieldKeys = undefined;
                 }
-                setQuery({ ...query, ...{ field: fieldKeys, type: type ? type : undefined, progress: progress ? progress : undefined }})
+                setQuery({ ...query, ...{ field: fieldKeys, type: type ? type : undefined, progress: progress ? progress : undefined }});
+                setFilterShown(false);
               }}>적용하기</button>
             </div>
           </div>
         </div>
         <div className={styles.search}>
-          <div className={styles.searchIcon}><Image width={size} height={size} src="/images/ic_search.png" alt="Search" /></div>
-          <input className={styles.searchInput} type="text" placeholder="챌린지 이름을 검색해보세요." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <div className={styles.searchIcon}><Image width={size} height={size} src="/images/ic_search.png" alt="Search" onClick={() => {
+            setPage(1);
+            setQuery({ ...query, keyword: search.trim() ? search.trim() : undefined });
+          }} /></div>
+          <input className={styles.searchInput} type="text" placeholder="챌린지 이름을 검색해보세요." value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={(e) => {
+            if (e.key === "Process") return;
+            if (e.code === "Enter" || e.code === "NumpadEnter") {
+              setPage(1);
+              setQuery({ ...query, keyword: search.trim() ? search.trim() : undefined });
+            }
+          }} />
         </div>
       </div>
       {challenges?.data?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)}

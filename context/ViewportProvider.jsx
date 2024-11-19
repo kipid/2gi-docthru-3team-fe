@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-const defaultValue = "PC";
+const defaultValue = { model: "PC", size: 16 };
 
 const ViewportContext = React.createContext(defaultValue);
 
@@ -18,8 +18,8 @@ function ViewportProvider({ defValue = defaultValue, children }) {
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setValue(
-				window.innerWidth > 1200 ? "PC" :
-				window.innerWidth > 744 ? "tablet" : "phone"
+				window.innerWidth > 1200 ? { model: "PC", size: 16 } :
+					window.innerWidth > 744 ? { model: "tablet", size: 14 } : { model: "phone", size: 12 }
 			);
 		});
 		window.dispatchEvent(new Event("resize"));

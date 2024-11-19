@@ -8,6 +8,7 @@ import { getChallenges } from "@/apis/challengeService.js";
 import Challenge from "@/components/Challenge.jsx";
 import X from "@/components/X.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
+import Pagination from "@/components/Pagination";
 
 const initialFieldState = {
   Next: false,
@@ -26,8 +27,12 @@ export default function Home() {
   const [field, setField] = useState(initialFieldState);
   const [type, setType] = useState("");
   const [progress, setProgress] = useState("");
-  const [query, setQuery] = useState({});
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [query, setQuery] = useState({
+    page,
+    limit,
+  });
   const {
     data: challenges,
     isPending,
@@ -37,6 +42,7 @@ export default function Home() {
     queryFn: () => getChallenges(query),
   });
   const router = useRouter();
+  console.log(challenges);
 
   useEffect(() => {
     if (viewport) {
@@ -114,11 +120,11 @@ export default function Home() {
             <div className={styles.filterDropdownItem}>
               <h4>상태</h4>
               <label>
-                <input type="radio" value="ing" name="progress" checked={progress === "ing"} onChange={handleProgressChange} />
+                <input type="radio" value="ongoing" name="progress" checked={progress === "ongoing"} onChange={handleProgressChange} />
                 <span>진행중</span>
               </label>
               <label>
-                <input type="radio" value="complete" name="progress" checked={progress === "complete"} onChange={handleProgressChange} />
+                <input type="radio" value="completed" name="progress" checked={progress === "completed"} onChange={handleProgressChange} />
                 <span>마감</span>
               </label><br />
             </div>
@@ -127,8 +133,17 @@ export default function Home() {
                 setField(initialFieldState);
                 setType("");
                 setProgress("");
+                setQuery({ page, limit });
               }}>초기화</button>
-              <button className={styles.button} type="button" onClick={() => setQuery({ ...query, ...{ field: 'Next', type: 'Document', progress: false } })}>적용하기</button>
+              <button className={styles.button} type="button" onClick={() => {
+                let fieldKeys = Object.keys(field).filter(key => field[key]);
+                if (fieldKeys.length) {
+                  fieldKeys = fieldKeys.join(",");
+                } else {
+                  fieldKeys = undefined;
+                }
+                setQuery({ ...query, ...{ field: fieldKeys, type: type ? type : undefined, progress: progress ? progress : undefined }})
+              }}>적용하기</button>
             </div>
           </div>
         </div>
@@ -137,7 +152,8 @@ export default function Home() {
           <input className={styles.searchInput} type="text" placeholder="챌린지 이름을 검색해보세요." value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
       </div>
-      {challenges?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)}
+      {challenges?.data?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)}
+      <Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(challenges?.totalCount / limit)} />
     </>
   );
 }

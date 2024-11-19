@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 const instance = axios.create({
 	// baseURL: `https://panda-market-api.vercel.app`,
-	baseURL: `http://localhost:3100`,
+	baseURL: `http://localhost:3100/api`,
 	withCredentials: true,
 });
 

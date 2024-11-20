@@ -115,10 +115,10 @@ function ChallengeDetail() {
       <div className={styles.participantsContainer}>
         <div className={styles.head}>
           <h2>참여 현황</h2>
-          <span className={styles.page}>{page}/{pageMax}</span>
+          <span className={styles.page}><span className={styles.currentPage}>{page}</span>/{pageMax}</span>
           <div className={styles.pageButtons}>
-            <button className={styles.button} type="button" disabled={page === 1}>&lt;</button>
-            <button className={styles.button} type="button" disabled={page === pageMax}>&gt;</button>
+            <button className={styles.button} type="button" disabled={page === 1} onClick={() => setPage(prev => prev - 1 >= 1 ? prev - 1 : 1)}>&lt;</button>
+            <button className={styles.button} type="button" disabled={page === pageMax} onClick={() => setPage(prev => prev + 1 <= pageMax ? prev + 1 : pageMax)}>&gt;</button>
           </div>
         </div>
         <div className={styles.works}>

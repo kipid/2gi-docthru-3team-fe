@@ -135,6 +135,11 @@
 			font-weight: 600;
 			flex-grow: 1;
 		}
+
+		& .currentPage {
+			color: var(--prime-yellow);
+		}
+
 	}
 }
 

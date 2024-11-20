@@ -1,6 +1,15 @@
 .main {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid var(--gray-850);
+	display: flex;
+	gap: 1em;
+	justify-content: space-between;
+	align-items: flex-start;
+	border-bottom: 1px solid var(--gray-800);
+
+	& .challengeInfoContainer {
+		flex-grow: 1;
+	}
 
 	& .headContainer {
 		display: flex;
@@ -18,6 +27,19 @@
 		font-weight: 600;
 		margin-bottom: 1rem;
 	}
+
+	& .description {
+		margin: .9rem 0 .8rem;
+		font-size: var(--16px);
+	}
+
+	& .writerContainer {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: var(--12px);
+		gap: 1em;
+	}
 }
 
 .subHead {
@@ -26,3 +48,47 @@
   align-items: center;
   gap: .5em;
 }
+
+.buttonContainer {
+	width: 17.8125rem;
+	border-radius: var(--16px);
+	border: 2px solid var(--gray-800);
+	padding: 1.3em 1em;
+
+	& .button {
+		width: 100%;
+		font-size: var(--14px);
+		font-weight: 700;
+		height: var(--40px);
+		border-radius: 12px;
+		text-align: center;
+
+		&.seeOriginal {
+			margin: 1rem 0 .5rem;
+			background-color: var(--prime-yellow);
+			border: 2px solid var(--brand-black);
+		}
+
+		&:last-child {
+			background-color: var(--brand-black);
+			color: var(--brand-white);
+			border: none;
+		}
+	}
+}
+
+.challengeDateAndParti {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+  font-size: var(--13px);
+  font-weight: 400;
+
+  & .challengeDeadLine, & .challengeParticipants {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+  }
+}
+

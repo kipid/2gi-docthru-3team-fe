@@ -1,6 +1,5 @@
 .loginBody {
   display: flex;
-  background-color: #fafafa;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -8,7 +7,6 @@
 }
 
 .loginContainer {
-  background-color: #fafafa;
   margin: 124.5px 0 0 0;
   padding: 0;
   gap: 40px;
@@ -20,7 +18,7 @@
 }
 
 /***** Mobile *****/
-@media (max-width: 343px) {
+@media (max-width: 744px) {
   .logo {
     width: 240px;
     height: 54px;

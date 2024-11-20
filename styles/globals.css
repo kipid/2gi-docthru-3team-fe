@@ -6,6 +6,7 @@
   --40px: 2.5rem;
   --32px: 2rem;
   --24px: 1.5rem;
+  --22px: 1.375rem;
   --20px: 1.25rem;
   --18px: 1.125rem;
   --16px: 1rem;
@@ -26,6 +27,7 @@
 
   /* Colors: #000000 이 가장 어둡고, #FFFFFF 가 가장 밝으니 숫자도 비슷하게 증감하도록. */
   --gray-900: #ffffff;
+  --gray-850: #fafafa;
   --gray-800: #d8d8d8;
   --gray-700: #747474;
   --gray-600: #4b4b4b;
@@ -50,12 +52,12 @@ body {
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  background-color: var(--gray-900);
-  color: var(--gray-0);
+  background-color: var(--gray-850);
+  color: var(--brand-black);
   font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  line-height: 1.5;
   font-size: 16px;
   /* Responsive font-size */
-  line-height: 1.5;
 
   @media (max-width: 1200px) {
     font-size: 14px;
@@ -96,6 +98,15 @@ p {
 img {
   box-sizing: content-box;
   max-width: 100%;
+}
+
+a {
+  color: var(--brand-black);
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--brand-black);
 }
 
 .inline {

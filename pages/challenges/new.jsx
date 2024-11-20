@@ -4,6 +4,7 @@ import InputItem from "@/components/InputItem";
 import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
+import styles from "@/styles/new.module.css"
 
 function NewChallenge() {
   const categories = ["분야1", "분야2", "분야3"];
@@ -33,7 +34,7 @@ function NewChallenge() {
   const allFields = watch();
 
   return (
-    <>
+    <div className={styles.Container}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2>신규 챌린지 신청</h2>
           <div>
@@ -68,6 +69,8 @@ function NewChallenge() {
               control={control}
               render={({ field }) => (
                 <Dropdown
+                  id="category"
+                  label="카테고리"
                   options={categories}
                   placeholder="카테고리"
                   {...field}
@@ -80,6 +83,8 @@ function NewChallenge() {
               control={control}
               render={({ field }) => (
                 <Dropdown
+                  id="doctype"
+                  label="문서 타입"
                   options={doctypes}
                   placeholder="문서 타입"
                   {...field}
@@ -91,7 +96,10 @@ function NewChallenge() {
               name="deadline"
               control={control}
               render={({ field }) => (
-                <CustomDatePicker placeholder="YY/MM/DD" {...field} />
+                <CustomDatePicker 
+                  id="deadline"
+                  label="마감일"
+                  placeholder="YYYY/MM/DD" {...field} />
               )}
             />
 
@@ -121,7 +129,7 @@ function NewChallenge() {
               )}
             />
           </div>
-          <button
+          <button className={styles.button}
             type="submit"
             disabled={
               !allFields.name ||
@@ -136,7 +144,7 @@ function NewChallenge() {
             신청하기
           </button>
         </form>
-    </>
+    </div>
   );
 }
 

@@ -137,3 +137,9 @@ img {
 .none {
   display: none;
 }
+
+input::placeholder, textarea::placeholder {
+  font-family: inherit;
+  font-size: 14px;
+  color: #888;
+}

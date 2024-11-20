@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-const CustomDatePicker = ({ placeholder, value, onChange }) => {
+import Label from "./Label";
+import styles from "@/styles/CustomDatePicker.module.css"
+const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
-      <div>
-        <input
+      {label && <Label htmlFor={id}>{label}</Label>}
+      <div className={styles.input}>
+        <input className={styles.inputfield}
+          id={id}
           type="text"
           readOnly
-          value={value ? value.toLocaleDateString() : placeholder}
+          value={value ? value.toLocaleDateString() : ""}
+          placeholder={placeholder}
           onClick={() => setIsOpen(!isOpen)}
         />
         <button

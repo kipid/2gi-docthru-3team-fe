@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import Label from "./Label";
+import styles from "@/styles/Dropdown.module.css"
 
-const Dropdown = ({ options, placeholder, value, onChange }) => {
+const Dropdown = ({ id, label, options, placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (option) => {
@@ -10,13 +12,18 @@ const Dropdown = ({ options, placeholder, value, onChange }) => {
 
   return (
     <div>
-      <div>
-        <input
+      {label && <Label htmlFor={id}>{label}</Label>}
+      <div className={styles.input}>
+        <input 
+          className={styles.inputfield}
+          id={id}
           type="text"
           readOnly
-          value={value || placeholder}
+          value={value || ""}
+          placeholder={placeholder}
           onClick={() => setIsOpen(!isOpen)}
-        />
+        >
+        </input>
         <div onClick={() => setIsOpen(!isOpen)}>▼</div>
       </div>
       {isOpen && (

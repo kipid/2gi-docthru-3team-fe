@@ -1,0 +1,69 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.table {
+  width: 100%;
+	min-width: 696px;
+  border-collapse: collapse;
+  font-size: var(--13px);
+  text-align: left;
+}
+
+.th, .td {
+  padding: var(--8px);
+  border-bottom: 1px solid var(--gray-700);
+}
+
+.th {
+  background-color: var(--brand-black);
+	color: var(--brand-white);
+  font-weight: bold;
+}
+
+.td {
+  white-space: nowrap;
+}
+
+/* 열 너비 조정 */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  width: 5%; /* No. */
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: 10%; /* 분야 */
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  width: 10%; /* 카테고리 */
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+  width: 40%; /* 챌린지 제목 */
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5) {
+  width: 10%; /* 모집 인원 */
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6) {
+  width: 10%; /* 신청일 */
+}
+
+.table th:nth-child(7),
+.table td:nth-child(7) {
+  width: 10%; /* 마감 기한 */
+}
+
+.table th:nth-child(8),
+.table td:nth-child(8) {
+  width: 10%; /* 상태 */
+}

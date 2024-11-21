@@ -148,3 +148,8 @@ a:visited {
 .none {
   display: none;
 }
+
+.ql-container.ql-snow {
+  height: 35rem;
+  overflow: auto;
+}

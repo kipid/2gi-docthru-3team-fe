@@ -12,7 +12,6 @@ import { useState } from "react";
 function Manage() {
   const viewport = useViewport();
   const [page, setPage] = useState(1);
-  const [pageMax, setPageMax] = useState(1);
   const [query, setQuery] = useState({
     page,
     limit: 10,

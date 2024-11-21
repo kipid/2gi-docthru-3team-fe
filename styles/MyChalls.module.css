@@ -25,3 +25,47 @@
     border-radius: 100px;
   }
 }
+
+.myChallHeader {
+	font-size: var(--18px);
+	width: 100%;
+	border-bottom: 1px solid var(--gray-700);
+	display: flex;
+
+	& .button {
+		display: inline-block;
+		border: none;
+		background-color: transparent;
+		padding: 1rem 1.3rem;
+
+		@media (max-width: 744px) {
+			padding: 1rem .5rem
+		}
+	}
+
+	& .button.active {
+		border-bottom: 3px solid var(--brand-black);
+	}
+}
+
+.search {
+	position: relative;
+	width: 100%;
+	height: var(--40px);
+	margin: 1rem 0;
+	border: 1px solid var(--gray--700);
+
+	& img {
+		position: absolute;
+		left: var(--8px);
+		top: var(--8px);
+		bottom: var(--8px);
+	}
+
+	& input {
+		border-radius: 100px;
+		position: absolute;
+		padding-left: var(--40px);
+		inset: 0;
+	}
+}

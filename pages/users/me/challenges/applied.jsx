@@ -1,5 +1,9 @@
+import MyChallHeader from "@/components/MyChallHeader";
+
 function Applied() {
-	return;
+	return (
+		<MyChallHeader progress="applied" />
+	);
 }
 
 export default Applied;

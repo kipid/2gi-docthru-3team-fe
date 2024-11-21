@@ -1,11 +1,15 @@
+import { postLogin } from '@/apis/authService';
 import styles from './LoginForm.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
 function LoginForm() {
+  const router = useRouter();
   const [pwIsVisible, setPwIsVisible] = useState(false);
+  const [loginError, setLoginError] = useState('');
   const PWD_MIN_LENGTH = 8;
   const EMAIL_REGEX = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
   const {
@@ -23,15 +27,20 @@ function LoginForm() {
     },
   });
 
+  const onSubmit = async ({ email, password }) => {
+    try {
+      const userData = await postLogin({ email, password });
+      console.log('로그인 성공', userData);
+      router.push('/');
+    } catch (error) {
+      console.log('로그인 실패', error);
+      setLoginError('이메일 또는 비밀번호가 잘못되었습니다.');
+    }
+  };
+
   return (
     <div className={styles.form}>
-      <form
-        className={styles.LoginForm}
-        onSubmit={e => {
-          e.preventDefault();
-          login();
-        }}
-      >
+      <form className={styles.LoginForm} onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="email">
           <p>이메일</p>
           <div className={styles.email}>

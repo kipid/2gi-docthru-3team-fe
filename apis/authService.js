@@ -2,8 +2,8 @@ import instance from './instance.js';
 
 export async function postLogin({ email = '', password = '' }) {
   const user = await instance.post(`/auth/login`, { email, password });
-  const { accessToken, refreshToken } = user.data;
-  localStorage.setItem('user', JSON.stringify({ accessToken, refreshToken }));
+
+  localStorage.setItem('user', JSON.stringify(user.data));
   return user.data;
 }
 

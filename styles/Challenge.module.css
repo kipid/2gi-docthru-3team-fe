@@ -89,9 +89,43 @@
   font-size: var(--13px);
   font-weight: 400;
 
+  @media (max-width: 744px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
   & .challengeDeadLine, & .challengeParticipants {
     display: flex;
     align-items: center;
     gap: .5em;
+  }
+}
+
+.bottomContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & .contiChall {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8.25rem;
+    height: 2.125rem;
+    gap: .5em;
+    font-size: var(--14px);
+    font-weight: 700;
+  }
+
+  & .seeMine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    height: 2.125rem;
+    gap: .5em;
+    font-size: var(--14px);
+    font-weight: 700;
   }
 }

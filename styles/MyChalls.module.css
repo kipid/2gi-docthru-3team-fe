@@ -1,0 +1,27 @@
+.myChall {
+	display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em 0;
+
+  & h1 {
+    font-size: var(--20px);
+    font-weight: 600;
+  }
+
+  & .button {
+    background-color: black;
+    color: white;
+    height: var(--40px);
+    padding: 0 10px;
+    line-height: 1.3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--12px);
+    font-size: var(--16px);
+    font-weight: 600;
+    width: max-content;
+    border-radius: 100px;
+  }
+}

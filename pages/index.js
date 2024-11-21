@@ -39,8 +39,9 @@ export default function Home() {
     isPending,
     isError
   } = useQuery({
-    queryKey: ['challenges', query, page],
-    queryFn: () => getChallenges(query),
+    queryKey: ['challenges', { ...query, page }, page],
+    queryFn: () => getChallenges({ ...query, page }),
+    staleTime: 5 * 60 * 1000,
   });
   const router = useRouter();
   console.log(challenges);
@@ -145,7 +146,8 @@ export default function Home() {
                 } else {
                   fieldKeys = undefined;
                 }
-                setQuery({ ...query, ...{ field: fieldKeys, type: type ? type : undefined, progress: progress ? progress : undefined }});
+                setPage(1);
+                setQuery({ ...query, ...{ page, limit: 5, field: fieldKeys, type: type ? type : undefined, progress: progress ? progress : undefined }});
                 setFilterShown(false);
               }}>적용하기</button>
             </div>
@@ -165,8 +167,8 @@ export default function Home() {
           }} />
         </div>
       </div>
-      {challenges?.data?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)
-      || <div className={styles.noResult}>아직 챌린지가 없어요.<br />지금 바로 챌린지를 신청해보세요!</div>}
+      {challenges?.data?.length ? challenges?.data?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)
+      : <div className={styles.noResult}>아직 챌린지가 없어요.<br />지금 바로 챌린지를 신청해보세요!</div>}
       <Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(challenges?.totalCount / limit)} />
     </>
   );

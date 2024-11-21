@@ -88,11 +88,6 @@
           font-size: var(--16px);
           font-weight: 600;
         }
-
-        & .x line {
-          stroke: black;
-          stroke-width: 10%;
-        }
       }
 
       & .filterDropdownItem {

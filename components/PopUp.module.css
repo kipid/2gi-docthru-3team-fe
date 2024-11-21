@@ -36,3 +36,7 @@
   padding: 12px 23px;
   border-radius: 8px;
 }
+
+.none {
+  display: none;
+}

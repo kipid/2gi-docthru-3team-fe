@@ -149,8 +149,13 @@ a:visited {
   display: none;
 }
 
+.ql-container.ql-snow {
+  height: 35rem;
+  overflow: auto;
+}
+
 input::placeholder, textarea::placeholder {
   font-family: inherit;
-  font-size: 14px;
+  font-size: var(--14px);
   color: #888;
 }

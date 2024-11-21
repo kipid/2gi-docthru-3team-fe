@@ -1,5 +1,5 @@
 import { TYPE, FIELD } from "@/apis/translate.js";
-import styles from "@/styles/Table.module.css";
+import styles from "./Table.module.css";
 import moment from "moment";
 import Link from "next/link";
 

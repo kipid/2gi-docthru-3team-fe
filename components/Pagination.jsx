@@ -1,4 +1,4 @@
-import styles from "@/styles/Pagination.module.css";
+import styles from "./Pagination.module.css";
 
 function Pagination({ page, setPage, pageMaxCandi }) {
   let pageMax = pageMaxCandi ?? 1;

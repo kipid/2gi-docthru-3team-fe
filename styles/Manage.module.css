@@ -8,6 +8,11 @@
 }
 
 .searchAndSort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+
   & .search {
     position: relative;
     flex-grow: 1;
@@ -28,6 +33,19 @@
       left: var(--12px);
       top: var(--8px);
       bottom: var(--8px);
+    }
+  }
+
+  & .sort {
+    position: relative;
+    width: 10rem;
+    border-radius: 100px;
+    height: var(--40px);
+
+    & select {
+      position: absolute;
+      inset: 0;
+      font-size: 1rem;
     }
   }
 }

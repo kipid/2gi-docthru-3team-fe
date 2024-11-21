@@ -8,7 +8,9 @@ import { getChallenges } from "@/apis/challengeService.js";
 import Challenge from "@/components/Challenge.jsx";
 import X from "@/components/X.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/Pagination.jsx";
+import Loading from "@/components/Loading.jsx";
+import Error from "@/components/Error.jsx";
 
 const initialFieldState = {
   Next: false,
@@ -21,7 +23,6 @@ const initialFieldState = {
 export default function Home() {
   const user = useUser();
   const viewport = useViewport();
-  const [size, setSize] = useState(16);
   const [search, setSearch] = useState("");
   const [filterShown, setFilterShown] = useState(false);
   const [filterNum, setFilterNum] = useState(0);
@@ -46,12 +47,6 @@ export default function Home() {
   const router = useRouter();
   console.log(challenges);
 
-  useEffect(() => {
-    if (viewport) {
-      setSize(viewport.size);
-    }
-  }, [viewport]);
-
   const handleFieldChange = (e) => {
     setField((prev) => ({
       ...prev,
@@ -67,23 +62,26 @@ export default function Home() {
     setProgress(e.target.value);
   };
 
+  if (isPending) return <Loading />;
+  if (isError) return <Error />;
+
   return (
     <>
       <div className={styles.head}>
         <h1>챌린지 목록</h1>
         {/* TODO: user && */}
-        {true && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={size} height={size} src="/images/ic_plus.png" alt="New challenge" /></button>}
+        {true && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
       </div>
       <div className={styles.subHead}>
         <div className={styles.filter}>
           <div className={[styles.filterContainer, (filterNum ? styles.filtered : styles.unfiltered)].join(" ")} onClick={() => setFilterShown(prev => !prev)}>
             <div className={styles.filterText}>필터{filterNum ? `(${filterNum})` : ""}</div>
-            <div className={styles.filterIcon}><Image width={size} height={size} src="/images/ic_filter.png" alt="Filter" /></div>
+            <div className={styles.filterIcon}><Image width={viewport.size} height={viewport.size} src="/images/ic_filter.png" alt="Filter" /></div>
           </div>
           <div className={filterShown ? styles.filterDropdown : `none ${styles.filterDropdown}`}>
             <div className={styles.head}>
               <h3>필터</h3>
-              <X width={size} height={size} onClick={() => setFilterShown(false)} />
+              <X width={viewport.size} height={viewport.size} onClick={() => setFilterShown(false)} />
             </div>
             <div className={styles.filterDropdownItem}>
               <h4>분야</h4>
@@ -154,7 +152,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.search}>
-          <div className={styles.searchIcon}><Image width={size} height={size} src="/images/ic_search.png" alt="Search" onClick={() => {
+          <div className={styles.searchIcon}><Image width={viewport.size} height={viewport.size} src="/images/ic_search.png" alt="Search" onClick={() => {
             setPage(1);
             setQuery({ ...query, keyword: search.trim() ? search.trim() : undefined });
           }} /></div>

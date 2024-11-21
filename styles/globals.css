@@ -153,3 +153,9 @@ a:visited {
   height: 35rem;
   overflow: auto;
 }
+
+input::placeholder, textarea::placeholder {
+  font-family: inherit;
+  font-size: var(--14px);
+  color: #888;
+}

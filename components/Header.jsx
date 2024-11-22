@@ -21,7 +21,6 @@ const Header = () => {
         <Link href="/"><Image width={120} height={27} src="/images/img_logo.png" alt="Logo" className={styles.logo} priority /></Link>
       </div>
       <div className={styles.right}>
-        {/* TODO: !user */}
         {!user ? (
           <button className={styles.loginButton} onClick={() => router.push("/login")}>
             로그인
@@ -32,7 +31,7 @@ const Header = () => {
               <Image width={24} height={24} src="/images/ic_bell.png" alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
               {isNotiOpen && <div className={styles.notiDropDown}>
                 <h3>알림</h3>
-                {/* notifications.map... */}
+                {/* TODO: notifications.map... */}
               </div>}
             </div>
             <div className={styles.userContainer}>
@@ -48,6 +47,7 @@ const Header = () => {
                 <Link href="/users/me/challenges/ongoing"><div className={styles.userDropDownItem}>나의 챌린지</div></Link>
                 <button className={styles.userDropDownItem} onClick={() => {
                   setUser(null);
+                  // TODO: localStorage 에서도 삭제
                 }}>로그아웃</button>
               </div>}
             </div>

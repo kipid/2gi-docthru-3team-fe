@@ -4,8 +4,7 @@ import { useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import styles from '@/styles/TextEditor.module.css';
 import { useRouter } from 'next/router';
-// import Toast from '../modals/Toast';
-// import CAN_USE_DOM from '@/utils/canUseDom';
+import sanitizeHtml from 'sanitize-html';
 
 const MODULES = {
 	toolbar: [
@@ -31,12 +30,9 @@ function TextEditor() {
 	// const STORAGE_KEY = `work_${id}`;
 	// let savedContent;
 	const [content, setContent] = useState("");
-
-	// if (CAN_USE_DOM) {
-		// savedContent = localStorage.getItem(STORAGE_KEY);
-	// }
-
-
+	const setSanitizedContent = (value) => {
+		setContent(sanitizeHtml(value));
+	};
 
 	// useImperativeHandle(ref, () => ({
 	// 	saveContent: () => {

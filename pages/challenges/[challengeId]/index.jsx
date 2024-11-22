@@ -126,7 +126,9 @@ function ChallengeDetail() {
               const { workId, message } = await doChallenge(challengeId);
               setError({ message, onClose:() => {
                 queryClient.invalidateQueries({ queryKey: ["challenges", challengeId] });
-                router.push(`/work/${workId}/edit`);
+                if (workId) {
+                  router.push(`/work/${workId}/edit`);
+                }
               } })
             }}>작업 도전하기</button>
           </div>

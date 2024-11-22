@@ -98,7 +98,7 @@ function ChallengeDetail() {
             <div className={styles.description}>{challenge.description}</div>
             <div className={styles.writerContainer}>
               <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_profile.png" alt="Profile" />
-              <span>{challenge.applications.user.nickname}</span>
+              <span>{challenge?.applications?.user.nickname}</span>
             </div>
           </div>
         </div>

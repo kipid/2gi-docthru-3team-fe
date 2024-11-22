@@ -55,6 +55,10 @@ function ManageApp() {
 				<div className={styles.iframeContainer}>
 					<iframe src={challenge.docUrl} width="100%" height="100%" />
 				</div>
+				<div className={styles.buttons}>
+					<button className={`${styles.button} ${styles.reject}`} type="button" onClick={() => window.open(challenge.docUrl)}>거절하기</button>
+					<button className={`${styles.button} ${styles.approve}`} type="button" onClick={() => router.push(`/challenges/${challenge.id}/edit`)}>승인하기</button>
+				</div>
 			</div>
 		</main>
 	);

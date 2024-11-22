@@ -1,19 +1,17 @@
-import { postLogin } from '@/apis/authService';
-import styles from './LoginForm.module.css';
+import { postSignup } from '@/apis/authService';
+import styles from './SignupForm.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import PopUp from './PopUp';
-import { useSetUser } from '@/context/UserProvider';
 
-function LoginForm() {
+function SignupForm() {
   const router = useRouter();
-  const setUser = useSetUser();
-  const [pwIsVisible, setPwIsVisible] = useState(false);
-  const [loginError, setLoginError] = useState(null);
   const PWD_MIN_LENGTH = 8;
+  const [pwIsVisible, setPwIsVisible] = useState(false);
+  const [signupError, setSignupError] = useState(null);
   const EMAIL_REGEX = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
   const {
     register,
@@ -30,21 +28,18 @@ function LoginForm() {
     },
   });
 
-  const onSubmit = async ({ email, password }) => {
+  const onSubmit = async ({ email, nickname, password }) => {
     try {
-      const userData = await postLogin({ email, password });
-      console.log('로그인 성공', userData);
-      setUser(userData.user);
-      if (userData.user.role === 'Admin') {
-        router.push('/admin');
-      } else {
-        router.push('/');
-      }
+      const userData = await postSignup({ email, nickname, password });
+      console.log('회원가입 성공', userData);
+      router.push('/login');
     } catch (error) {
-      console.log('로그인 실패', error);
-      setLoginError({ message: '이메일 또는 비밀번호가 잘못되었습니다.', onClose: () => setLoginError(null) });
+      console.log('회원가입 실패', error);
+      setSignupError({ message: `${error}`, onClose: () => setSignupError(null) });
     }
   };
+
+  const password = watch('password');
 
   return (
     <div className={styles.form}>
@@ -91,19 +86,45 @@ function LoginForm() {
             />
           </div>
         </label>
+        <label htmlFor="passwordConfirm">
+          비밀번호 확인
+          <div className={styles.password}>
+            <input
+              {...register('password', {
+                required: '비밀번호를 입력해주세요.',
+                validate: { matchesPassword: value => value === password || '비밀번호가 일치하지 않습니다.' },
+              })}
+              placeholder="비밀번호를 입력해주세요"
+              type={pwIsVisible ? 'text' : 'password'}
+              autoComplete="on"
+              required
+            />
+            {errors.password && <div className={styles.errorMassage}>{errors.password.message}</div>}
+
+            <Image
+              width={24}
+              height={24}
+              className={styles.pwToggle}
+              src={pwIsVisible ? '/images/vector.png' : '/images/btn_visibility_off_24px.png'}
+              alt="비밀번호 보기"
+              onClick={() => setPwIsVisible(prev => !prev)}
+              priority
+            />
+          </div>
+        </label>
         <button type="submit" className={styles.loginButton}>
           로그인
         </button>
         <div className={styles.signupLink}>
-          회원이 아니신가요?
-          <Link href="/signup" style={{ color: '#262626', style: 'solid', textDecorationLine: 'underline' }}>
-            회원가입하기
+          회원이신가요?
+          <Link href="/login" style={{ color: '#262626', style: 'solid', textDecorationLine: 'underline' }}>
+            로그인하기
           </Link>
         </div>
       </form>
-      <PopUp error={loginError} setError={setLoginError} />
+      <PopUp error={signupError} setError={setSignupError} />
     </div>
   );
 }
 
-export default LoginForm;
+export default SignupForm;

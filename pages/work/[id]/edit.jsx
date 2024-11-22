@@ -17,6 +17,41 @@ const MODULES = {
 	],
 };
 
+const SANITIZE_OPTIONS = {
+	allowedTags: [
+		'p',
+		'br',
+		'span',
+		'strong',
+		'em',
+		'u',
+		's',
+		'h1',
+		'h2',
+		'h3',
+		'h4',
+		'h5',
+		'h6',
+		'ul',
+		'ol',
+		'li',
+		'blockquote',
+		'pre',
+		'code',
+		'hr',
+		'img',
+		'figure',
+		'figcaption',
+		'iframe',
+	],
+	allowedAttributes: {
+		span: ['style'],
+		span: ['class'],
+		img: ['src', 'alt', 'width', 'height'],
+		iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
+	},
+};
+
 const ReactQuill = dynamic(() => import('react-quill'), {
 	ssr: false,
 	loading: () => <p>Loading Editor...</p>,
@@ -31,7 +66,7 @@ function TextEditor() {
 	// let savedContent;
 	const [content, setContent] = useState("");
 	const setSanitizedContent = (value) => {
-		setContent(sanitizeHtml(value));
+		setContent(sanitizeHtml(value, SANITIZE_OPTIONS));
 	};
 
 	// useImperativeHandle(ref, () => ({
@@ -58,7 +93,7 @@ function TextEditor() {
 			<div className={[styles.TextEditor, isIframeOpen ? styles.fixed : ""].join(" ")}>
 				<ReactQuill
 					value={content}
-					onChange={setContent}
+					onChange={setSanitizedContent}
 					modules={MODULES}
 					theme="snow"
 					placeholder="번역 시작하기..."

@@ -11,6 +11,7 @@ function SignupForm() {
   const router = useRouter();
   const PWD_MIN_LENGTH = 8;
   const [pwIsVisible, setPwIsVisible] = useState(false);
+  const [pwCfIsVisible, setPwCfIsVisible] = useState(false);
   const [signupError, setSignupError] = useState(null);
   const EMAIL_REGEX = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
   const {
@@ -32,7 +33,7 @@ function SignupForm() {
     try {
       const userData = await postSignup({ email, nickname, password });
       console.log('회원가입 성공', userData);
-      router.push('/login');
+      router.push('/');
     } catch (error) {
       console.log('회원가입 실패', error);
       setSignupError({ message: `${error}`, onClose: () => setSignupError(null) });
@@ -60,8 +61,21 @@ function SignupForm() {
             {errors.email && <div className={styles.errorMassage}>{errors.email.message}</div>}
           </div>
         </label>
+        <label htmlFor="nickname">
+          <p>닉네임</p>
+          <div className={styles.nickname}>
+            <input
+              {...register('nickname', {
+                required: '닉네임을 입력해주세요.',
+              })}
+              placeholder="닉네임을 입력해주세요."
+              type="nickname"
+              required
+            />
+          </div>
+        </label>
         <label htmlFor="password">
-          비밀번호
+          <p>비밀번호</p>
           <div className={styles.password}>
             <input
               {...register('password', {
@@ -87,33 +101,33 @@ function SignupForm() {
           </div>
         </label>
         <label htmlFor="passwordConfirm">
-          비밀번호 확인
+          <p>비밀번호 확인</p>
           <div className={styles.password}>
             <input
-              {...register('password', {
+              {...register('passwordConfirm', {
                 required: '비밀번호를 입력해주세요.',
-                validate: { matchesPassword: value => value === password || '비밀번호가 일치하지 않습니다.' },
+                validate: { matchesPassword: value => value === watch('password') || '비밀번호가 일치하지 않습니다.' },
               })}
               placeholder="비밀번호를 입력해주세요"
               type={pwIsVisible ? 'text' : 'password'}
               autoComplete="on"
               required
             />
-            {errors.password && <div className={styles.errorMassage}>{errors.password.message}</div>}
+            {errors.passwordConfirm && <div className={styles.errorMassage}>{errors.passwordConfirm.message}</div>}
 
             <Image
               width={24}
               height={24}
               className={styles.pwToggle}
-              src={pwIsVisible ? '/images/vector.png' : '/images/btn_visibility_off_24px.png'}
+              src={pwCfIsVisible ? '/images/vector.png' : '/images/btn_visibility_off_24px.png'}
               alt="비밀번호 보기"
-              onClick={() => setPwIsVisible(prev => !prev)}
+              onClick={() => setPwCfIsVisible(prev => !prev)}
               priority
             />
           </div>
         </label>
         <button type="submit" className={styles.loginButton}>
-          로그인
+          회원가입
         </button>
         <div className={styles.signupLink}>
           회원이신가요?

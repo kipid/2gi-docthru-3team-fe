@@ -1,0 +1,41 @@
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+  }
+  
+  .left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 100px;
+  }
+  
+  .loginButton {
+    padding: 10px 20px;
+    background-color: #FFC117;
+    ;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .notificationButton {
+    padding: 10px 8px;
+    cursor: pointer;
+  }
+  
+  .userButton {
+    padding: 10px 8px;
+    cursor: pointer;
+  }

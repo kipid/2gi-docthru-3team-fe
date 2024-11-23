@@ -17,7 +17,8 @@
     "react-datepicker": "^7.5.0",
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
-    "react-quill": "^2.0.0"
+    "react-quill": "^2.0.0",
+    "sanitize-html": "^2.13.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

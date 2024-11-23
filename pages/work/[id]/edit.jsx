@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import styles from '@/styles/TextEditor.module.css';
 import { useRouter } from 'next/router';
+import sanitizeHtml from 'sanitize-html';
 import { useViewport } from '@/context/ViewportProvider';
 import Image from 'next/image';
 import X from '@/components/X';
-// import Toast from '../modals/Toast';
-// import CAN_USE_DOM from '@/utils/canUseDom';
 
 const MODULES = {
   toolbar: [
@@ -19,6 +18,41 @@ const MODULES = {
     [{ align: [] }],
     ['clean'],
   ],
+};
+
+const SANITIZE_OPTIONS = {
+	allowedTags: [
+		'p',
+		'br',
+		'span',
+		'strong',
+		'em',
+		'u',
+		's',
+		'h1',
+		'h2',
+		'h3',
+		'h4',
+		'h5',
+		'h6',
+		'ul',
+		'ol',
+		'li',
+		'blockquote',
+		'pre',
+		'code',
+		'hr',
+		'img',
+		'figure',
+		'figcaption',
+		'iframe',
+	],
+	allowedAttributes: {
+		span: ['style'],
+		span: ['class'],
+		img: ['src', 'alt', 'width', 'height'],
+		iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
+	},
 };
 
 const ReactQuill = dynamic(() => import('react-quill'), {

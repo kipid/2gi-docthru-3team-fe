@@ -19,3 +19,13 @@ export async function getChallengeWithId(id) {
 		return err?.response?.data || err;
 	}
 }
+
+export async function doChallenge(challengeId) {
+	try {
+		const result = await instance.post(`/challenges/${challengeId}/participations`);
+		return result?.data;
+	} catch (err) {
+		console.error(err);
+		return err?.response?.data || err;
+	}
+}

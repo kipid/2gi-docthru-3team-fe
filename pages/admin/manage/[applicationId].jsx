@@ -18,7 +18,7 @@ function ManageApp() {
 		queryFn: () => getApplicationWithId(applicationId),
 		staleTime: 5 * 60 * 1000,
 	});
-	console.log(application);
+	console.log("ManageApp applications", application);
 
 	if (isPending) return <Loading />;
 	if (isError) return <Error />;

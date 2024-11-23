@@ -45,7 +45,7 @@ export default function Home() {
     staleTime: 5 * 60 * 1000,
   });
   const router = useRouter();
-  console.log(challenges);
+  console.log("Home challenges", challenges);
 
   const handleFieldChange = (e) => {
     setField((prev) => ({
@@ -69,8 +69,7 @@ export default function Home() {
     <>
       <div className={styles.head}>
         <h1>챌린지 목록</h1>
-        {/* TODO: user && */}
-        {true && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
+        {user && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
       </div>
       <div className={styles.subHead}>
         <div className={styles.filter}>

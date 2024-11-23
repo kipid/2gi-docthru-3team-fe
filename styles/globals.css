@@ -110,6 +110,10 @@ a:visited {
   color: var(--brand-black);
 }
 
+a, button {
+  cursor: pointer;
+}
+
 .inline {
   display: inline;
 }

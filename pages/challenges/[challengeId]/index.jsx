@@ -59,8 +59,8 @@ function ChallengeDetail() {
     queryFn: () => getChallengeWithId(challengeId),
     staleTime: 5 * 60 * 1000,
   });
-  console.log(challenge);
-  console.log(user);
+  console.log("ChallengeDetail challenge", challenge);
+  console.log("ChallengeDetail user", user);
   const isAdmin = user?.role === "Admin";
 
   useEffect(() => {

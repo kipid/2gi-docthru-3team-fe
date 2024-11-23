@@ -40,14 +40,14 @@ const Header = () => {
                 <div className={styles.user}>
                   <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_profile.png" alt="Profile" />
                   <div className={styles.nicknameAndGrade}>
-                    <span className={styles.nickname}>nickname</span>
-                    <span className={styles.grade}>GRADE[grade]</span>
+                    <span className={styles.nickname}>{user?.nickname}</span>
+                    <span className={styles.grade}>{GRADE[user?.grade]}</span>
                   </div>
                 </div>
                 <Link href="/users/me/challenges/ongoing"><div className={styles.userDropDownItem}>나의 챌린지</div></Link>
                 <button className={styles.userDropDownItem} onClick={() => {
                   setUser(null);
-                  // TODO: localStorage 에서도 삭제
+                  // TODO: localStorage 에서도 삭제 및 postLogout 요청.
                 }}>로그아웃</button>
               </div>}
             </div>

@@ -10,7 +10,7 @@ function WorkDetail() {
 		queryFn: () => getWorkById(workId),
 		staleTime: 5 * 60 * 1000,
 	});
-	console.log(work);
+	console.log("WorkDetail work", work);
 
 	return;
 }

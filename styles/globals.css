@@ -38,8 +38,10 @@
   --gray-100: #131313;
   --gray-0: #000000;
   --prime-red: #eb3e3e;
+  --light-blue: #dff0ff;
   --prime-blue: #558fff;
   --prime-orange: #eb5230;
+  --light-yellow: #fffde7;
   --prime-yellow: #ffc117;
   --brand-black: #262626;
   --brand-white: #f1f2f5;
@@ -107,6 +109,10 @@ a {
 
 a:visited {
   color: var(--brand-black);
+}
+
+a, button, label {
+  cursor: pointer;
 }
 
 .inline {

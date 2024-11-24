@@ -27,8 +27,8 @@ const FeedbackList = ({ workId }) => {
 
   return (
     <div>
-      {data?.pages.map((page) =>
-        page.feedbacks.map((feedback) => (
+      {data?.list.map((list) =>
+        list.feedbacks.map((feedback) => (
           <div key={feedback.id}>
             <small>
               {feedback.author} · {feedback.createdAt}

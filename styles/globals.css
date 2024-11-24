@@ -37,6 +37,7 @@
   --gray-200: #212121;
   --gray-100: #131313;
   --gray-0: #000000;
+  --light-red: #ffe7e7;
   --prime-red: #eb3e3e;
   --light-blue: #dff0ff;
   --prime-blue: #558fff;
@@ -153,4 +154,15 @@ a, button, label {
 
 .none {
   display: none;
+}
+
+.ql-container.ql-snow {
+  height: 35rem;
+  overflow: auto;
+}
+
+input::placeholder, textarea::placeholder {
+  font-family: inherit;
+  font-size: var(--14px);
+  color: #888;
 }

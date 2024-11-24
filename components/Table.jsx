@@ -1,4 +1,7 @@
-import styles from "@/styles/Table.module.css";
+import { TYPE, FIELD } from "@/apis/translate.js";
+import styles from "./Table.module.css";
+import moment from "moment";
+import Link from "next/link";
 
 function Table({ applications }) {
   return (
@@ -18,16 +21,17 @@ function Table({ applications }) {
         </thead>
         <tbody>
           {applications.map(app => {
+            const { id, challenge: { docType, field, title, maxParticipants, deadLine }, appliedAt, status } = app;
             return (
-              <tr>
-                <td className={styles.td}>1023</td>
-                <td className={styles.td}>공식문서</td>
-                <td className={styles.td}>Next.js</td>
-                <td className={styles.td}>Next.js - App Router: Routing Fundamentals</td>
-                <td className={styles.td}>10</td>
-                <td className={styles.td}>24/01/16</td>
-                <td className={styles.td}>24/02/24</td>
-                <td className={styles.td}>승인 대기</td>
+              <tr key={id}>
+                <td className={styles.td}>{id}</td>
+                <td className={styles.td}>{TYPE[docType]}</td>
+                <td className={styles.td}>{[FIELD[field]]}</td>
+                <td className={styles.td}><Link href={`/admin/manage/${id}`}>{title}</Link></td>
+                <td className={styles.td}>{maxParticipants}</td>
+                <td className={styles.td}>{moment(new Date(appliedAt)).format("YY/MM/DD")}</td>
+                <td className={styles.td}>{moment(new Date(deadLine)).format("YY/MM/DD")}</td>
+                <td className={styles.td}>{status}</td>
               </tr>);
           })}
         </tbody>

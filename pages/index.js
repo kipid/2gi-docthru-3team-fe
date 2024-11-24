@@ -9,6 +9,8 @@ import Challenge from "@/components/Challenge.jsx";
 import X from "@/components/X.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import Pagination from "@/components/Pagination.jsx";
+import Loading from "@/components/Loading.jsx";
+import Error from "@/components/Error.jsx";
 
 const initialFieldState = {
   Next: false,
@@ -21,7 +23,6 @@ const initialFieldState = {
 export default function Home() {
   const user = useUser();
   const viewport = useViewport();
-  const [size, setSize] = useState(16);
   const [search, setSearch] = useState("");
   const [filterShown, setFilterShown] = useState(false);
   const [filterNum, setFilterNum] = useState(0);
@@ -44,13 +45,7 @@ export default function Home() {
     staleTime: 5 * 60 * 1000,
   });
   const router = useRouter();
-  console.log(challenges);
-
-  useEffect(() => {
-    if (viewport) {
-      setSize(viewport.size);
-    }
-  }, [viewport]);
+  console.log("Home challenges", challenges);
 
   const handleFieldChange = (e) => {
     setField((prev) => ({
@@ -67,12 +62,14 @@ export default function Home() {
     setProgress(e.target.value);
   };
 
+  if (isPending) return <Loading />;
+  if (isError) return <Error />;
+
   return (
     <>
       <div className={styles.head}>
         <h1>챌린지 목록</h1>
-        {/* TODO: user && */}
-        {true && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={size} height={size} src="/images/ic_plus.png" alt="New challenge" /></button>}
+        {user && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
       </div>
       <div className={styles.subHead}>
         <div className={styles.filter}>
@@ -83,7 +80,7 @@ export default function Home() {
           <div className={filterShown ? styles.filterDropdown : `none ${styles.filterDropdown}`}>
             <div className={styles.head}>
               <h3>필터</h3>
-              <X width={size} height={size} onClick={() => setFilterShown(false)} />
+              <X width={viewport.size} height={viewport.size} onClick={() => setFilterShown(false)} />
             </div>
             <div className={styles.filterDropdownItem}>
               <h4>분야</h4>
@@ -154,7 +151,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.search}>
-          <div className={styles.searchIcon}><Image width={size} height={size} src="/images/ic_search.png" alt="Search" onClick={() => {
+          <div className={styles.searchIcon}><Image width={viewport.size} height={viewport.size} src="/images/ic_search.png" alt="Search" onClick={() => {
             setPage(1);
             setQuery({ ...query, keyword: search.trim() ? search.trim() : undefined });
           }} /></div>
@@ -167,7 +164,7 @@ export default function Home() {
           }} />
         </div>
       </div>
-      {challenges?.data?.list?.length ? challenges?.data?.list?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)
+      {challenges?.list?.length ? challenges?.list?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)
       : <div className={styles.noResult}>아직 챌린지가 없어요.<br />지금 바로 챌린지를 신청해보세요!</div>}
       <Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(challenges?.totalCount / limit)} />
     </>

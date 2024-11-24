@@ -8,7 +8,7 @@ import { getChallenges } from "@/apis/challengeService.js";
 import Challenge from "@/components/Challenge.jsx";
 import X from "@/components/X.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/Pagination.jsx";
 
 const initialFieldState = {
   Next: false,
@@ -167,7 +167,7 @@ export default function Home() {
           }} />
         </div>
       </div>
-      {challenges?.data?.length ? challenges?.data?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)
+      {challenges?.data?.list?.length ? challenges?.data?.list?.map?.(challenge => <Challenge key={challenge.id} challenge={challenge} />)
       : <div className={styles.noResult}>아직 챌린지가 없어요.<br />지금 바로 챌린지를 신청해보세요!</div>}
       <Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(challenges?.totalCount / limit)} />
     </>

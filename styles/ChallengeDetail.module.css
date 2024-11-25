@@ -54,6 +54,21 @@
   gap: .5em;
 }
 
+.kebabMenu {
+  position: relative;
+
+  & .kebabMenuItems {
+    position: absolute;
+    right: 0;
+    width: max-content;
+
+    & .kebabMenuItem {
+      padding: .5rem;
+      border: 1px solid var(--gray-800)
+    }
+  }
+}
+
 .buttonContainer {
   width: 17.8125rem;
   border-radius: var(--16px);
@@ -96,10 +111,14 @@
       color: var(--brand-white);
       border: none;
 
+      &:disabled {
+        background-color: var(--gray-800);
+      }
       @media (max-width: 744px) {
         margin: 1rem 0 0;
       }
     }
+
   }
 }
 

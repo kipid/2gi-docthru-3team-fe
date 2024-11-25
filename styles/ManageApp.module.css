@@ -1,0 +1,57 @@
+.challengeInfoContainer {
+	border-bottom: 1px solid var(--gray-800);
+}
+
+.head {
+  display: flex;
+	flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  & h1 {
+    font-size: var(--20px);
+    font-weight: 600;
+  }
+}
+
+.subHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em 0;
+  gap: var(--12px);
+}
+
+.challengeDateAndParti {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 1rem;
+	margin: 1rem 0;
+
+	& .challengeDeadLine, & .challengeParticipants {
+		display: flex;
+		align-items: center;
+		gap: .5rem;
+	}
+}
+
+.originalLinkIframe {
+	& h2 {
+		font-size: var(--18px);
+		font-weight: 600;
+		margin: 1rem 0;
+	}
+
+	& .iframeContainer {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1.7 / 1;
+		margin-bottom: 1rem;
+		border-bottom: 1px solid var(--gray-800);
+	}
+
+	/* & .buttons {
+
+	} */
+}

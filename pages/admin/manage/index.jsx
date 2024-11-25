@@ -57,7 +57,7 @@ function Manage() {
           </select>
         </div>
       </div>
-      <Table applications={applications.data} />
+      <Table applications={applications?.list} />
       <Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(applications.totalCount / 10)} />
     </main>
   )

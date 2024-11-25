@@ -20,6 +20,36 @@ export async function getChallengeWithId(id) {
 	}
 }
 
+export async function getMyChallsOngoing() {
+	try {
+		const result = await instance.get(`/me/challenges/ongoing`);
+		return result?.data;
+	} catch (err) {
+		console.error(err);
+		return err?.response?.data || err;
+	}
+}
+
+export async function getMyChallsCompleted() {
+	try {
+		const result = await instance.get(`/me/challenges/completed`);
+		return result?.data;
+	} catch (err) {
+		console.error(err);
+		return err?.response?.data || err;
+	}
+}
+
+export async function getMyChallsApplied() {
+	try {
+		const result = await instance.get(`/me/challenges/application`);
+		return result?.data;
+	} catch (err) {
+		console.error(err);
+		return err?.response?.data || err;
+	}
+}
+
 export async function doChallenge(challengeId) {
 	try {
 		const result = await instance.post(`/challenges/${challengeId}/participations`);

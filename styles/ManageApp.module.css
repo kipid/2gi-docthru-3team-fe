@@ -48,5 +48,10 @@
 		width: 100%;
 		aspect-ratio: 1.7 / 1;
 		margin-bottom: 1rem;
+		border-bottom: 1px solid var(--gray-800);
 	}
+
+	/* & .buttons {
+
+	} */
 }

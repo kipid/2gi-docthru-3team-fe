@@ -10,6 +10,7 @@ import { GRADE } from "@/apis/translate.js";
 const Header = () => {
   const viewport = useViewport();
   const user = useUser();
+  const isAdmin = user?.role === "Admin";
   const setUser = useSetUser();
   const router = useRouter();
   const [isNotiOpen, setIsNotiOpen] = useState(false);
@@ -44,7 +45,8 @@ const Header = () => {
                     <span className={styles.grade}>{GRADE[user?.grade]}</span>
                   </div>
                 </div>
-                <Link href="/users/me/challenges/ongoing"><div className={styles.userDropDownItem}>나의 챌린지</div></Link>
+                  {isAdmin ? <Link href="/admin/manage"><div className={styles.userDropDownItem}>챌린지 관리하기</div></Link>
+                : <Link href="/users/me/challenges/ongoing"><div className={styles.userDropDownItem}>나의 챌린지</div></Link>}
                 <button className={styles.userDropDownItem} onClick={() => {
                   setUser(null);
                   // TODO: localStorage 에서도 삭제 및 postLogout 요청.

@@ -75,7 +75,7 @@ export default function Home() {
         <div className={styles.filter}>
           <div className={[styles.filterContainer, (filterNum ? styles.filtered : styles.unfiltered)].join(" ")} onClick={() => setFilterShown(prev => !prev)}>
             <div className={styles.filterText}>필터{filterNum ? `(${filterNum})` : ""}</div>
-            <div className={styles.filterIcon}><Image width={viewport.size} height={viewport.size} src="/images/ic_filter.png" alt="Filter" /></div>
+            <div className={styles.filterIcon}><Image width={viewport.size} height={viewport.size} src={filterNum ? "/images/ic_filter_white.png" : "/images/ic_filter.png"} alt="Filter" /></div>
           </div>
           <div className={filterShown ? styles.filterDropdown : `none ${styles.filterDropdown}`}>
             <div className={styles.head}>

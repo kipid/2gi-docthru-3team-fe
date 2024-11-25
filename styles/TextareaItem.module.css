@@ -8,4 +8,5 @@
     border: 1px solid #e5e5e5;
     margin-bottom: 10px;
     font-family: inherit;
+    resize: none;
 }

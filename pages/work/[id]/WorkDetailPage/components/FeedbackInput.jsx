@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import styles from "@/styles/FeedbackForm.module.css";
+import inactiveImage from "@/public/images/status=inactive.png";
+import activeImage from "@/public/images/status=active.png";
+import TextareaItem from "../../../../../components/TextareaItem";
+
 
 const postFeedback = async ({ workId, content }) => {
   const { data } = await axios.post(`/api/works/${workId}/feedbacks`, { content });
@@ -28,13 +32,18 @@ const FeedbackForm = ({ workId }) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.feedbackForm}>
-      <textarea
+      <TextareaItem
+      id="feedback"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="피드백을 남겨주세요"
+        className={styles.textarea}
       />
-      <button type="submit" disabled={mutation.isLoading}>
-        {mutation.isLoading ? "전송 중..." : "피드백 남기기"}
+      <button type="submit" disabled={mutation.isLoading || !content.trim()} className={styles.submitButton}>
+        <img
+          src={content.trim() ? activeImage : inactiveImage}
+          alt="Submit Button"
+        />
       </button>
     </form>
   );

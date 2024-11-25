@@ -20,9 +20,9 @@ export async function patchWorkById(workId, content) {
 	}
 }
 
-export async function deleteWorkById(workId) {
+export async function deleteWorkById(workId, reasonDel) {
 	try {
-		const result = await instance.delete(`/works/${workId}`);
+		const result = await instance.delete(`/works/${workId}`, reasonDel ? { data: { message: reasonDel } } : undefined);
 		return result?.data;
 	} catch (err) {
 		console.error(err);

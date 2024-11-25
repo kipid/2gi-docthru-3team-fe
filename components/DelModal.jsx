@@ -1,7 +1,7 @@
 import styles from "./DelModal.module.css";
 import X from "./X.jsx";
 
-function DelModal({ error, setError }) {
+function DelModal({ error, setError, reasonDel, setReasonDel }) {
 	return (
 		<div className={[styles.popup_container, (error ? "" : styles.none)].join(" ")}>
 			<div className={styles.popup}>
@@ -13,7 +13,7 @@ function DelModal({ error, setError }) {
 					}} />
 				</div>
 				<h4>내용</h4>
-				<textarea className={styles.popup_text} placeholder="삭제 사유를 입력해주세요."></textarea>
+				<textarea className={styles.popup_text} placeholder="삭제 사유를 입력해주세요." value={reasonDel} onChange={(e) => setReasonDel(e.target.value)}></textarea>
 				<button className={styles.popup_button_ok} onClick={() => {
 					setError(null);
 					error?.onClose?.();

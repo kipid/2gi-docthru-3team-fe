@@ -44,6 +44,7 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 function TextEditor() {
   const [error, setError] = useState(null);
   const [errorDel, setErrorDel] = useState(null);
+  const [reasonDel, setReasonDel] = useState("");
   const user = useUser();
   const router = useRouter();
   const viewport = useViewport();
@@ -96,9 +97,17 @@ function TextEditor() {
           {isAdmin
             ? <button className={`${styles.button} ${styles.giveupButton}`} type="button" onClick={() => {
               setErrorDel({
-                onClose: () => {
-                  deleteWorkById(id);
+                onClose: async () => {
+                  const result = await deleteWorkById(id, reasonDel);
                   queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+                  if (result?.message) {
+                    setError({ message: result.message, onClose: () => {
+                      queryClient.invalidateQueries({ queryKey: ["works", id] });
+                      router.push(`/challenges/${work?.challenge?.id}`);
+                    }});
+                    return;
+                  }
+                  queryClient.invalidateQueries({ queryKey: ["works", id] });
                   router.push(`/challenges/${work?.challenge?.id}`);
                 }
               });
@@ -162,7 +171,7 @@ function TextEditor() {
       </div>
       <button className={styles.openButton} onClick={() => setIsIframeOpen(true)}>원문</button>
       <PopUp error={error} setError={setError} />
-      <DelModal error={errorDel} setError={setErrorDel} />
+      <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />
     </>
   );
 };

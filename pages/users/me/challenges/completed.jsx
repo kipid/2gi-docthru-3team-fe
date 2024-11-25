@@ -7,8 +7,13 @@ import { useUser } from "@/context/UserProvider.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { getMyChallsCompleted } from "@/apis/challengeService.js";
 import Loading from "@/components/Loading.jsx";
+import Challenge from "@/components/Challenge.jsx";
+import Pagination from "@/components/Pagination.jsx";
+
+const PAGE_SIZE = 5;
 
 function Completed() {
+	const [page, setPage] = useState(1);
 	const user = useUser();
 	const viewport = useViewport();
 	const [search, setSearch] = useState("");
@@ -31,8 +36,9 @@ function Completed() {
 				<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_search.png" alt="Search" />
 			</div>
 			<div className={styles.challenges}>
-				{/* challenges?.list?.map(chall => <Challenge challenge={chall} status="completed" />) */}
+				{challenges?.list?.map(chall => <Challenge challenge={chall} status="completed" />)}
 			</div>
+			<Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(challenges?.totalCount / PAGE_SIZE)} />
 		</main>
 	);
 }

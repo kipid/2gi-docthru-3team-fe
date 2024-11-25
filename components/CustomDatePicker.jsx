@@ -3,6 +3,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Label from "./Label";
 import styles from "@/styles/CustomDatePicker.module.css"
+
+
 const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 

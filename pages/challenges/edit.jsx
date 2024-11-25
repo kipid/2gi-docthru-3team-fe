@@ -9,8 +9,8 @@ import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/new.module.css";
 
 function updateChallenge() {
-  const categories = ["Next.js", "API", "Career"];
-  const doctypes = ["블로그", "공식문서"];
+  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
+  const doctypes = ["Blog", "Document"];
 
   const router = useRouter();
 
@@ -18,7 +18,7 @@ function updateChallenge() {
     defaultValues: {
       name: "",
       link: "",
-      category: "",
+      field: "",
       doctype: "",
       deadline: null,
       personnel: "",
@@ -26,9 +26,9 @@ function updateChallenge() {
     },
   });
 
-  const updateChallenge = async (id, data) => {
+  const updateChallenge = async (challengeid, data) => {
     try {
-      const response = await axios.patch(`/api/challenges/${id}`, data, {
+      const response = await axios.patch(`/api/challenges/${challengeid}`, data, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -90,7 +90,7 @@ function updateChallenge() {
               <Dropdown
                 id="category"
                 label="카테고리"
-                options={categories}
+                options={fields}
                 placeholder="카테고리"
                 {...field}
               />

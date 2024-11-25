@@ -117,8 +117,8 @@ function ChallengeDetail() {
         </div>
         <div className={styles.buttonContainer}>
           <div className={styles.challengeDateAndParti}>
-            <div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" /> {moment(new Date(challenge.deadLine)).format("YYYY년 M월 D일 마감")}</div>
-            <div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" /> {challenge.participants}/{challenge.maxParticipants}</div>
+            <div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" />{moment(new Date(challenge.deadLine)).format("YYYY년 M월 D일 마감")}</div>
+            <div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" />{challenge.participants}/{challenge.maxParticipants}</div>
           </div>
           <div className={styles.buttons}>
             <button className={`${styles.button} ${styles.seeOriginal}`} type="button" onClick={() => window.open(challenge.docUrl)}>원문 보기</button>
@@ -130,7 +130,7 @@ function ChallengeDetail() {
                   router.push(`/work/${workId}/edit`);
                 }
               } })
-            }}>작업 도전하기</button>
+            }} disabled={challenge.participants >= challenge.maxParticipants || new Date(challenge.deadLine).getTime() < Date.now()}>작업 도전하기</button>
           </div>
         </div>
       </main>

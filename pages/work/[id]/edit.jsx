@@ -5,9 +5,15 @@ import 'react-quill/dist/quill.snow.css';
 import styles from '@/styles/TextEditor.module.css';
 import { useRouter } from 'next/router';
 import sanitizeHtml from 'sanitize-html';
-import { useViewport } from '@/context/ViewportProvider';
+import { useViewport } from '@/context/ViewportProvider.jsx';
 import Image from 'next/image';
-import X from '@/components/X';
+import X from '@/components/X.jsx';
+import Loading from '@/components/Loading.jsx';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteWorkById, getWorkById, patchWorkById } from '@/apis/workService.js';
+import PopUp from '@/components/PopUp.jsx';
+import { useUser } from '@/context/UserProvider.jsx';
+import DelModal from '@/components/DelModal';
 
 const MODULES = {
   toolbar: [
@@ -21,46 +27,25 @@ const MODULES = {
 };
 
 const SANITIZE_OPTIONS = {
-	allowedTags: [
-		'p',
-		'br',
-		'span',
-		'strong',
-		'em',
-		'u',
-		's',
-		'h1',
-		'h2',
-		'h3',
-		'h4',
-		'h5',
-		'h6',
-		'ul',
-		'ol',
-		'li',
-		'blockquote',
-		'pre',
-		'code',
-		'hr',
-		'img',
-		'figure',
-		'figcaption',
-		'iframe',
-	],
-	allowedAttributes: {
-		span: ['style'],
-		span: ['class'],
-		img: ['src', 'alt', 'width', 'height'],
-		iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
-	},
+  allowedTags: [ 'p', 'br', 'span', 'strong', 'em', 'u', 's', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'hr', 'img', 'figure', 'figcaption', 'iframe' ],
+  allowedAttributes: {
+    span: ['style'],
+    span: ['class'],
+    img: ['src', 'alt', 'width', 'height'],
+    iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
+  },
 };
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
-  loading: () => <p>Loading Editor...</p>,
+  loading: () => <Loading />,
 });
 
 function TextEditor() {
+  const [error, setError] = useState(null);
+  const [errorDel, setErrorDel] = useState(null);
+  const [reasonDel, setReasonDel] = useState("");
+  const user = useUser();
   const router = useRouter();
   const viewport = useViewport();
   const [isIframeOpen, setIsIframeOpen] = useState(false);
@@ -69,47 +54,88 @@ function TextEditor() {
   const [savedContent, setSavedContent] = useState("");
   const { id } = router.query;
   const STORAGE_KEY = `work_${id}`;
+  const queryClient = useQueryClient();
+  const { data: work, isPending, isError } = useQuery({
+    queryKey: ["works", id],
+    queryFn: () => getWorkById(id),
+    staleTime: 5 * 60 * 1000,
+  });
+  console.log("WorkDetail edit work", work);
+  const setSanitizedContent = (content) => {
+    console.log("content", content);
+    const sanitizedContent = sanitizeHtml(content, SANITIZE_OPTIONS);
+    setContent(sanitizedContent);
+  };
+  const isAdmin = user?.role === "Admin";
 
   useEffect(() => {
     setSavedContent(localStorage.getItem(STORAGE_KEY));
     console.log("Saved content", savedContent);
     if (savedContent?.length) {
-  		setHasDraft(true);
-  	}
+      setHasDraft(true);
+    }
   }, [savedContent, id]);
 
-  // useImperativeHandle(ref, () => ({
-  // 	saveContent: () => {
-  // 		localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
-  // 		alert('임시 저장되었습니다.');
-  // 		console.log('Saved content:', content);
-  // 	},
-  // }));
+  useEffect(() => {
+    if (work) {
+      setSanitizedContent(work.content);
+    }
+  }, [work]);
 
   const handleBringBackDraft = () => {
-  	setContent(savedContent);
-  	setHasDraft(false);
+    setSavedContent(localStorage.getItem(STORAGE_KEY));
+    console.log("savedContent", savedContent);
+    setSanitizedContent(savedContent);
+    setHasDraft(false);
   };
 
   return (
     <>
       <div className={styles.head}>
-        {/* TODO: h1 변경하기, button onClick 구현하기 */}
-        <h1>번역하기</h1>
+        <h1>{work?.challenge?.title}</h1>
         <div className={styles.buttons}>
-          <button className={`${styles.button} ${styles.giveupButton}`} type="button" onClick={() => {
-            //
-          }}>포기 <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_giveup.png" alt="Give up" /></button>
+          {isAdmin
+            ? <button className={`${styles.button} ${styles.giveupButton}`} type="button" onClick={() => {
+              setErrorDel({
+                onClose: async () => {
+                  const result = await deleteWorkById(id, reasonDel);
+                  queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+                  if (result?.message) {
+                    setError({ message: result.message, onClose: () => {
+                      queryClient.invalidateQueries({ queryKey: ["works", id] });
+                      router.push(`/challenges/${work?.challenge?.id}`);
+                    }});
+                    return;
+                  }
+                  queryClient.invalidateQueries({ queryKey: ["works", id] });
+                  router.push(`/challenges/${work?.challenge?.id}`);
+                }
+              });
+            }}>삭제하기</button>
+          : <button className={`${styles.button} ${styles.giveupButton}`} type="button" onClick={() => {
+            setError({ message: "작업을 포기하시겠습니까? 이 작업은 되돌릴 수 없습니다.", onClose: () => {
+              deleteWorkById(id);
+              queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+              router.push(`/challenges/${work?.challenge?.id}`);
+            } });
+          }}>포기 <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_giveup.png" alt="Give up" /></button>}
           <button className={`${styles.button} ${styles.tempSave}`} type="button" onClick={() => {
             setSavedContent(content);
-            localStorage.setItem(STORAGE_KEY, savedContent);
+            localStorage.setItem(STORAGE_KEY, content);
             console.log("Saved content", content);
             setHasDraft(true);
             alert('임시 저장되었습니다.');
           }}>임시저장</button>
           <button className={`${styles.button} ${styles.submit}`} type="button" onClick={() => {
-            // router.push(`/work/${id}`)
-          }}>제출하기</button>
+            setError({
+              message: "작업을 제출하시겠습니까? 이전 작업은 덮어씌워집니다.", onClose: () => {
+                patchWorkById(id, content);
+                queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+                queryClient.invalidateQueries({ queryKey: ["works", id] });
+                router.push(`/challenges/${work?.challenge?.id}`);
+              }
+            });
+          }}>{isAdmin ? "수정하기" : "제출하기"}</button>
         </div>
       </div>
       {hasDraft && (
@@ -133,14 +159,19 @@ function TextEditor() {
       <div className={[styles.iframeContainer, isIframeOpen ? styles.fixed : styles.closed].join(" ")}>
         <iframe
           className={styles.iframe}
-          src={`http://example.com`}
+          src={work?.challenge?.docUrl ?? "http://example.com"}
           hidden={!isIframeOpen}
         />
         <button className={styles.closeButton} onClick={() => setIsIframeOpen(false)}>
           닫기
         </button>
+        <button className={styles.newOpen} onClick={() => window.open(work?.challenge?.docUrl)}>
+          링크 열기
+        </button>
       </div>
       <button className={styles.openButton} onClick={() => setIsIframeOpen(true)}>원문</button>
+      <PopUp error={error} setError={setError} />
+      <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />
     </>
   );
 };

@@ -3,6 +3,11 @@
 	justify-content: space-between;
 	align-items: center;
 
+	& h1 {
+		font-size: var(--20px);
+		font-weight: 600;
+	}
+
 	& .buttons {
 		display: flex;
 		justify-content: flex-start;
@@ -88,6 +93,12 @@
 	.closeButton {
 		position: fixed;
 		z-index: 110;
+	}
+
+	.newOpen {
+		position: fixed;
+		z-index: 110;
+		right: 0;
 	}
 }
 

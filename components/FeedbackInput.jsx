@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import styles from "@/styles/FeedbackForm.module.css";
-import inactiveImage from "@/public/images/status=inactive.png";
-import activeImage from "@/public/images/status=active.png";
-import TextareaItem from "../../../../../components/TextareaItem";
+import styles from "./FeedbackInput.module.css";
+import inactiveImage from "@/public/images/ic_inactivedown.png";
+import activeImage from "@/public/images/ic_activedown.png";
+import TextareaItem from "./TextareaItem";
 
 
 const postFeedback = async ({ workId, content }) => {

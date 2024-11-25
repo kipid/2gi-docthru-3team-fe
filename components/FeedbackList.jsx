@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import TextareaItem from "../../../../../components/TextareaItem";
+import TextareaItem from "./TextareaItem";
 import menu from "@/public/images/feedback_menu.png";
-import styles from "@/styles/FeedbackList.module.css";
+import styles from "./FeedbackList.module.css";
 
 const fetchFeedbacks = async ({ pageParam = 1, queryKey }) => {
   const [_, workId] = queryKey;

@@ -5,8 +5,8 @@ import styles from "@/styles/WorkDetail.module.css";
 import { format } from "date-fns";
 import likeIconActive from "@/public/images/ic_heart.png";
 import likeIconInactive from "@/public/images/ic_inactiveheart.png";
-import FeedbackForm from "./FeedbackInput";
-import FeedbackList from "./FeedbackList";
+import FeedbackForm from "@/components/FeedbackInput";
+import FeedbackList from "@/components/FeedbackList";
 
 const fetchWorkDetail = async (workId) => {
   const { data } = await axios.get(`/api/works/${workId}`);
@@ -21,19 +21,24 @@ const toggleLike = async (workId) => {
 const WorkDetail = ({ workId }) => {
   const queryClient = useQueryClient();
 
-  const { data, isLoading, isError, error } = useQuery(
-    ["workDetail", workId],
-    () => fetchWorkDetail(workId)
-  );
-
-  const likeMutation = useMutation(() => toggleLike(workId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["workDetail", workId]);
-    },
-    onError: (error) => {
-      console.error("좋아요 처리 중 에러:", error);
-    },
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["workDetail", workId],
+    queryFn: () => fetchWorkDetail(workId),
   });
+
+  const formattedDate = data?.createdAt
+    ? format(new Date(data.createdAt), "yyyy-MM-dd")
+    : "날짜 정보 없음";
+
+    const likeMutation = useMutation({
+      mutationFn: () => toggleLike(workId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["workDetail", workId] });
+      },
+      onError: (error) => {
+        console.error("좋아요 처리 중 에러:", error);
+      },
+    });
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -50,10 +55,8 @@ const WorkDetail = ({ workId }) => {
     likeMutation.mutate();
   };
 
-  const formattedDate = format(new Date(data.createdAt), "yyyy-MM-dd");
-
   return (
-    <div className={styles.container}>
+    <div>
       <div className={styles.workDetail}>
         <h1>{data.title}</h1>
         <span className={styles.docType}>{data.docType}</span>
@@ -76,7 +79,6 @@ const WorkDetail = ({ workId }) => {
         </div>
         <p>{data.content}</p>
       </div>
-
       <FeedbackForm workId={workId} />
       <FeedbackList workId={workId} />
     </div>

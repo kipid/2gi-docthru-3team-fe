@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useUser } from "@/context/UserProvider.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { getMyChallsCompleted } from "@/apis/challengeService.js";
+import Loading from "@/components/Loading.jsx";
 
 function Completed() {
 	const user = useUser();

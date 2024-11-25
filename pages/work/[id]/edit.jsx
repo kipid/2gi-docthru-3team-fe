@@ -108,6 +108,7 @@ function TextEditor() {
               message: "작업을 제출하시겠습니까? 이전 작업은 덮어씌워집니다.", onClose: () => {
                 patchWorkById(id, content);
                 queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+                queryClient.invalidateQueries({ queryKey: ["works", id] });
                 router.push(`/challenges/${work?.challenge?.id}`);
               }
             });

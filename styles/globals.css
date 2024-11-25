@@ -112,7 +112,7 @@ a:visited {
   color: var(--brand-black);
 }
 
-a, button {
+a, button, label {
   cursor: pointer;
 }
 

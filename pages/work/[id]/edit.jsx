@@ -12,6 +12,8 @@ import Loading from '@/components/Loading.jsx';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteWorkById, getWorkById, patchWorkById } from '@/apis/workService.js';
 import PopUp from '@/components/PopUp.jsx';
+import { useUser } from '@/context/UserProvider.jsx';
+import DelModal from '@/components/DelModal';
 
 const MODULES = {
   toolbar: [
@@ -41,6 +43,8 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 
 function TextEditor() {
   const [error, setError] = useState(null);
+  const [errorDel, setErrorDel] = useState(null);
+  const user = useUser();
   const router = useRouter();
   const viewport = useViewport();
   const [isIframeOpen, setIsIframeOpen] = useState(false);
@@ -61,6 +65,7 @@ function TextEditor() {
     const sanitizedContent = sanitizeHtml(content, SANITIZE_OPTIONS);
     setContent(sanitizedContent);
   };
+  const isAdmin = user?.role === "Admin";
 
   useEffect(() => {
     setSavedContent(localStorage.getItem(STORAGE_KEY));
@@ -86,16 +91,25 @@ function TextEditor() {
   return (
     <>
       <div className={styles.head}>
-        {/* TODO: h1 변경하기, button onClick 구현하기 */}
         <h1>{work?.challenge?.title}</h1>
         <div className={styles.buttons}>
-          <button className={`${styles.button} ${styles.giveupButton}`} type="button" onClick={() => {
+          {isAdmin
+            ? <button className={`${styles.button} ${styles.giveupButton}`} type="button" onClick={() => {
+              setErrorDel({
+                onClose: () => {
+                  deleteWorkById(id);
+                  queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+                  router.push(`/challenges/${work?.challenge?.id}`);
+                }
+              });
+            }}>삭제하기</button>
+          : <button className={`${styles.button} ${styles.giveupButton}`} type="button" onClick={() => {
             setError({ message: "작업을 포기하시겠습니까? 이 작업은 되돌릴 수 없습니다.", onClose: () => {
               deleteWorkById(id);
               queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
               router.push(`/challenges/${work?.challenge?.id}`);
             } });
-          }}>포기 <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_giveup.png" alt="Give up" /></button>
+          }}>포기 <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_giveup.png" alt="Give up" /></button>}
           <button className={`${styles.button} ${styles.tempSave}`} type="button" onClick={() => {
             setSavedContent(content);
             localStorage.setItem(STORAGE_KEY, content);
@@ -112,7 +126,7 @@ function TextEditor() {
                 router.push(`/challenges/${work?.challenge?.id}`);
               }
             });
-          }}>제출하기</button>
+          }}>{isAdmin ? "수정하기" : "제출하기"}</button>
         </div>
       </div>
       {hasDraft && (
@@ -148,6 +162,7 @@ function TextEditor() {
       </div>
       <button className={styles.openButton} onClick={() => setIsIframeOpen(true)}>원문</button>
       <PopUp error={error} setError={setError} />
+      <DelModal error={errorDel} setError={setErrorDel} />
     </>
   );
 };

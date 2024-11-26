@@ -15,11 +15,18 @@ const Header = () => {
   const router = useRouter();
   const [isNotiOpen, setIsNotiOpen] = useState(false);
   const [isUserDDOpen, setIsUserDDOpen] = useState(false);
+  const currentPath = router.pathname;
 
 	return (
 	<nav className={styles.navbar}>
       <div className={styles.left}>
         <Link href="/"><Image width={120} height={27} src="/images/img_logo.png" alt="Logo" className={styles.logo} priority /></Link>
+        {user?.role === "Admin" && (
+          <div className={styles.adminNav}>
+            <Link href="/admin/manage"><p className={`${styles.manageButton} ${currentPath === '/admin/manage' ? styles.active : ''}`}>챌린지 관리</p></Link>
+            <Link href="/" ><p className={`${styles.listButton} ${currentPath === '/' ? styles.active : ''}`}>챌린지 목록</p></Link>
+          </div>
+        )}
       </div>
       <div className={styles.right}>
         {!user ? (

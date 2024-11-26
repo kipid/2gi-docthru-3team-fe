@@ -1,10 +1,12 @@
-import { getChallengeWithId } from "@/apis/challengeService.js";
+import { doChallenge, getChallengeWithId } from "@/apis/challengeService.js";
 import { GRADE } from "@/apis/translate.js";
 import { Field, Type } from "@/components/Challenge.jsx";
 import Loading from "@/components/Loading.jsx";
+import PopUp from "@/components/PopUp.jsx";
+import { useUser } from "@/context/UserProvider.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import styles from "@/styles/ChallengeDetail.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,19 +44,24 @@ export function Work({ work, viewport }) {
 }
 
 function ChallengeDetail() {
+  const user = useUser();
+  const [error, setError] = useState(null);
+  const [isKebabOpen, setIsKebabOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [pageMax, setPageMax] = useState(1);
   const [works, setWorks] = useState([]);
   const viewport = useViewport();
   const router = useRouter();
-  const [kebabMenuShown, setKebabMenuShown] = useState(false);
   const { challengeId } = router.query;
+  const queryClient = useQueryClient();
   const { data: challenge, isPending, isError } = useQuery({
     queryKey: ["challenges", challengeId],
     queryFn: () => getChallengeWithId(challengeId),
     staleTime: 5 * 60 * 1000,
   });
-  console.log(challenge);
+  console.log("ChallengeDetail challenge", challenge);
+  console.log("ChallengeDetail user", user);
+  const isAdmin = user?.role === "Admin";
 
   useEffect(() => {
     if (challenge) {
@@ -92,24 +99,39 @@ function ChallengeDetail() {
               </div>
             </div>
             {/* TODO: user 가 맞을때만 수정/삭제 보이도록... */}
-            <div className={styles.kebabMenu}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_kebab_menu.png" alt="Kebab menu" onClick={() => setKebabMenuShown(prev => !prev)} /></div>
+            {(isAdmin || user?.id === challenge?.applications?.user?.id) && <div className={styles.kebabMenu}>
+              <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_kebab_menu.png" alt="Kebab menu" onClick={() => setIsKebabOpen(prev => !prev)} />
+              {isKebabOpen && <div className={styles.kebabMenuItems}>
+                <div className={styles.kebabMenuItem} onClick={() => router.push(`/challenges/${challengeId}/edit`)}>수정하기</div>
+                <div className={styles.kebabMenuItem} onClick={() => router.push(`/challenges/${challengeId}/delete`)}>삭제하기</div>
+              </div>}
+            </div>}
           </div>
           <div className={styles.content}>
             <div className={styles.description}>{challenge.description}</div>
             <div className={styles.writerContainer}>
               <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_profile.png" alt="Profile" />
-              <span>{challenge.applications.user.nickname}</span>
+              <span>{challenge?.applications?.user.nickname}</span>
             </div>
           </div>
         </div>
         <div className={styles.buttonContainer}>
           <div className={styles.challengeDateAndParti}>
-            <div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" /> {moment(new Date(challenge.deadLine)).format("YYYY년 M월 D일 마감")}</div>
-            <div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" /> {challenge.participants}/{challenge.maxParticipants}</div>
+            <div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" />{moment(new Date(challenge.deadLine)).format("YYYY년 M월 D일 마감")}</div>
+            <div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" />{challenge.participants}/{challenge.maxParticipants}</div>
           </div>
           <div className={styles.buttons}>
             <button className={`${styles.button} ${styles.seeOriginal}`} type="button" onClick={() => window.open(challenge.docUrl)}>원문 보기</button>
-            <button className={styles.button} type="button" onClick={() => router.push(`/challenges/${challengeId}/edit`)}>작업 도전하기</button>
+            <button className={styles.button} type="button" onClick={async () => {
+              const { workId, message } = await doChallenge(challengeId);
+              setError({ message, onClose:() => {
+                queryClient.invalidateQueries({ queryKey: ["challenges", challengeId] });
+                if (workId) {
+                  router.push(`/work/${workId}/edit`);
+                }
+              } })
+            }} disabled={new Date(challenge.deadLine).getTime() < Date.now()}>작업 도전하기</button>
+            {/* {challenge.participants >= challenge.maxParticipants ||} */}
           </div>
         </div>
       </main>
@@ -123,9 +145,10 @@ function ChallengeDetail() {
           </div>
         </div>
         <div className={styles.works}>
-          {works.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(work => <Work work={work} viewport={viewport} key={work.id} />)}
+          {works?.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(work => <Work work={work} viewport={viewport} key={work.id} />)}
         </div>
       </div>
+      <PopUp error={error} setError={setError} />
     </>
   );
 }

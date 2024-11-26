@@ -45,7 +45,7 @@ export default function Home() {
     staleTime: 5 * 60 * 1000,
   });
   const router = useRouter();
-  console.log(challenges);
+  console.log("Home challenges", challenges);
 
   const handleFieldChange = (e) => {
     setField((prev) => ({
@@ -69,14 +69,13 @@ export default function Home() {
     <>
       <div className={styles.head}>
         <h1>챌린지 목록</h1>
-        {/* TODO: user && */}
-        {true && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
+        {user && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
       </div>
       <div className={styles.subHead}>
         <div className={styles.filter}>
           <div className={[styles.filterContainer, (filterNum ? styles.filtered : styles.unfiltered)].join(" ")} onClick={() => setFilterShown(prev => !prev)}>
             <div className={styles.filterText}>필터{filterNum ? `(${filterNum})` : ""}</div>
-            <div className={styles.filterIcon}><Image width={viewport.size} height={viewport.size} src="/images/ic_filter.png" alt="Filter" /></div>
+            <div className={styles.filterIcon}><Image width={viewport.size} height={viewport.size} src={filterNum ? "/images/ic_filter_white.png" : "/images/ic_filter.png"} alt="Filter" /></div>
           </div>
           <div className={filterShown ? styles.filterDropdown : `none ${styles.filterDropdown}`}>
             <div className={styles.head}>

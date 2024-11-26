@@ -1,0 +1,28 @@
+.submitButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .submitButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .textarea {
+    width: 100%;
+    height: 80px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+  }
+
+  .feedbackForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }

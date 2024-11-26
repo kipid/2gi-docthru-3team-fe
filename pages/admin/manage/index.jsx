@@ -25,7 +25,7 @@ function Manage() {
     queryFn: () => getApplications({ ...query, page }),
     staleTime: 5 * 60 * 1000,
   });
-  console.log(applications);
+  console.log("/admin/manage applications", applications);
 
   if (isPending) return <Loading />;
   if (isError) return <Error />;
@@ -57,7 +57,7 @@ function Manage() {
           </select>
         </div>
       </div>
-      <Table applications={applications.data} />
+      <Table applications={applications?.list} />
       <Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(applications.totalCount / 10)} />
     </main>
   )

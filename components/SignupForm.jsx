@@ -32,7 +32,6 @@ function SignupForm() {
   });
 
   const onSubmit = async ({ email, nickname, password }) => {
-    setLoading(true);
     try {
       const userData = await postSignup({ email, nickname, password });
       console.log('회원가입 성공', userData);

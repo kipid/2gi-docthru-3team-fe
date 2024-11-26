@@ -1,10 +1,12 @@
 import { doChallenge, getChallengeWithId } from "@/apis/challengeService.js";
 import { GRADE } from "@/apis/translate.js";
+import { getWorkById } from "@/apis/workService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
 import Loading from "@/components/Loading.jsx";
 import PopUp from "@/components/PopUp.jsx";
 import { useUser } from "@/context/UserProvider.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
+import { SANITIZE_OPTIONS } from "@/pages/work/[id]/edit.jsx";
 import styles from "@/styles/ChallengeDetail.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
@@ -12,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import sanitizeHtml from 'sanitize-html';
 
 function padNumber(number) {
   return number < 10 ? `0${number}` : `${number}`;
@@ -20,7 +23,7 @@ function padNumber(number) {
 const PAGE_SIZE = 5;
 
 export function Work({ work, viewport }) {
-  const { id, grade, nickname, likeCount, rank } = work;
+  const { id, grade, nickname, likeCount, rank, isLiked } = work;
 
   return (
     <div className={styles.work} key={id}>
@@ -33,11 +36,45 @@ export function Work({ work, viewport }) {
         </div>
       </div>
       <div className={styles.like}>
-        <Image width={viewport.size} height={viewport.size} src="/images/ic_heart.png" alt="Like" />
+        <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src={isLiked ? "/images/ic_heart_active.svg" : "/images/ic_heart_inactive.svg"} alt="Like" />
         <span>{likeCount}</span>
       </div>
       <div className={styles.seeWork}>
         <Link href={`/work/${id}`}>작업물 보기 &gt;</Link>
+      </div>
+    </div>
+  );
+}
+
+export function WorkDetail({ work, viewport }) {
+  const { id, user: { nickname }, likeCount, rank, content, createdAt, isLiked } = work;
+
+  return (
+    <div className={styles.workDetail}>
+      <div className={styles.head0}>
+        <Image width={viewport.size} height={viewport.size} src="/images/ic_medal.png" alt="Medal" />
+        <h2>최다 추천 번역</h2>
+      </div>
+      <div className={styles.detail}>
+        <div className={styles.head}>
+          <div className={styles.userAndLike}>
+            <div className={styles.user}>
+              <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_profile.png" alt="Profile" />
+              <div className={styles.nicknameAndGrade}>
+                <span className={styles.nickname}>{nickname}</span>
+                {/* <span className={styles.grade}>{GRADE[grade]}</span> */}
+              </div>
+            </div>
+            <div className={styles.like}>
+              <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src={isLiked ? "/images/ic_heart_active.svg" : "/images/ic_heart_inactive.svg"} alt="Like" />
+              <span>{likeCount}</span>
+            </div>
+          </div>
+          <div className={styles.date}>
+            <span>{moment(createdAt).format("YYYY.MM.DD hh:mm")}</span>
+          </div>
+        </div>
+        <div className={styles.content} dangerouslySetInnerHTML={{__html: sanitizeHtml(content, SANITIZE_OPTIONS)}}></div>
       </div>
     </div>
   );
@@ -50,6 +87,7 @@ function ChallengeDetail() {
   const [page, setPage] = useState(1);
   const [pageMax, setPageMax] = useState(1);
   const [works, setWorks] = useState([]);
+  const [maxLikeWorks, setMaxLikeWorks] = useState([]);
   const viewport = useViewport();
   const router = useRouter();
   const { challengeId } = router.query;
@@ -58,33 +96,50 @@ function ChallengeDetail() {
     queryKey: ["challenges", challengeId],
     queryFn: () => getChallengeWithId(challengeId),
     staleTime: 5 * 60 * 1000,
+    enabled: !!challengeId,
   });
-  console.log("ChallengeDetail challenge", challenge);
-  console.log("ChallengeDetail user", user);
+  // console.log("ChallengeDetail challenge", challenge);
+  // console.log("ChallengeDetail user", user);
   const isAdmin = user?.role === "Admin";
 
   useEffect(() => {
-    if (challenge) {
-      setPageMax(Math.ceil(challenge.works?.list.length / PAGE_SIZE) ?? 1);
+    const updateData = async () => {
+      if (challenge) {
+        const newPageMax = Math.ceil(challenge.works?.list.length / PAGE_SIZE) || 1;
+        setPageMax(newPageMax);
 
-      let rank = 1;
-      let prevWork = null;
-      let offset = 1;
-      const rankedWorks = challenge.works?.list.sort((work1, work2) => work2.likeCount - work1.likeCount).map(work => {
-        if (prevWork && prevWork.likeCount !== work.likeCount) {
-          rank += offset;
-          offset = 1;
-        } else if (prevWork) {
-          offset += 1;
-        }
-        prevWork = work;
-        return { ...work, rank };
-      });
-      setWorks(rankedWorks);
-    }
+        let rank = 1;
+        let prevWork = null;
+        let offset = 1;
+        const rankedWorks = challenge.works?.list.sort((work1, work2) => work2.likeCount - work1.likeCount).map(work => {
+          if (prevWork && prevWork.likeCount !== work.likeCount) {
+            rank += offset;
+            offset = 1;
+          } else if (prevWork) {
+            offset += 1;
+          }
+          prevWork = work;
+          return { ...work, rank };
+        });
+
+        setWorks(rankedWorks);
+        const filteredMaxLikeWorks = rankedWorks?.filter(work => work.rank === 1);
+        const detailedMaxLikeWorks = await Promise.all(filteredMaxLikeWorks?.map(async work => await getWorkById(work.id)));
+
+        setMaxLikeWorks(detailedMaxLikeWorks);
+      }
+    };
+
+    updateData();
   }, [challenge]);
 
   if (isPending) return <Loading />;
+  if (!maxLikeWorks) return <Loading />;
+  console.log("maxLikeWorks", maxLikeWorks);
+  // (async function() {
+  //   console.log(await Promise.all(maxLikeWorks));
+  // })();
+  // maxLikeWorks?.map(work => console.log(work));
 
   return (
     <>
@@ -98,7 +153,6 @@ function ChallengeDetail() {
                 <Type type={challenge.docType} />
               </div>
             </div>
-            {/* TODO: user 가 맞을때만 수정/삭제 보이도록... */}
             {(isAdmin || user?.id === challenge?.applications?.user?.id) && <div className={styles.kebabMenu}>
               <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_kebab_menu.png" alt="Kebab menu" onClick={() => setIsKebabOpen(prev => !prev)} />
               {isKebabOpen && <div className={styles.kebabMenuItems}>
@@ -135,6 +189,14 @@ function ChallengeDetail() {
           </div>
         </div>
       </main>
+      <div className={styles.maxLikeWorksContainer}>
+        {maxLikeWorks?.length > 1
+        ? <div className={styles.works}>
+            {maxLikeWorks.map(work => <WorkDetail work={work} viewport={viewport} key={work.id} />)}
+          </div>
+        : maxLikeWorks?.length === 1
+        && <WorkDetail work={maxLikeWorks[0]} viewport={viewport} />}
+      </div>
       <div className={styles.participantsContainer}>
         <div className={styles.head}>
           <h2>참여 현황</h2>

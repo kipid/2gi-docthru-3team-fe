@@ -26,7 +26,7 @@ const MODULES = {
   ],
 };
 
-const SANITIZE_OPTIONS = {
+export const SANITIZE_OPTIONS = {
   allowedTags: [ 'p', 'br', 'span', 'strong', 'em', 'u', 's', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'hr', 'img', 'figure', 'figcaption', 'iframe' ],
   allowedAttributes: {
     span: ['style'],

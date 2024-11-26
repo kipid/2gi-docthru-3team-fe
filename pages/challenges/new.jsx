@@ -5,12 +5,14 @@ import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/new.module.css"
+import axios from "axios";
 
 function NewChallenge() {
-  const categories = ["분야1", "분야2", "분야3"];
-  const doctypes = ["문서 타입1", "문서 타입2", "문서 타입3"];
+  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
+  const doctypes = ["Blog", "Document"];
 
-  const { handleSubmit, control, watch } = useForm({
+  const { handleSubmit, control, formState: { isValid } } = useForm({
+    mode: "onChange",
     defaultValues: {
       name: "",
       link: "",
@@ -24,8 +26,7 @@ function NewChallenge() {
 
   const onSubmit = async (data) => {
     try {
-      const result = await addChallenge(data);
-      navigate(`/challenges/${result.id}`);
+      await axios.patch(`/api/challenges`, data);
     } catch (error) {
       console.log("챌린지 등록 실패:", error);
     }
@@ -71,7 +72,7 @@ function NewChallenge() {
                 <Dropdown
                   id="category"
                   label="카테고리"
-                  options={categories}
+                  options={fields}
                   placeholder="카테고리"
                   {...field}
                 />
@@ -97,9 +98,12 @@ function NewChallenge() {
               control={control}
               render={({ field }) => (
                 <CustomDatePicker 
-                  id="deadline"
-                  label="마감일"
-                  placeholder="YYYY/MM/DD" {...field} />
+                    id="deadline"
+                    label="마감일"
+                    selected={field.value}
+                    onChange={field.onChange}
+                    placeholder="YYYY/MM/DD"
+                />
               )}
             />
 
@@ -129,17 +133,10 @@ function NewChallenge() {
               )}
             />
           </div>
-          <button className={styles.button}
+          <button
+            className={styles.button}
             type="submit"
-            disabled={
-              !allFields.name ||
-              !allFields.link ||
-              !allFields.category ||
-              !allFields.doctype ||
-              !allFields.deadline ||
-              !allFields.personnel ||
-              !allFields.description
-            }
+            disabled={!isValid}
           >
             신청하기
           </button>

@@ -65,6 +65,7 @@ export async function doChallenge(challengeId) {
 
 export async function deleteChallenge(challengeId, invalidationComment) {
 	const data = { invalidationComment };
+	console.log(data);
 	try {
 		const result = await instance.patch(`/challenges/${challengeId}/invalidate`, data);
 		return result?.data;

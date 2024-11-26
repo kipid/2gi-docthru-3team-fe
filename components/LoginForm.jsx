@@ -36,7 +36,7 @@ function LoginForm() {
       console.log('로그인 성공', userData);
       setUser(userData.user);
       if (userData.user.role === 'Admin') {
-        router.push('/admin');
+        router.push('/admin/manage');
       } else {
         router.push('/');
       }

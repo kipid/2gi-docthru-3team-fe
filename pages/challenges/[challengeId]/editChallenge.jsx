@@ -6,7 +6,7 @@ import InputItem from "@/components/InputItem";
 import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
-import styles from "@/styles/new.module.css";
+import styles from "@/styles/editChallenge.module.css";
 
 function updateChallenge() {
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
@@ -21,7 +21,7 @@ function updateChallenge() {
       field: "",
       doctype: "",
       deadline: null,
-      personnel: "",
+      participations: "",
       description: "",
     },
   });
@@ -125,11 +125,11 @@ function updateChallenge() {
           />
 
           <Controller
-            name="personnel"
+            name="participations"
             control={control}
             render={({ field }) => (
               <InputItem
-                id="personnel"
+                id="participations"
                 label="최대 인원"
                 placeholder="인원을 입력해주세요"
                 {...field}
@@ -159,7 +159,7 @@ function updateChallenge() {
             !allFields.category ||
             !allFields.doctype ||
             !allFields.deadline ||
-            !allFields.personnel ||
+            !allFields.participations ||
             !allFields.description
           }
         >

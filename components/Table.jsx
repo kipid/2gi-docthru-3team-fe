@@ -8,7 +8,7 @@ function Table({ applications }) {
     <div className={styles.tableContainer}>
       <table className={styles.table}>
         <thead>
-          <tr>
+          <tr className={styles.tr}>
             <th className={styles.th}>No.</th>
             <th className={styles.th}>분야</th>
             <th className={styles.th}>카테고리</th>
@@ -31,7 +31,8 @@ function Table({ applications }) {
                 <td className={styles.td}>{maxParticipants}</td>
                 <td className={styles.td}>{moment(new Date(appliedAt)).format("YY/MM/DD")}</td>
                 <td className={styles.td}>{moment(new Date(deadLine)).format("YY/MM/DD")}</td>
-                <td className={styles.td}>{status}</td>
+                <td className={styles.td}>
+                  <p className={styles[status]}>{status === "Waiting" ? "승인 대기" : status === "Rejected" ? "신청 거절" : status === "Invalidated" ? "챌린지 삭제" : "신청 승인"}</p></td>
               </tr>);
           })}
         </tbody>

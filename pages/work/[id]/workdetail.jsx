@@ -60,7 +60,7 @@ const WorkDetail = () => {
   return (
     <div>
       <div className={styles.workDetail}>
-        <h1>{data?.title || "제목 없음"}</h1>
+        <h1 style={{ fontSize: "24px"}}>{data?.title || "제목 없음"}</h1>
         <div>
           <span className={styles.docType}>{data?.docType || "문서 타입 없음"}</span>
           <span className={styles.category}>{data?.category || "카테고리 없음"}</span>
@@ -87,7 +87,7 @@ const WorkDetail = () => {
               : "날짜 정보 없음"}
           </span>
         </div>
-        <p>{data?.content || "내용 없음"}</p>
+        <p style={{maxWidth: "890px"}}>{data?.content || "내용 없음"}</p>
       </div>
       <FeedbackForm workId={workId} />
       <FeedbackList workId={workId} />

@@ -47,7 +47,7 @@ export function Work({ work, viewport }) {
 }
 
 export function WorkDetail({ work, viewport }) {
-  const { id, user: { nickname }, likeCount, rank, content, createdAt, isLiked } = work;
+  const { id, user: { nickname }, likeCount, rank, content, lastModifiedAt, isLiked } = work;
 
   return (
     <div className={styles.workDetail}>
@@ -71,7 +71,7 @@ export function WorkDetail({ work, viewport }) {
             </div>
           </div>
           <div className={styles.date}>
-            <span>{moment(createdAt).format("YYYY.MM.DD hh:mm")}</span>
+            <span>{moment(lastModifiedAt).format("YYYY.MM.DD hh:mm")}</span>
           </div>
         </div>
         <div className={styles.content} dangerouslySetInnerHTML={{__html: sanitizeHtml(content, SANITIZE_OPTIONS)}}></div>

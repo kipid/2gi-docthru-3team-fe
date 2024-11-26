@@ -1,6 +1,6 @@
 import { FIELD, TYPE } from "@/apis/translate.js";
 import { useViewport } from "@/context/ViewportProvider";
-import styles from "@/styles/Challenge.module.css";
+import styles from "./Challenge.module.css";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -93,7 +93,7 @@ function Challenge({ challenge, status }) {
 				{/* TODO: onClick 제대로 동작하도록... */}
 				{status === "ongoing" && <button className={`${styles.button} ${styles.contiChall}`} type="button" onClick={() => router.push(`/`)}>도전 계속하기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_arrow_right.png" alt="Arrow right" /></button>}
 				{/* TODO: onClick 제대로 동작하도록... */}
-				{status === "completed" && <button className={`${styles.button} ${styles.seeMine}`} type="button" onClick={() => router.push(`/`)}>내 작업물 보기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_arrow_right.png" alt="Arrow right" /></button>}
+				{status === "completed" && <button className={`${styles.button} ${styles.seeMine}`} type="button" onClick={() => router.push(`/`)}>내 작업물 보기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_document.png" alt="Arrow right" /></button>}
 			</div>
 			{isModalOpen && (
 				<Modal

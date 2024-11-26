@@ -56,7 +56,7 @@ const Header = () => {
                 : <Link href="/users/me/challenges/ongoing"><div className={styles.userDropDownItem}>나의 챌린지</div></Link>}
                 <button className={styles.userDropDownItem} onClick={() => {
                   setUser(null);
-                  // TODO: localStorage 에서도 삭제 및 postLogout 요청.
+                  localStorage.removeItem("user");
                 }}>로그아웃</button>
               </div>}
             </div>

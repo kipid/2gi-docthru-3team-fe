@@ -40,14 +40,14 @@ export function Work({ work, viewport }) {
         <span>{likeCount}</span>
       </div>
       <div className={styles.seeWork}>
-        <Link href={`/work/${id}`}>작업물 보기 &gt;</Link>
+        <Link href={`/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
       </div>
     </div>
   );
 }
 
 export function WorkDetail({ work, viewport }) {
-  const { id, user: { nickname }, likeCount, rank, content, createdAt, isLiked } = work;
+  const { id, user: { nickname }, likeCount, rank, content, lastModifiedAt, isLiked } = work;
 
   return (
     <div className={styles.workDetail}>
@@ -71,7 +71,7 @@ export function WorkDetail({ work, viewport }) {
             </div>
           </div>
           <div className={styles.date}>
-            <span>{moment(createdAt).format("YYYY.MM.DD hh:mm")}</span>
+            <span>{moment(lastModifiedAt).format("YYYY.MM.DD hh:mm")}</span>
           </div>
         </div>
         <div className={styles.content} dangerouslySetInnerHTML={{__html: sanitizeHtml(content, SANITIZE_OPTIONS)}}></div>
@@ -206,9 +206,11 @@ function ChallengeDetail() {
             <button className={styles.button} type="button" disabled={page === pageMax} onClick={() => setPage(prev => prev + 1 <= pageMax ? prev + 1 : pageMax)}>&gt;</button>
           </div>
         </div>
-        <div className={styles.works}>
+        {works?.length
+        ? <div className={styles.works}>
           {works?.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(work => <Work work={work} viewport={viewport} key={work.id} />)}
         </div>
+        : <div className={styles.noWorks}>아직 참여한 도전자가 없어요.<br />지금 바로 도전해보세요!</div>}
       </div>
       <PopUp error={error} setError={setError} />
     </>

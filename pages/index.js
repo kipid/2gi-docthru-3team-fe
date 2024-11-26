@@ -69,7 +69,7 @@ export default function Home() {
     <>
       <div className={styles.head}>
         <h1>챌린지 목록</h1>
-        {user && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
+        {user && user?.role !== "Admin" && <button className={styles.button} type="button" onClick={() => {router.push('/challenges/new')}}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
       </div>
       <div className={styles.subHead}>
         <div className={styles.filter}>

@@ -15,6 +15,24 @@
   align-items: center;
 }
 
+.adminNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.manageButton,
+.listButton {
+  margin: 1rem;
+  cursor: pointer;
+  color: #737373;
+  font-weight: 500;
+}
+
+.active {
+  color: #262626;
+}
+
 .right {
   display: flex;
   align-items: center;

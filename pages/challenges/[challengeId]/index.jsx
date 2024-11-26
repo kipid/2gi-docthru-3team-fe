@@ -206,9 +206,11 @@ function ChallengeDetail() {
             <button className={styles.button} type="button" disabled={page === pageMax} onClick={() => setPage(prev => prev + 1 <= pageMax ? prev + 1 : pageMax)}>&gt;</button>
           </div>
         </div>
-        <div className={styles.works}>
+        {works?.length
+        ? <div className={styles.works}>
           {works?.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(work => <Work work={work} viewport={viewport} key={work.id} />)}
         </div>
+        : <div className={styles.noWorks}>아직 참여한 도전자가 없어요.<br />지금 바로 도전해보세요!</div>}
       </div>
       <PopUp error={error} setError={setError} />
     </>

@@ -62,7 +62,7 @@ const WorkDetail = ({ workId }) => {
         <span className={styles.docType}>{data.docType}</span>
         <span className={styles.category}>{data.category}</span>
         <div className={styles.meta}>
-          <span className={styles.author}>{data.author}</span>
+          <span className={styles.nickname}>{data.nickname}</span>
           <button
             className={styles.likeButton}
             onClick={handleLikeClick}

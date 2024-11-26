@@ -59,6 +59,7 @@ function TextEditor() {
     queryKey: ["works", id],
     queryFn: () => getWorkById(id),
     staleTime: 5 * 60 * 1000,
+    enabled: !!id,
   });
   console.log("WorkDetail edit work", work);
   const setSanitizedContent = (content) => {

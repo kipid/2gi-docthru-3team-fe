@@ -40,7 +40,7 @@ export function Work({ work, viewport }) {
         <span>{likeCount}</span>
       </div>
       <div className={styles.seeWork}>
-        <Link href={`/work/${id}`}>작업물 보기 &gt;</Link>
+        <Link href={`/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
       </div>
     </div>
   );

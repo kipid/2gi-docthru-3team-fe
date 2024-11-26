@@ -1,6 +1,6 @@
 import { doChallenge, getChallengeWithId } from "@/apis/challengeService.js";
 import { GRADE } from "@/apis/translate.js";
-import { getWorkById } from "@/apis/workService.js";
+import { getWorkById, toggleLike } from "@/apis/workService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
 import Loading from "@/components/Loading.jsx";
 import PopUp from "@/components/PopUp.jsx";
@@ -8,7 +8,7 @@ import { useUser } from "@/context/UserProvider.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import { SANITIZE_OPTIONS } from "@/pages/work/[id]/edit.jsx";
 import styles from "@/styles/ChallengeDetail.module.css";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,7 +47,19 @@ export function Work({ work, viewport }) {
 }
 
 export function WorkDetail({ work, viewport }) {
-  const { id, user: { nickname }, likeCount, rank, content, lastModifiedAt, isLiked } = work;
+  const { id, user: { nickname }, rank, content, lastModifiedAt } = work;
+  const [likeCount, setLikeCount] = useState(work.likeCount);
+  const [isLiked, setIsLiked] = useState(work.isLiked);
+  const toggleLikeMutation = useMutation({
+    mutationFn: (workId) => toggleLike(workId),
+    onSuccess: (data) => {
+      setLikeCount(data.likeCount);
+      setIsLiked(!isLiked);
+    },
+    onError: (error) => {
+      console.error(error);
+    }
+  });
 
   return (
     <div className={styles.workDetail}>
@@ -66,7 +78,7 @@ export function WorkDetail({ work, viewport }) {
               </div>
             </div>
             <div className={styles.like}>
-              <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src={isLiked ? "/images/ic_heart_active.svg" : "/images/ic_heart_inactive.svg"} alt="Like" />
+              <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src={isLiked ? "/images/ic_heart_active.svg" : "/images/ic_heart_inactive.svg"} alt="Like" onClick={() => toggleLikeMutation.mutate(id)}/>
               <span>{likeCount}</span>
             </div>
           </div>
@@ -125,7 +137,7 @@ function ChallengeDetail() {
         setWorks(rankedWorks);
         const filteredMaxLikeWorks = rankedWorks?.filter(work => work.rank === 1);
         const detailedMaxLikeWorks = await Promise.all(filteredMaxLikeWorks?.map(async work => await getWorkById(work.id)));
-
+        // console.log(rankedWorks);
         setMaxLikeWorks(detailedMaxLikeWorks);
       }
     };
@@ -136,10 +148,6 @@ function ChallengeDetail() {
   if (isPending) return <Loading />;
   if (!maxLikeWorks) return <Loading />;
   console.log("maxLikeWorks", maxLikeWorks);
-  // (async function() {
-  //   console.log(await Promise.all(maxLikeWorks));
-  // })();
-  // maxLikeWorks?.map(work => console.log(work));
 
   return (
     <>

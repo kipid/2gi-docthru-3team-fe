@@ -6,7 +6,7 @@ import InputItem from "@/components/InputItem";
 import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
-import styles from "@/styles/new.module.css";
+import styles from "@/styles/editChallenge.module.css";
 
 function updateChallenge() {
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];

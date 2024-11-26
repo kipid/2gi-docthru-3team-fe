@@ -11,7 +11,6 @@ import PopUp from './PopUp';
 function SignupForm() {
   const router = useRouter();
   const setUser = useSetUser();
-  const [loading, setLoading] = useState(false);
   const PWD_MIN_LENGTH = 8;
   const [pwIsVisible, setPwIsVisible] = useState(false); //비밀번호 보기
   const [pwcIsVisible, setPwcIsVisible] = useState(false); //비밀번호 확인 보기
@@ -44,8 +43,6 @@ function SignupForm() {
     } catch (error) {
       console.log('회원가입 실패', error);
       setSignupError({ message: `${error.response.data.message}`, onClose: () => setSignupError(null) });
-    } finally {
-      setLoading(false);
     }
   };
 

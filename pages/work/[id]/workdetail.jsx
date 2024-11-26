@@ -1,6 +1,7 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import instance from "@/apis/instance";
 import styles from "@/styles/WorkDetail.module.css";
 import { format } from "date-fns";
 import likeIconActive from "@/public/images/ic_heart.png";
@@ -9,26 +10,24 @@ import FeedbackForm from "@/components/FeedbackInput";
 import FeedbackList from "@/components/FeedbackList";
 
 const fetchWorkDetail = async (workId) => {
-  const { data } = await axios.get(`/api/works/${workId}`);
+  const { data } = await instance.get(`/works/${workId}`);
   return data;
 };
 
 const toggleLike = async (workId) => {
-  const { data } = await axios.post(`/api/works/${workId}/likes`);
+  const { data } = await instance.post(`/works/${workId}/likes`);
   return data;
 };
 
-const WorkDetail = ({ workId }) => {
+const WorkDetail = () => {
+  const router = useRouter();
+  const { id: workId } = router.query;
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["workDetail", workId],
     queryFn: () => fetchWorkDetail(workId),
   });
-
-  const formattedDate = data?.createdAt
-    ? format(new Date(data.createdAt), "yyyy-MM-dd")
-    : "날짜 정보 없음";
 
     const likeMutation = useMutation({
       mutationFn: () => toggleLike(workId),
@@ -58,26 +57,30 @@ const WorkDetail = ({ workId }) => {
   return (
     <div>
       <div className={styles.workDetail}>
-        <h1>{data.title}</h1>
-        <span className={styles.docType}>{data.docType}</span>
-        <span className={styles.category}>{data.category}</span>
+        <h1>{data?.title || "제목 없음"}</h1>
+        <span className={styles.docType}>{data?.docType || "문서 타입 없음"}</span>
+        <span className={styles.category}>{data?.category || "카테고리 없음"}</span>
         <div className={styles.meta}>
-          <span className={styles.nickname}>{data.nickname}</span>
+          <span className={styles.nickname}>{data?.nickname || "작성자 없음"}</span>
           <button
             className={styles.likeButton}
             onClick={handleLikeClick}
             disabled={likeMutation.isLoading}
           >
             <img
-              src={data.isLiked ? likeIconActive : likeIconInactive}
+              src={data?.isLiked ? likeIconActive : likeIconInactive}
               alt="좋아요 아이콘"
               className={styles.likeIcon}
             />
           </button>
-          <span className={styles.likes}>{data.likes}</span>
-          <span className={styles.date}>{formattedDate}</span>
+          <span className={styles.likes}>{data?.likes || 0}</span>
+          <span className={styles.date}>
+            {data?.createdAt
+              ? format(new Date(data.createdAt), "yyyy-MM-dd")
+              : "날짜 정보 없음"}
+          </span>
         </div>
-        <p>{data.content}</p>
+        <p>{data?.content || "내용 없음"}</p>
       </div>
       <FeedbackForm workId={workId} />
       <FeedbackList workId={workId} />

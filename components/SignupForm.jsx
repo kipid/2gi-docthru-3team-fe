@@ -1,18 +1,20 @@
-import { postSignup } from '@/apis/authService';
+import { postLogin, postSignup } from '@/apis/authService';
 import styles from './SignupForm.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import { useSetUser } from '@/context/UserProvider';
 import PopUp from './PopUp';
 
 function SignupForm() {
   const router = useRouter();
+  const setUser = useSetUser();
+  const [loading, setLoading] = useState(false);
   const PWD_MIN_LENGTH = 8;
   const [pwIsVisible, setPwIsVisible] = useState(false); //비밀번호 보기
   const [pwcIsVisible, setPwcIsVisible] = useState(false); //비밀번호 확인 보기
-  const [pwCfIsVisible, setPwCfIsVisible] = useState(false);
   const [signupError, setSignupError] = useState(null);
   const EMAIL_REGEX = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
   const {
@@ -31,13 +33,19 @@ function SignupForm() {
   });
 
   const onSubmit = async ({ email, nickname, password }) => {
+    setLoading(true);
     try {
       const userData = await postSignup({ email, nickname, password });
       console.log('회원가입 성공', userData);
-      router.push('/login');
+      const userDataSignup = await postLogin({ email, password });
+      console.log('로그인 성공', userDataSignup);
+      setUser(userDataSignup.user);
+      router.push('/');
     } catch (error) {
       console.log('회원가입 실패', error);
       setSignupError({ message: `${error.response.data.message}`, onClose: () => setSignupError(null) });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,7 +128,7 @@ function SignupForm() {
               width={24}
               height={24}
               className={styles.pwToggle}
-              src={pwCfIsVisible ? '/images/vector.png' : '/images/btn_visibility_off_24px.png'}
+              src={pwcIsVisible ? '/images/vector.png' : '/images/btn_visibility_off_24px.png'}
               alt="비밀번호 보기"
               onClick={() => setPwcIsVisible(prev => !prev)}
               priority

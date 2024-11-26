@@ -32,8 +32,6 @@ function NewChallenge() {
     }
   };
 
-  const allFields = watch();
-
   return (
     <div className={styles.Container}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -103,6 +101,7 @@ function NewChallenge() {
                     selected={field.value}
                     onChange={field.onChange}
                     placeholder="YYYY/MM/DD"
+                    {...field}
                 />
               )}
             />

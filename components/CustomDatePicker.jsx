@@ -8,6 +8,12 @@ import styles from "./CustomDatePicker.module.css"
 const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleDateChange = (date) => {
+    const isoDate = date.toISOString();
+    onChange(isoDate);
+    setIsOpen(false);
+  };
+
   return (
     <div>
       {label && <Label htmlFor={id}>{label}</Label>}
@@ -16,14 +22,14 @@ const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
           id={id}
           type="text"
           readOnly
-          value={value ? value.toLocaleDateString() : ""}
+          value={value ? new Date(value).toLocaleDateString() : ""}
           placeholder={placeholder}
           onClick={() => setIsOpen(!isOpen)}
         />
         <div onClick={() => setIsOpen(!isOpen)}>▼</div>
       </div>
       {isOpen && (
-        <DatePicker selected={value} onChange={onChange} inline />
+        <DatePicker selected={value ? new Date(value) : null} onChange={handleDateChange} inline />
       )}
     </div>
   );

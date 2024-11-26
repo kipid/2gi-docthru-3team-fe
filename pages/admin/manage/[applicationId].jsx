@@ -1,18 +1,25 @@
-import { getApplicationWithId } from "@/apis/applicationService.js";
+import { getApplicationWithId, invalidateApplication } from "@/apis/applicationService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
 import Error from "@/components/Error.jsx";
 import Loading from "@/components/Loading.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import styles from "@/styles/ManageApp.module.css";
-import { useQuery } from "@tanstack/react-query";
-import moment from "moment";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import moment, { invalid } from "moment";
 import Image from "next/image";
 import { useRouter } from 'next/router';
+import Modal from "@/components/Modal.jsx";
+import { useState } from "react";
 
 function ManageApp() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [invalidMessage, setInvalidMessage] = useState("");
 	const viewport = useViewport();
 	const router = useRouter();
 	const { applicationId } = router.query;
+
+	const queryClient = useQueryClient();
+
 	const { data: application, isPending, isError } = useQuery({
 		queryKey: ["applications", applicationId],
 		queryFn: () => getApplicationWithId(applicationId),
@@ -20,10 +27,31 @@ function ManageApp() {
 	});
 	console.log("ManageApp applications", application);
 
+	const mutation = useMutation({
+		mutationFn: (data) => invalidateApplication(applicationId, data.status, data.invalidationComment),
+		onSuccess: (data) => {
+			console.log("successfully updated: ", data);
+			queryClient.invalidateQueries(["applications", applicationId]);
+		},
+		onError: (error) => {
+			console.error(error);
+		}
+	})
+
 	if (isPending) return <Loading />;
 	if (isError) return <Error />;
 
 	const { id, challenge } = application;
+
+	const handleReject = () => {
+		mutation.mutate({ status: "Rejected", invalidationComment: invalidMessage });
+
+		setIsModalOpen(false);
+	}
+
+	const handleApprove = () => {
+		mutation.mutate({ status: "Accepted" });
+	};
 
 	return (
 		<main className={styles.main}>
@@ -31,6 +59,20 @@ function ManageApp() {
 				<div className={styles.headContainer}>
 					<div className={styles.head}>
 						<div className={styles.number}>No.&nbsp;{id}</div>
+						{application.status !== "Waiting" && (
+						<div className={styles.pending}>
+							<div className={`${styles.status} ${styles[application.status]}`}>
+								<p>{application.status === "Rejected" ? "신청이 거절된 챌린지입니다." : application.status === "Accepted" ? "신청이 승인된 챌린지입니다." : "삭제된 챌린지 입니다."}</p>
+							</div>
+							{application.status === "Rejected" && (
+							<div className={styles.comment}>
+								<h1>신청 거절 사유</h1>
+								<p className={styles.commentContent}>{application.invalidationComment}</p>
+								<p className={styles.date}>{application.invalidatedAt}</p>
+							</div>
+							)}
+						</div>
+						)}
 						<h1>{challenge.title}</h1>
 						<div className={styles.subHead}>
 							<Field field={challenge.field} />
@@ -55,11 +97,22 @@ function ManageApp() {
 				<div className={styles.iframeContainer}>
 					<iframe src={challenge.docUrl} width="100%" height="100%" />
 				</div>
+				{application.status === "Waiting" && (
 				<div className={styles.buttons}>
-					<button className={`${styles.button} ${styles.reject}`} type="button" onClick={() => window.open(challenge.docUrl)}>거절하기</button>
-					<button className={`${styles.button} ${styles.approve}`} type="button" onClick={() => router.push(`/challenges/${challenge.id}/edit`)}>승인하기</button>
+					<button className={`${styles.button} ${styles.reject}`} type="button" onClick={() => setIsModalOpen(true)}>거절하기</button>
+					<button className={`${styles.button} ${styles.approve}`} type="button" onClick={handleApprove}>{mutation.isLoading ? "처리 중" : "승인하기"}</button>
 				</div>
+				)}
 			</div>
+			{isModalOpen && (
+				<Modal
+					title="거절"
+					value={invalidMessage}
+					onClose={() => setIsModalOpen(false)}
+					onSubmit={handleReject}
+					onChange={(e) => setInvalidMessage(e.target.value)} 
+				/>
+			)}
 		</main>
 	);
 }

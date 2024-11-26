@@ -62,3 +62,14 @@ export async function doChallenge(challengeId) {
 		return err?.response?.data || err;
 	}
 }
+
+export async function deleteChallenge(challengeId, invalidationComment) {
+	const data = { invalidationComment };
+	try {
+		const result = await instance.patch(`/challenges/${challengeId}/invalidate`, data);
+		return result?.data;
+	} catch (err) {
+		console.error(err);
+		return err?.response?.data || err;
+	}
+}

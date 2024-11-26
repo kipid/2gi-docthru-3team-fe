@@ -55,23 +55,27 @@ export function WorkDetail({ work, viewport }) {
         <Image width={viewport.size} height={viewport.size} src="/images/ic_medal.png" alt="Medal" />
         <h2>최다 추천 번역</h2>
       </div>
-      <div className={styles.head}>
-        <div className={styles.user}>
-          <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_profile.png" alt="Profile" />
-          <div className={styles.nicknameAndGrade}>
-            <span className={styles.nickname}>{nickname}</span>
-            {/* <span className={styles.grade}>{GRADE[grade]}</span> */}
+      <div className={styles.detail}>
+        <div className={styles.head}>
+          <div className={styles.userAndLike}>
+            <div className={styles.user}>
+              <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_profile.png" alt="Profile" />
+              <div className={styles.nicknameAndGrade}>
+                <span className={styles.nickname}>{nickname}</span>
+                {/* <span className={styles.grade}>{GRADE[grade]}</span> */}
+              </div>
+            </div>
+            <div className={styles.like}>
+              <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src={isLiked ? "/images/ic_heart_active.svg" : "/images/ic_heart_inactive.svg"} alt="Like" />
+              <span>{likeCount}</span>
+            </div>
+          </div>
+          <div className={styles.date}>
+            <span>{moment(createdAt).format("YYYY.MM.DD hh:mm")}</span>
           </div>
         </div>
-        <div className={styles.like}>
-          <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src={isLiked ? "/images/ic_heart_active.svg" : "/images/ic_heart_inactive.svg"} alt="Like" />
-          <span>{likeCount}</span>
-        </div>
-        <div className={styles.date}>
-          <span>{moment(createdAt).format("YYYY.MM.DD")}</span>
-        </div>
+        <div className={styles.content} dangerouslySetInnerHTML={{__html: sanitizeHtml(content, SANITIZE_OPTIONS)}}></div>
       </div>
-      <div className={styles.content} dangerouslySetInnerHTML={{__html: sanitizeHtml(content, SANITIZE_OPTIONS)}}></div>
     </div>
   );
 }
@@ -119,8 +123,8 @@ function ChallengeDetail() {
         });
 
         setWorks(rankedWorks);
-        const filteredMaxLikeWorks = rankedWorks.filter(work => work.rank === 1);
-        const detailedMaxLikeWorks = await Promise.all(filteredMaxLikeWorks.map(async work => await getWorkById(work.id)));
+        const filteredMaxLikeWorks = rankedWorks?.filter(work => work.rank === 1);
+        const detailedMaxLikeWorks = await Promise.all(filteredMaxLikeWorks?.map(async work => await getWorkById(work.id)));
 
         setMaxLikeWorks(detailedMaxLikeWorks);
       }
@@ -130,7 +134,7 @@ function ChallengeDetail() {
   }, [challenge]);
 
   if (isPending) return <Loading />;
-  if (!maxLikeWorks) return <Loading />
+  if (!maxLikeWorks) return <Loading />;
   console.log("maxLikeWorks", maxLikeWorks);
   // (async function() {
   //   console.log(await Promise.all(maxLikeWorks));

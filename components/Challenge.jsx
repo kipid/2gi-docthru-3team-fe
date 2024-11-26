@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useUser } from "@/context/UserProvider";
 import Modal from "@/components/Modal.jsx";
 import { deleteChallenge } from "@/apis/challengeService";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function Field({ field }) {
 	return (
@@ -29,6 +29,7 @@ export function Type({ type }) {
 }
 
 function Challenge({ challenge, status }) {
+	const queryClient = useQueryClient();
 	const viewport = useViewport();
 	const router = useRouter();
 	const user = useUser();
@@ -37,9 +38,11 @@ function Challenge({ challenge, status }) {
 	const [invalidMessage, setInvalidMessage] = useState("");
 
 	const mutation = useMutation({
-		mutationFn: (data) => deleteChallenge(challenge.id, data.invalidationComment),
+		mutationFn: (data) => deleteChallenge(data.id, data.invalidationComment),
 		onSuccess: (data) => {
 			console.log("successfully updated: ", data);
+			setIsModalOpen(false);
+			queryClient.invalidateQueries(["challenges"]);
 		},
 		onError: (error) => {
 			console.error(error);
@@ -55,9 +58,8 @@ function Challenge({ challenge, status }) {
 	};
 
 	const handleDelete = () => {
-		console.log("삭제하기 클릭");
-		mutation.mutate({ invalidationCommnent: invalidMessage });
-		setIsKebabOpen(false);
+		mutation.mutate({ id: challenge.id, invalidationComment: invalidMessage });
+		setIsModalOpen(false);
 	};
 
 	return (

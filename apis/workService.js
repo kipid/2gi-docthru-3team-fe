@@ -29,3 +29,13 @@ export async function deleteWorkById(workId, reasonDel) {
 		return err?.response?.data || err;
 	}
 }
+
+export async function toggleLike(workId) {
+	try {
+		const result = await instance.post(`/works/${workId}/likes`);
+		return result?.data;
+	} catch (err) {
+		console.error(err);
+		return err?.response?.data || err;
+	}
+}

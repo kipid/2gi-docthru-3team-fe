@@ -1,5 +1,5 @@
 import Label from "./Label";
-import styles from "@/styles/TextareaItem.module.css"
+import styles from "./TextareaItem.module.css"
 
 function TextareaItem({id, label, register = {}, ...inputProps}) {
     return (

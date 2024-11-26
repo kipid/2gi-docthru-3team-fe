@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Label from "./Label";
-import styles from "@/styles/CustomDatePicker.module.css"
+import styles from "./CustomDatePicker.module.css"
 
 
 const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
@@ -20,13 +20,7 @@ const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
           placeholder={placeholder}
           onClick={() => setIsOpen(!isOpen)}
         />
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle calendar"
-        >
-          ▼
-        </button>
+        <div onClick={() => setIsOpen(!isOpen)}>▼</div>
       </div>
       {isOpen && (
         <DatePicker selected={value} onChange={onChange} inline />

@@ -5,7 +5,7 @@ import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/new.module.css"
-import axios from "axios";
+import instance from "instance";
 
 function NewChallenge() {
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
@@ -26,7 +26,7 @@ function NewChallenge() {
 
   const onSubmit = async (data) => {
     try {
-      await axios.patch(`/api/challenges`, data);
+      await instance.patch(`/challenges`, data);
     } catch (error) {
       console.log("챌린지 등록 실패:", error);
     }

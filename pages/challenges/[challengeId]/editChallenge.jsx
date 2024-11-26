@@ -1,4 +1,4 @@
-import axios from "axios";
+import instance from "@/apis/instance";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -28,7 +28,7 @@ function updateChallenge() {
 
   const updateChallenge = async (challengeid, data) => {
     try {
-      const response = await axios.patch(`/api/challenges/${challengeid}`, data, {
+      const response = await instance.patch(`/challenges/${challengeid}`, data, {
         headers: {
           "Content-Type": "application/json",
         },

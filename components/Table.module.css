@@ -12,19 +12,62 @@
   text-align: left;
 }
 
-.th, .td {
-  padding: var(--8px);
-  border-bottom: 1px solid var(--gray-700);
-}
-
 .th {
   background-color: var(--brand-black);
 	color: var(--brand-white);
   font-weight: bold;
+  padding: var(--8px);
+}
+
+.th:first-child {
+  border-top-left-radius: var(--8px);
+  border-bottom-left-radius: var(--8px);
+}
+
+.th:last-child {
+  border-top-right-radius: var(--8px);
+  border-bottom-right-radius: var(--8px);
 }
 
 .td {
   white-space: nowrap;
+  padding: var(--8px);
+  height: 3rem;
+  border-bottom: 1px solid var(--gray-700);
+  color: #737373;
+  font-size: var(--13px);
+}
+
+.td .Waiting {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #FFFDE7;
+  color: #F2BC00;
+}
+
+.td .Accepted {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #DFF0FF;
+  color: #4095DE;
+}
+
+.td .Rejected {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #FFF0F0;
+  color: #E54946;
+}
+
+.td .Invalidated {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #E5E5E5;
+  color: #737373;
 }
 
 /* 열 너비 조정 */

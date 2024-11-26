@@ -5,32 +5,40 @@ import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/new.module.css"
-import instance from "instance";
+import instance from "@/apis/instance";
+import { useRouter } from "next/router"
 
 function NewChallenge() {
+  const router = useRouter();
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
   const doctypes = ["Blog", "Document"];
 
-  const { handleSubmit, control, formState: { isValid } } = useForm({
-    mode: "onChange",
+
+  const { handleSubmit, control, watch} = useForm({
     defaultValues: {
-      name: "",
-      link: "",
-      category: "",
-      doctype: "",
-      deadline: null,
-      participations: "",
+      title: "",
+      docUrl: "",
+      field: "",
+      type: "",
+      deadLine: null,
+      maxParticipants: "",
       description: "",
     },
   });
 
   const onSubmit = async (data) => {
+    console.log("전송 데이터 확인:", data);
     try {
-      await instance.patch(`/challenges`, data);
+      const response = await instance.post("/challenges", data);
+      console.log("챌린지 등록 성공:", response.data);
+      router.push(`/challenges/${response.data.id}`);
     } catch (error) {
-      console.log("챌린지 등록 실패:", error);
+      console.error("챌린지 등록 실패:", error.response?.data || error.message);
+      alert("에러 발생: " + (error.response?.data?.message || error.message));
     }
   };
+
+  const allFields = watch();
 
   return (
     <div className={styles.Container}>
@@ -38,11 +46,11 @@ function NewChallenge() {
           <h2>신규 챌린지 신청</h2>
           <div>
             <Controller
-              name="name"
+              name="title"
               control={control}
               render={({ field }) => (
                 <InputItem
-                  id="name"
+                  id="title"
                   label="제목"
                   placeholder="제목을 입력해주세요"
                   {...field}
@@ -51,11 +59,11 @@ function NewChallenge() {
             />
 
             <Controller
-              name="link"
+              name="docUrl"
               control={control}
               render={({ field }) => (
                 <InputItem
-                  id="link"
+                  id="docUrl"
                   label="원문 링크"
                   placeholder="원문 링크를 입력해주세요"
                   {...field}
@@ -64,11 +72,11 @@ function NewChallenge() {
             />
 
             <Controller
-              name="category"
+              name="field"
               control={control}
               render={({ field }) => (
                 <Dropdown
-                  id="category"
+                  id="field"
                   label="카테고리"
                   options={fields}
                   placeholder="카테고리"
@@ -78,11 +86,11 @@ function NewChallenge() {
             />
 
             <Controller
-              name="doctype"
+              name="type"
               control={control}
               render={({ field }) => (
                 <Dropdown
-                  id="doctype"
+                  id="type"
                   label="문서 타입"
                   options={doctypes}
                   placeholder="문서 타입"
@@ -92,14 +100,14 @@ function NewChallenge() {
             />
 
             <Controller
-              name="deadline"
+              name="deadLine"
               control={control}
               render={({ field }) => (
                 <CustomDatePicker 
-                    id="deadline"
+                    id="deadLine"
                     label="마감일"
-                    selected={field.value}
-                    onChange={field.onChange}
+                    selected={field.value || null}
+                    onChange={(date) => field.onChange(date)}
                     placeholder="YYYY/MM/DD"
                     {...field}
                 />
@@ -107,11 +115,11 @@ function NewChallenge() {
             />
 
             <Controller
-              name="participations"
+              name="maxParticipants"
               control={control}
               render={({ field }) => (
                 <InputItem
-                  id="participations"
+                  id="maxParticipants"
                   label="최대 인원"
                   placeholder="인원을 입력해주세요"
                   {...field}
@@ -135,7 +143,15 @@ function NewChallenge() {
           <button
             className={styles.button}
             type="submit"
-            disabled={!isValid}
+            disabled={
+              !allFields.title ||
+              !allFields.docUrl ||
+              !allFields.field ||
+              !allFields.type ||
+              !allFields.deadLine ||
+              !allFields.maxParticipants ||
+              !allFields.description
+            }
           >
             신청하기
           </button>

@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import instance from "@/apis/instance";
 import TextareaItem from "./TextareaItem";
 import menu from "@/public/images/feedback_menu.png";
 import styles from "./FeedbackList.module.css";
 
 const fetchFeedbacks = async ({ pageParam = 1, queryKey }) => {
   const [_, workId] = queryKey;
-  const { data } = await axios.get(`/api/works/${workId}/feedbacks`, {
+  const { data } = await instance.get(`/works/${workId}/feedbacks`, {
     params: { page: pageParam, limit: 3 },
   });
   return data;
 };
 
 const deleteFeedback = async (feedbackId) => {
-  await axios.delete(`/api/feedbacks/${feedbackId}`);
+  await instance.delete(`/feedbacks/${feedbackId}`);
 };
 
 const updateFeedback = async ({ feedbackId, content }) => {
-  const { data } = await axios.put(`/api/feedbacks/${feedbackId}`, { content });
+  const { data } = await instance.put(`/feedbacks/${feedbackId}`, { content });
   return data;
 };
 
@@ -29,7 +29,8 @@ const FeedbackItem = ({ feedback }) => {
 
   const queryClient = useQueryClient();
 
-  const deleteMutation = useMutation(deleteFeedback, {
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteFeedback(feedback.id),
     onSuccess: () => {
       queryClient.invalidateQueries(["feedbacks", feedback.workId]);
     },
@@ -38,7 +39,8 @@ const FeedbackItem = ({ feedback }) => {
     },
   });
 
-  const updateMutation = useMutation(updateFeedback, {
+  const updateMutation = useMutation({
+    mutationFn: () => updateFeedback( {feedbackId: feedback.id, content}),
     onSuccess: () => {
       queryClient.invalidateQueries(["feedbacks", feedback.workId]);
       setIsEditing(false);
@@ -113,11 +115,10 @@ const FeedbackList = ({ workId }) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery(
-    ["feedbacks", workId],
-    fetchFeedbacks,
-    {
-      getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextPage : undefined),
+  } = useInfiniteQuery({
+    querykey: ["feedbacks", workId],
+    queryFn: fetchFeedbacks,
+    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextPage : undefined),
     }
   );
 

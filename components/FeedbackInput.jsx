@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import instance from "@/apis/instance";
 import styles from "./FeedbackInput.module.css";
 import inactiveImage from "@/public/images/ic_inactivedown.png";
 import activeImage from "@/public/images/ic_activedown.png";
@@ -8,7 +8,7 @@ import TextareaItem from "./TextareaItem";
 
 
 const postFeedback = async ({ workId, content }) => {
-  const { data } = await axios.post(`/api/works/${workId}/feedbacks`, { content });
+  const { data } = await instance.post(`/works/${workId}/feedbacks`, { content });
   return data;
 };
 
@@ -16,7 +16,8 @@ const FeedbackForm = ({ workId }) => {
   const [content, setContent] = useState("");
   const queryClient = useQueryClient();
 
-  const mutation = useMutation(postFeedback, {
+  const mutation = useMutation({
+    mutationFn: ({ workId, content }) => postFeedback({ workId, content }),
     onSuccess: () => {
       queryClient.invalidateQueries(["feedbacks", workId]);
       setContent("");

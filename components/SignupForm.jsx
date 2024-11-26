@@ -10,7 +10,8 @@ import PopUp from './PopUp';
 function SignupForm() {
   const router = useRouter();
   const PWD_MIN_LENGTH = 8;
-  const [pwIsVisible, setPwIsVisible] = useState(false);
+  const [pwIsVisible, setPwIsVisible] = useState(false); //비밀번호 보기
+  const [pwcIsVisible, setPwcIsVisible] = useState(false); //비밀번호 확인 보기
   const [pwCfIsVisible, setPwCfIsVisible] = useState(false);
   const [signupError, setSignupError] = useState(null);
   const EMAIL_REGEX = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
@@ -33,10 +34,10 @@ function SignupForm() {
     try {
       const userData = await postSignup({ email, nickname, password });
       console.log('회원가입 성공', userData);
-      router.push('/');
+      router.push('/login');
     } catch (error) {
       console.log('회원가입 실패', error);
-      setSignupError({ message: `${error}`, onClose: () => setSignupError(null) });
+      setSignupError({ message: `${error.response.data.message}`, onClose: () => setSignupError(null) });
     }
   };
 
@@ -44,7 +45,7 @@ function SignupForm() {
 
   return (
     <div className={styles.form}>
-      <form className={styles.LoginForm} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.SignupForm} onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="email">
           <p>이메일</p>
           <div className={styles.email}>
@@ -109,7 +110,7 @@ function SignupForm() {
                 validate: { matchesPassword: value => value === watch('password') || '비밀번호가 일치하지 않습니다.' },
               })}
               placeholder="비밀번호를 입력해주세요"
-              type={pwIsVisible ? 'text' : 'password'}
+              type={pwcIsVisible ? 'text' : 'password'}
               autoComplete="on"
               required
             />
@@ -121,7 +122,7 @@ function SignupForm() {
               className={styles.pwToggle}
               src={pwCfIsVisible ? '/images/vector.png' : '/images/btn_visibility_off_24px.png'}
               alt="비밀번호 보기"
-              onClick={() => setPwCfIsVisible(prev => !prev)}
+              onClick={() => setPwcIsVisible(prev => !prev)}
               priority
             />
           </div>
@@ -129,7 +130,7 @@ function SignupForm() {
         <button type="submit" className={styles.loginButton}>
           회원가입
         </button>
-        <div className={styles.signupLink}>
+        <div className={styles.loginLink}>
           회원이신가요?
           <Link href="/login" style={{ color: '#262626', style: 'solid', textDecorationLine: 'underline' }}>
             로그인하기

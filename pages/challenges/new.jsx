@@ -19,7 +19,7 @@ function NewChallenge() {
       category: "",
       doctype: "",
       deadline: null,
-      personnel: "",
+      participations: "",
       description: "",
     },
   });
@@ -108,11 +108,11 @@ function NewChallenge() {
             />
 
             <Controller
-              name="personnel"
+              name="participations"
               control={control}
               render={({ field }) => (
                 <InputItem
-                  id="personnel"
+                  id="participations"
                   label="최대 인원"
                   placeholder="인원을 입력해주세요"
                   {...field}

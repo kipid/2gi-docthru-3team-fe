@@ -118,6 +118,8 @@ function updateChallenge() {
               <CustomDatePicker
                 id="deadline"
                 label="마감일"
+                selected={field.value}
+                onChange={field.onChange}
                 placeholder="YYYY/MM/DD"
                 {...field}
               />

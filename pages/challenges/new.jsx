@@ -103,6 +103,7 @@ function NewChallenge() {
                     selected={field.value}
                     onChange={field.onChange}
                     placeholder="YYYY/MM/DD"
+                    {...field}
                 />
               )}
             />

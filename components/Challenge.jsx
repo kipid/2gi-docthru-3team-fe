@@ -62,40 +62,42 @@ function Challenge({ challenge, status }) {
 		setIsModalOpen(false);
 	};
 
+	const { id: challengeId, deadLine, maxParticipants, participants, title, field, docType, myWork } = challenge;
+
 	return (
 		<div className={styles.challenge}>
 			<div className={styles.titleAndKebab}>
-			{new Date(challenge.deadLine).getTime() < Date.now() && <div className={`${styles.challengeInfo} ${styles.alarm}`}>
+			{new Date(deadLine).getTime() < Date.now() && <div className={`${styles.challengeInfo} ${styles.alarm}`}>
 				<Image width={viewport.size} height={viewport.size} src="/images/ic_alarm_white.svg" alt="Alarm" />
 				<span>챌린지가 마감되었어요.</span>
 			</div>}
-			{new Date(challenge.deadLine).getTime() >= Date.now() && challenge.maxParticipants <= challenge.participants && <div className={`${styles.challengeInfo} ${styles.fullParticipants}`}>
+			{new Date(deadLine).getTime() >= Date.now() && maxParticipants <= participants && <div className={`${styles.challengeInfo} ${styles.fullParticipants}`}>
 				<Image width={viewport.size} height={viewport.size} src="/images/ic_participants.svg" alt="Participants" />
 				<span>모집이 완료된 상태에요.</span>
 			</div>}
-			<Link href={`/challenges/${challenge.id}`}><h2 className={styles.challengeTitle}>{challenge.title}</h2></Link>
+			<Link href={`/challenges/${challengeId}`}><h2 className={styles.challengeTitle}>{title}</h2></Link>
 			{(user?.id === challenge.applications.userId || user?.role === "Admin") && <Image className={styles.kebab} src={ic_kebab} alt="Kebab menu" onClick={toggleMenu} />}
 			{isKebabOpen && (
-				<div className={styles.kebabMenu}> 
+				<div className={styles.kebabMenu}>
 					<button type="button" onClick={handleEdit}>수정하기</button>
 					{user?.role === "Admin" && <button type="button" onClick={() => setIsModalOpen(true)}>삭제하기</button>}
 				</div>
 			)}
 			</div>
 			<div className={styles.challengeFieldAndType}>
-				<Field field={challenge.field} />
-				<Type type={challenge.docType} />
+				<Field field={field} />
+				<Type type={docType} />
 			</div>
 			<hr className={styles.hr} />
 			<div className={styles.bottomContainer}>
 				<div className={styles.challengeDateAndParti}>
-					<div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" /> {moment(new Date(challenge.deadLine)).format("YYYY년 M월 D일 마감")}</div>
-					<div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" /> {challenge.participants}/{challenge.maxParticipants}&nbsp;{challenge.participants >= challenge.maxParticipants ? "참여 완료" : "참여중"}</div>
+					<div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" /> {moment(new Date(deadLine)).format("YYYY년 M월 D일 마감")}</div>
+					<div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" /> {participants}/{maxParticipants}&nbsp;{participants >= maxParticipants ? "참여 완료" : "참여중"}</div>
 				</div>
 				{/* TODO: onClick 제대로 동작하도록... */}
-				{status === "ongoing" && <button className={`${styles.button} ${styles.contiChall}`} type="button" onClick={() => router.push(`/`)}>도전 계속하기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_arrow_right.png" alt="Arrow right" /></button>}
+				{status === "ongoing" && <button className={`${styles.button} ${styles.contiChall}`} type="button" onClick={() => router.push(`/work/${myWork.id}/edit`)}>도전 계속하기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_arrow_right.png" alt="Arrow right" /></button>}
 				{/* TODO: onClick 제대로 동작하도록... */}
-				{status === "completed" && <button className={`${styles.button} ${styles.seeMine}`} type="button" onClick={() => router.push(`/`)}>내 작업물 보기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_document.png" alt="Arrow right" /></button>}
+				{status === "completed" && <button className={`${styles.button} ${styles.seeMine}`} type="button" onClick={() => router.push(`/work/${myWork.id}/workdetail`)}>내 작업물 보기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_document.png" alt="Arrow right" /></button>}
 			</div>
 			{isModalOpen && (
 				<Modal
@@ -103,7 +105,7 @@ function Challenge({ challenge, status }) {
 					value={invalidMessage}
 					onClose={() => setIsModalOpen(false)}
 					onSubmit={handleDelete}
-					onChange={(e) => setInvalidMessage(e.target.value)} 
+					onChange={(e) => setInvalidMessage(e.target.value)}
 				/>
 			)}
 		</div>

@@ -30,7 +30,7 @@ const WorkDetail = () => {
     queryFn: () => fetchWorkDetail(workId),
     enabled: !!workId,
   });
-
+  console.log("WorkDetail data", data);
     const likeMutation = useMutation({
       mutationFn: () => toggleLike(workId),
       onSuccess: () => {

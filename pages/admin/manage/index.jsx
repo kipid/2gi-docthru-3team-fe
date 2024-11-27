@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 function Manage() {
   const viewport = useViewport();
+  // const [sort, setSort] = useState("");
   const [keyword, setKeyword] = useState("");
   const [input, setInput] = useState("");
   const [page, setPage] = useState(1);
@@ -73,7 +74,8 @@ function Manage() {
         </div>
         <div className={styles.sort}>
           <Sort currentValue={currentSort} onChange={handleSortChange}/>
-          {/* <select onChange={(e) => {
+          {/* <select value={sort} onChange={(e) => {
+            setSort(e.target.value);
             setPage(1);
             const [key, value] = e.target.value.split('=');
             const [sort, order] = value.split(",");

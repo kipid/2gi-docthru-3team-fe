@@ -17,9 +17,13 @@ function Completed() {
 	const user = useUser();
 	const viewport = useViewport();
 	const [search, setSearch] = useState("");
+	const [query, setQuery] = useState({
+		page,
+		limit: 5,
+	});
 	const { data: challenges, isPending, isError } = useQuery({
-		queryKey: ["challenges", "completed", user?.id],
-		queryFn: () => getMyChallsCompleted(),
+		queryKey: ["challenges", "completed", user?.id, { ...query, page }],
+		queryFn: () => getMyChallsCompleted({ ...query, page }),
 		staleTime: 5 * 60 * 1000,
 	});
 	console.log("Completed challenges", challenges);
@@ -32,8 +36,17 @@ function Completed() {
 		<main className={styles.main}>
 			<MyChallHeader progress="completed" />
 			<div className={styles.search}>
-				<input type="text" placeholder="챌린지 이름을 검색해보세요." value={search} onChange={(e) => setSearch(e.target.value)} />
-				<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_search.png" alt="Search" />
+				<input type="text" placeholder="챌린지 이름을 검색해보세요." value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={(e) => {
+					if (e.key === "Process") return;
+					if (e.code === "Enter" || e.code === "NumpadEnter") {
+						setPage(1);
+						setQuery({ ...query, keyword: search.trim() ? search.trim() : undefined });
+					}
+				}} />
+				<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_search.png" alt="Search" onClick={() => {
+					setPage(1);
+					setQuery({ ...query, keyword: search.trim() ? search.trim() : undefined });
+				}} />
 			</div>
 			<div className={styles.challenges}>
 				{challenges?.list?.map(chall => <Challenge challenge={chall} status="completed" />)}

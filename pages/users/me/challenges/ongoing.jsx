@@ -18,8 +18,8 @@ function Ongoing() {
 	const viewport = useViewport();
 	const [search, setSearch] = useState("");
 	const { data: challenges, isPending, isError } = useQuery({
-		queryKey: ["challenges", "ongoing", user?.id],
-		queryFn: () => getMyChallsOngoing(),
+		queryKey: ["challenges", "ongoing", user?.id, page],
+		queryFn: () => getMyChallsOngoing({ page, limit: 5 }),
 		staleTime: 5 * 60 * 1000,
 	});
 	console.log("Ongoing challenges", challenges);

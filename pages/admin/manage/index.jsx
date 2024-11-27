@@ -11,6 +11,7 @@ import { useState } from "react";
 
 function Manage() {
   const viewport = useViewport();
+  const [sort, setSort] = useState("");
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState({
     page,
@@ -41,7 +42,8 @@ function Manage() {
           <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_search.png" alt="Search" />
         </div>
         <div className={styles.sort}>
-          <select onChange={(e) => {
+          <select value={sort} onChange={(e) => {
+            setSort(e.target.value);
             setPage(1);
             const [key, value] = e.target.value.split('=');
             const [sort, order] = value.split(",");

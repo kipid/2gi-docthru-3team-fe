@@ -11,7 +11,7 @@ function MyChallHeader({ progress }) {
     <>
       <div className={styles.myChall}>
         <h1>나의 챌린지</h1>
-        {true && <button className={styles.button} type="button" onClick={() => { router.push('/challenges/new') }}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>}
+        <button className={styles.button} type="button" onClick={() => { router.push('/challenges/new') }}>신규 챌린지 신청 <Image width={viewport.size} height={viewport.size} src="/images/ic_plus.png" alt="New challenge" /></button>
       </div>
       <div className={styles.myChallHeader}>
         <div className={styles.myChallHeaderItem}>

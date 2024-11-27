@@ -3,7 +3,7 @@ import styles from "./Table.module.css";
 import moment from "moment";
 import Link from "next/link";
 
-function Table({ applications }) {
+function Table({ applications, me }) {
   return (
     <div className={styles.tableContainer}>
       <table className={styles.table}>
@@ -27,7 +27,7 @@ function Table({ applications }) {
                 <td className={styles.td}>{id}</td>
                 <td className={styles.td}>{TYPE[docType]}</td>
                 <td className={styles.td}>{[FIELD[field]]}</td>
-                <td className={styles.td}><Link href={`/admin/manage/${id}`}>{title}</Link></td>
+                <td className={styles.td}><Link href={me ? `/users/me/challenges/${id}` : `/admin/manage/${id}`}>{title}</Link></td>
                 <td className={styles.td}>{maxParticipants}</td>
                 <td className={styles.td}>{moment(new Date(appliedAt)).format("YY/MM/DD")}</td>
                 <td className={styles.td}>{moment(new Date(deadLine)).format("YY/MM/DD")}</td>

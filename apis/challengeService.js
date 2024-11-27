@@ -20,10 +20,9 @@ export async function getChallengeWithId(id) {
 	}
 }
 
-export async function getMyChallsOngoing() {
+export async function getMyChallsOngoing(query) {
 	try {
-		const result = await instance.get(`/challenges`);
-		// const result = await instance.get(`/me/challenges/ongoing`);
+		const result = await instance.get(`/me/challenges/ongoing`, { params: query });
 		return result?.data;
 	} catch (err) {
 		console.error(err);
@@ -31,10 +30,9 @@ export async function getMyChallsOngoing() {
 	}
 }
 
-export async function getMyChallsCompleted() {
+export async function getMyChallsCompleted(query) {
 	try {
-		const result = await instance.get(`/challenges`);
-		// const result = await instance.get(`/me/challenges/completed`);
+		const result = await instance.get(`/me/challenges/completed`, { params: query });
 		return result?.data;
 	} catch (err) {
 		console.error(err);
@@ -42,10 +40,9 @@ export async function getMyChallsCompleted() {
 	}
 }
 
-export async function getMyChallsApplied() {
+export async function getMyChallsApplied(query) {
 	try {
-		const result = await instance.get(`/challenges`);
-		// const result = await instance.get(`/me/challenges/application`);
+		const result = await instance.get(`/me/challenges/application`, { params: query });
 		return result?.data;
 	} catch (err) {
 		console.error(err);

@@ -1,7 +1,8 @@
-import { doChallenge, getChallengeWithId } from "@/apis/challengeService.js";
+import { deleteChallenge, doChallenge, getChallengeWithId } from "@/apis/challengeService.js";
 import { GRADE } from "@/apis/translate.js";
 import { getWorkById, toggleLike } from "@/apis/workService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
+import DelModal from "@/components/DelModal";
 import Loading from "@/components/Loading.jsx";
 import PopUp from "@/components/PopUp.jsx";
 import { useUser } from "@/context/UserProvider.jsx";
@@ -95,6 +96,9 @@ export function WorkDetail({ work, viewport }) {
 function ChallengeDetail() {
   const user = useUser();
   const [error, setError] = useState(null);
+  const [errorDel, setErrorDel] = useState(null);
+  const [isDelModalOpen, setIsDelModalOpen] = useState(false);
+  const [reasonDel, setReasonDel] = useState("");
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [pageMax, setPageMax] = useState(1);
@@ -164,9 +168,21 @@ function ChallengeDetail() {
             {(isAdmin || user?.id === challenge?.applications?.user?.id) && <div className={styles.kebabMenu}>
               <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_kebab_menu.png" alt="Kebab menu" onClick={() => setIsKebabOpen(prev => !prev)} />
               {isKebabOpen && <div className={styles.kebabMenuItems}>
-                <div className={styles.kebabMenuItem} onClick={() => router.push(`/challenges/${challengeId}/edit`)}>수정하기</div>
-                <div className={styles.kebabMenuItem} onClick={() => router.push(`/challenges/${challengeId}/delete`)}>삭제하기</div>
+                <div className={styles.kebabMenuItem} onClick={() => router.push(`/challenges/${challengeId}/editChallenge`)}>수정하기</div>
+                <div className={styles.kebabMenuItem} onClick={() => {
+                  if (isAdmin) {
+                    setIsDelModalOpen(true);
+                    setErrorDel({ onClose: () => {
+                      deleteChallenge(challengeId, reasonDel);
+                      queryClient.invalidateQueries({ queryKey: ["challenges", "*"] });
+                      router.push("/");
+                    } });
+                  } else {
+                    setError({ message: "승인된 챌린지는 관리자만 삭제 가능합니다." });
+                  }
+                }}>삭제하기</div>
               </div>}
+              {isDelModalOpen && <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />}
             </div>}
           </div>
           <div className={styles.content}>

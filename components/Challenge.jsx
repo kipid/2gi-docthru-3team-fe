@@ -94,9 +94,7 @@ function Challenge({ challenge, status }) {
 					<div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" /> {moment(new Date(deadLine)).format("YYYY년 M월 D일 마감")}</div>
 					<div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" /> {participants}/{maxParticipants}&nbsp;{participants >= maxParticipants ? "참여 완료" : "참여중"}</div>
 				</div>
-				{/* TODO: onClick 제대로 동작하도록... */}
 				{status === "ongoing" && <button className={`${styles.button} ${styles.contiChall}`} type="button" onClick={() => router.push(`/work/${myWork.id}/edit`)}>도전 계속하기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_arrow_right.png" alt="Arrow right" /></button>}
-				{/* TODO: onClick 제대로 동작하도록... */}
 				{status === "completed" && <button className={`${styles.button} ${styles.seeMine}`} type="button" onClick={() => router.push(`/work/${myWork.id}/workdetail`)}>내 작업물 보기&nbsp;<Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_document.png" alt="Arrow right" /></button>}
 			</div>
 			{isModalOpen && (

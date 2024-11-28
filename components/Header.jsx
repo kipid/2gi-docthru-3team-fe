@@ -36,7 +36,7 @@ const Header = () => {
         ) : (
           <>
             <div className={styles.notiContainer}>
-              <Image width={24} height={24} src="/images/ic_bell.png" alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
+              <Image width={24} height={24} src="/images/ic_noti.png" alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
               {isNotiOpen && <div className={styles.notiDropDown}>
                 <h3>알림</h3>
                 {/* TODO: notifications.map... */}

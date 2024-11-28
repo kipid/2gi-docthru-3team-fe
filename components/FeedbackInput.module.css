@@ -2,9 +2,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
   }
 
   .submitButton:disabled {
@@ -13,16 +11,22 @@
   }
 
   .textarea {
-    width: 100%;
+    border-radius: 12px;
     height: 80px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    font-size: 16px;
+    color: #000000;
+    width: 100%;
+    min-width: 800px;
+    padding: 11px 20px;
+    border: 1px solid #e5e5e5;
+    margin-bottom: 10px;
+    font-family: inherit;
     resize: none;
-  }
+}
 
   .feedbackForm {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
   }

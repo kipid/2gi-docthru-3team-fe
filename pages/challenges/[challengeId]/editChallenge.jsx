@@ -1,4 +1,4 @@
-import axios from "axios";
+import instance from "@/apis/instance";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -16,19 +16,19 @@ function updateChallenge() {
 
   const { handleSubmit, control, watch } = useForm({
     defaultValues: {
-      name: "",
-      link: "",
+      title: "",
+      docUrl: "",
       field: "",
-      doctype: "",
+      type: "",
       deadline: null,
-      participations: "",
+      maxParticipants: "",
       description: "",
     },
   });
 
   const updateChallenge = async (challengeid, data) => {
     try {
-      const response = await axios.patch(`/api/challenges/${challengeid}`, data, {
+      const response = await instance.patch(`/challenges/${challengeid}`, data, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -58,11 +58,11 @@ function updateChallenge() {
         <h1>챌린지 수정</h1>
         <div>
           <Controller
-            name="name"
+            name="title"
             control={control}
             render={({ field }) => (
               <InputItem
-                id="name"
+                id="title"
                 label="제목"
                 placeholder="제목을 입력해주세요"
                 {...field}
@@ -71,11 +71,11 @@ function updateChallenge() {
           />
 
           <Controller
-            name="link"
+            name="docUrl"
             control={control}
             render={({ field }) => (
               <InputItem
-                id="link"
+                id="docUrl"
                 label="원문 링크"
                 placeholder="원문 링크를 입력해주세요"
                 {...field}
@@ -84,11 +84,11 @@ function updateChallenge() {
           />
 
           <Controller
-            name="category"
+            name="field"
             control={control}
             render={({ field }) => (
               <Dropdown
-                id="category"
+                id="field"
                 label="카테고리"
                 options={fields}
                 placeholder="카테고리"
@@ -98,11 +98,11 @@ function updateChallenge() {
           />
 
           <Controller
-            name="doctype"
+            name="type"
             control={control}
             render={({ field }) => (
               <Dropdown
-                id="doctype"
+                id="type"
                 label="문서 타입"
                 options={doctypes}
                 placeholder="문서 타입"
@@ -118,6 +118,8 @@ function updateChallenge() {
               <CustomDatePicker
                 id="deadline"
                 label="마감일"
+                selected={field.value || null}
+                onChange={(date) => field.onChange(date)}
                 placeholder="YYYY/MM/DD"
                 {...field}
               />
@@ -125,11 +127,11 @@ function updateChallenge() {
           />
 
           <Controller
-            name="participations"
+            name="maxParticipants"
             control={control}
             render={({ field }) => (
               <InputItem
-                id="participations"
+                id="maxParticipants"
                 label="최대 인원"
                 placeholder="인원을 입력해주세요"
                 {...field}
@@ -154,12 +156,12 @@ function updateChallenge() {
           className={styles.button}
           type="submit"
           disabled={
-            !allFields.name ||
-            !allFields.link ||
-            !allFields.category ||
-            !allFields.doctype ||
+            !allFields.title ||
+            !allFields.docUrl ||
+            !allFields.field ||
+            !allFields.type ||
             !allFields.deadline ||
-            !allFields.participations ||
+            !allFields.maxParticipants ||
             !allFields.description
           }
         >

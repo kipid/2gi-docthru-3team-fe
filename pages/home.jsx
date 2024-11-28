@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, QueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useUser } from "@/context/UserProvider.jsx";
 import { useEffect, useState } from "react";
@@ -40,7 +40,7 @@ export default function Home() {
     isPending,
     isError
   } = useQuery({
-    queryKey: ['challenges', { ...query, page }, page],
+    queryKey: ['challenges', { ...query, page }],
     queryFn: () => getChallenges({ ...query, page }),
     staleTime: 5 * 60 * 1000,
   });

@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Label from "./Label";
-import styles from "@/styles/CustomDatePicker.module.css"
+import styles from "./CustomDatePicker.module.css"
 
 
 const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleDateChange = (date) => {
+    const isoDate = date.toISOString();
+    onChange(isoDate);
+    setIsOpen(false);
+  };
 
   return (
     <div>
@@ -16,20 +22,14 @@ const CustomDatePicker = ({ id, label, placeholder, value, onChange }) => {
           id={id}
           type="text"
           readOnly
-          value={value ? value.toLocaleDateString() : ""}
+          value={value ? new Date(value).toLocaleDateString() : ""}
           placeholder={placeholder}
           onClick={() => setIsOpen(!isOpen)}
         />
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle calendar"
-        >
-          ▼
-        </button>
+        <div onClick={() => setIsOpen(!isOpen)}>▼</div>
       </div>
       {isOpen && (
-        <DatePicker selected={value} onChange={onChange} inline />
+        <DatePicker selected={value ? new Date(value) : null} onChange={handleDateChange} inline />
       )}
     </div>
   );

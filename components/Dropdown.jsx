@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Label from "./Label";
-import styles from "@/styles/Dropdown.module.css"
+import styles from "./Dropdown.module.css"
 
 const Dropdown = ({ id, label, options, placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);

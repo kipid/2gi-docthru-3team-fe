@@ -38,10 +38,10 @@
 
   & .sort {
     position: relative;
+    /* width: 10.2rem; */
     width: 8.75rem;
-    /* border-radius: 100px; */
     height: 2.5rem;
-
+/* 
     & select {
       position: absolute;
       border-radius: 2rem; 
@@ -55,6 +55,14 @@
         width: 8.75rem;
         height: 301px;
       }
+    } */
+  }
+}
+
+@media (max-width: 768px) {
+  .searchAndSort {
+    & .sort {
+      width: 6rem;
     }
   }
 }

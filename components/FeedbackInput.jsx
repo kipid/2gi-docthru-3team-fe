@@ -5,6 +5,7 @@ import styles from "./FeedbackInput.module.css";
 import inactiveImage from "@/public/images/ic_inactivedown.png";
 import activeImage from "@/public/images/ic_activedown.png";
 import TextareaItem from "./TextareaItem";
+import Image from "next/image";
 
 
 const postFeedback = async ({ workId, content }) => {
@@ -41,9 +42,11 @@ const FeedbackForm = ({ workId }) => {
         className={styles.textarea}
       />
       <button type="submit" disabled={mutation.isLoading || !content.trim()} className={styles.submitButton}>
-        <img
+        <Image
           src={content.trim() ? activeImage : inactiveImage}
           alt="Submit Button"
+          width={40}
+          height={40}
         />
       </button>
     </form>

@@ -49,7 +49,7 @@ function Ongoing() {
 				}} />
 			</div>
 			<div className={styles.challenges}>
-				{challenges?.list?.map(chall => <Challenge challenge={chall} status="ongoing" />)}
+				{challenges?.list?.map(chall => <Challenge key={chall.id} challenge={chall} status="ongoing" />)}
 			</div>
 			<Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(challenges?.totalCount / PAGE_SIZE)} />
 		</main>

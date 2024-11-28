@@ -139,7 +139,7 @@ function ChallengeDetail() {
         });
 
         setWorks(rankedWorks);
-        const filteredMaxLikeWorks = rankedWorks?.filter(work => work.rank === 1);
+        const filteredMaxLikeWorks = rankedWorks?.filter(work => work.rank === 1) ?? [];
         const detailedMaxLikeWorks = await Promise.all(filteredMaxLikeWorks?.map(async work => await getWorkById(work.id)));
         // console.log(rankedWorks);
         setMaxLikeWorks(detailedMaxLikeWorks);

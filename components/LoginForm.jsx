@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import PopUp from './PopUp';
 import { useSetUser } from '@/context/UserProvider';
+import google from '@/public/images/google.webp';
 
 function LoginForm() {
   const router = useRouter();
@@ -93,6 +94,12 @@ function LoginForm() {
         </label>
         <button type="submit" className={styles.loginButton}>
           로그인
+        </button>
+        <button className={styles.googleLogin} onClick={() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`;
+        }} >
+          <p>구글 로그인</p>
+          <Image width={24} height={24} src={google} alt="구글 로그인" className={styles.google} priority />
         </button>
         <div className={styles.signupLink}>
           회원이 아니신가요?

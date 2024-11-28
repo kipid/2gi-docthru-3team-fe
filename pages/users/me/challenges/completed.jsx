@@ -49,7 +49,7 @@ function Completed() {
 				}} />
 			</div>
 			<div className={styles.challenges}>
-				{challenges?.list?.map(chall => <Challenge challenge={chall} status="completed" />)}
+				{challenges?.list?.map(chall => <Challenge key={chall.id} challenge={chall} status="completed" />)}
 			</div>
 			<Pagination page={page} setPage={setPage} pageMaxCandi={Math.ceil(challenges?.totalCount / PAGE_SIZE)} />
 		</main>

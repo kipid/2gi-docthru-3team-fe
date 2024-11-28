@@ -147,15 +147,6 @@ function TextEditor() {
           <button className={styles.bringBackButton} onClick={handleBringBackDraft}>불러오기</button>
         </div>
       )}
-      <div className={[styles.TextEditor, isIframeOpen ? styles.fixed : ""].join(" ")}>
-        <ReactQuill
-          value={content}
-          onChange={setContent}
-          modules={MODULES}
-          theme="snow"
-          placeholder="번역 시작하기..."
-        />
-      </div>
       <div className={[styles.iframeContainer, isIframeOpen ? styles.fixed : styles.closed].join(" ")}>
         <iframe
           className={styles.iframe}
@@ -168,6 +159,15 @@ function TextEditor() {
         <button className={styles.newOpen} onClick={() => window.open(work?.challenge?.docUrl)}>
           링크 열기
         </button>
+      </div>
+      <div className={[styles.TextEditor, isIframeOpen ? styles.fixed : ""].join(" ")}>
+        <ReactQuill
+          value={content}
+          onChange={setContent}
+          modules={MODULES}
+          theme="snow"
+          placeholder="번역 시작하기..."
+        />
       </div>
       <button className={styles.openButton} onClick={() => setIsIframeOpen(true)}>원문</button>
       <PopUp error={error} setError={setError} />

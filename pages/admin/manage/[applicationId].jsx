@@ -68,7 +68,14 @@ function ManageApp() {
 							<div className={styles.comment}>
 								<h1>신청 거절 사유</h1>
 								<p className={styles.commentContent}>{application.invalidationComment}</p>
-								<p className={styles.date}>{application.invalidatedAt}</p>
+								<p className={styles.date}>{moment(new Date(application.invalidatedAt)).format("YYYY-MM-DD hh:mm")}</p>
+							</div>
+							)}
+							{application.status === "Invalidated" && application.invalidationComment && (
+							<div className={styles.comment}>
+								<h1>삭제 사유</h1>
+								<p className={styles.commentContent}>{application.invalidationComment}</p>
+								<p className={styles.date}>{moment(new Date(application.invalidatedAt)).format("YYYY-MM-DD hh:mm")}</p>
 							</div>
 							)}
 						</div>
@@ -110,7 +117,7 @@ function ManageApp() {
 					value={invalidMessage}
 					onClose={() => setIsModalOpen(false)}
 					onSubmit={handleReject}
-					onChange={(e) => setInvalidMessage(e.target.value)} 
+					onChange={(e) => setInvalidMessage(e.target.value)}
 				/>
 			)}
 		</main>

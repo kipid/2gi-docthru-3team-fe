@@ -4,12 +4,16 @@ import instance from "@/apis/instance";
 import TextareaItem from "./TextareaItem";
 import menu from "@/public/images/feedback_menu.png";
 import styles from "./FeedbackList.module.css";
+import Image from "next/image";
+import { format } from "date-fns";
+
 
 const fetchFeedbacks = async ({ pageParam = 1, queryKey }) => {
   const [_, workId] = queryKey;
   const { data } = await instance.get(`/works/${workId}/feedbacks`, {
     params: { page: pageParam, limit: 3 },
   });
+  console.log("Fetched feedbacks:", data);
   return data;
 };
 
@@ -18,7 +22,7 @@ const deleteFeedback = async (feedbackId) => {
 };
 
 const updateFeedback = async ({ feedbackId, content }) => {
-  const { data } = await instance.put(`/feedbacks/${feedbackId}`, { content });
+  const { data } = await instance.patch(`/feedbacks/${feedbackId}`, { content });
   return data;
 };
 
@@ -67,8 +71,11 @@ const FeedbackItem = ({ feedback }) => {
 
   return (
     <div className={styles.feedbackItem}>
+      <p>
+        {feedback.userId}
+      </p>
       <small>
-        {feedback.author} · {feedback.createdAt}
+        {format(new Date(feedback.createdAt), "yyyy/MM/dd HH:mm")}
       </small>
       {isEditing ? (
         <div className={styles.editFeedback}>
@@ -89,9 +96,11 @@ const FeedbackItem = ({ feedback }) => {
           <p>{feedback.content}</p>
           <div className={styles.menuContainer}>
             <button className={styles.menuButton} onClick={handleMenuToggle}>
-              <img
+              <Image
                 src={menu}
                 alt="더보기"
+                width={16}
+                height={16}
               />
             </button>
             {isMenuOpen && (
@@ -116,7 +125,7 @@ const FeedbackList = ({ workId }) => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    querykey: ["feedbacks", workId],
+    queryKey: ["feedbacks", workId],
     queryFn: fetchFeedbacks,
     getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextPage : undefined),
     }
@@ -125,7 +134,7 @@ const FeedbackList = ({ workId }) => {
   return (
     <div>
       {data?.pages.map((page) =>
-        page.feedbacks.map((feedback) => (
+        page.list.map((feedback) => (
           <FeedbackItem key={feedback.id} feedback={feedback} />
         ))
       )}

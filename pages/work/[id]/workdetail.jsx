@@ -58,32 +58,34 @@ const WorkDetail = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.workDetail}>
-        <h1 style={{ fontSize: "24px"}}>{data?.title || "제목 없음"}</h1>
+        <h1 style={{ fontSize: "24px"}}>{data?.challenge?.title || "제목 없음"}</h1>
         <div>
-          <span className={styles.docType}>{data?.docType || "문서 타입 없음"}</span>
-          <span className={styles.category}>{data?.category || "카테고리 없음"}</span>
+          <span className={styles.type}>{data?.challenge?.type || "문서 타입 없음"}</span>
+          <span className={styles.field}>{data?.challenge?.field || "카테고리 없음"}</span>
         </div>
         <div className={styles.meta}>
-          <span className={styles.nickname}>{data?.nickname || "작성자 없음"}</span>
-          <button
-            className={styles.likeButton}
-            onClick={handleLikeClick}
-            disabled={likeMutation.isLoading}
-          >
-            <Image
-              width={16}
-              height={16}
-              src={data?.isLiked ? likeIconActive : likeIconInactive}
-              alt="좋아요 아이콘"
-              className={styles.likeIcon}
-            />
-          </button>
-          <span className={styles.likes}>{data?.likes || 0}</span>
+          <div>
+            <span className={styles.nickname}>{data?.user?.nickname || "작성자 없음"}</span>
+            <button
+              className={styles.likeButton}
+              onClick={handleLikeClick}
+              disabled={likeMutation.isLoading}
+            >
+              <Image
+                width={16}
+                height={16}
+                src={data?.isLiked ? likeIconActive : likeIconInactive}
+                alt="좋아요 아이콘"
+                className={styles.likeIcon}
+              />
+            </button>
+            <span className={styles.likes}>{data?.likes || 0}</span>
+          </div>
           <span className={styles.date}>
-            {data?.createdAt
-              ? format(new Date(data.createdAt), "yyyy-MM-dd")
+          {data?.submittedAt
+              ? format(new Date(data.submittedAt), "yyyy-MM-dd")
               : "날짜 정보 없음"}
           </span>
         </div>

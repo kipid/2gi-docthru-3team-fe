@@ -1,30 +1,11 @@
 import { useState } from "react";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import instance from "@/apis/instance";
+import { fetchFeedbacks, deleteFeedback, updateFeedback } from "@/apis/feedbackService";
 import TextareaItem from "./TextareaItem";
 import menu from "@/public/images/feedback_menu.png";
 import styles from "./FeedbackList.module.css";
 import Image from "next/image";
-import { format } from "date-fns";
-
-
-const fetchFeedbacks = async ({ pageParam = 1, queryKey }) => {
-  const [_, workId] = queryKey;
-  const { data } = await instance.get(`/works/${workId}/feedbacks`, {
-    params: { page: pageParam, limit: 3 },
-  });
-  console.log("Fetched feedbacks:", data);
-  return data;
-};
-
-const deleteFeedback = async (feedbackId) => {
-  await instance.delete(`/feedbacks/${feedbackId}`);
-};
-
-const updateFeedback = async ({ feedbackId, content }) => {
-  const { data } = await instance.patch(`/feedbacks/${feedbackId}`, { content });
-  return data;
-};
+import moment from "moment";
 
 const FeedbackItem = ({ feedback }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -75,7 +56,7 @@ const FeedbackItem = ({ feedback }) => {
         {feedback.userId}
       </p>
       <small>
-        {format(new Date(feedback.createdAt), "yyyy/MM/dd HH:mm")}
+        {moment(new Date(lastModifiedAt)).format("YYYY/MM/DD hh:mm")}
       </small>
       {isEditing ? (
         <div className={styles.editFeedback}>

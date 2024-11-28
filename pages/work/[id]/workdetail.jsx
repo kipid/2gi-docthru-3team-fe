@@ -1,24 +1,14 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import instance from "@/apis/instance";
+import { getWorkById, toggleLike } from "@/apis/workService";
 import styles from "@/styles/WorkDetail.module.css";
-import { format } from "date-fns";
+import moment from "moment";
 import likeIconActive from "@/public/images/ic_heart.png";
 import likeIconInactive from "@/public/images/ic_inactiveheart.png";
 import FeedbackForm from "@/components/FeedbackInput";
 import FeedbackList from "@/components/FeedbackList";
 import Image from "next/image";
-
-const fetchWorkDetail = async (workId) => {
-  const { data } = await instance.get(`/works/${workId}`);
-  return data;
-};
-
-const toggleLike = async (workId) => {
-  const { data } = await instance.post(`/works/${workId}/likes`);
-  return data;
-};
 
 const WorkDetail = () => {
   const router = useRouter();
@@ -27,7 +17,7 @@ const WorkDetail = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["workDetail", workId],
-    queryFn: () => fetchWorkDetail(workId),
+    queryFn: () => getWorkById(workId),
     enabled: !!workId,
   });
   console.log("WorkDetail data", data);
@@ -85,7 +75,7 @@ const WorkDetail = () => {
           </div>
           <span className={styles.date}>
           {data?.submittedAt
-              ? format(new Date(data.submittedAt), "yyyy-MM-dd")
+              ? moment(new Date(data.submittedAt), "yyyy-MM-dd")
               : "날짜 정보 없음"}
           </span>
         </div>

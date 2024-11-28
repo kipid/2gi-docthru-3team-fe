@@ -71,3 +71,13 @@ export async function deleteChallenge(challengeId, invalidationComment) {
 		return err?.response?.data || err;
 	}
 }
+
+export async function deleteChallengeByUser(challengeId) {
+	try {
+		const result = await instance.delete(`/challenges/${challengeId}`);
+		return result?.data;
+	} catch (err) {
+		console.error(err);
+		return err?.response?.data || err;
+	}
+}

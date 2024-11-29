@@ -43,8 +43,11 @@ export function Work({ work, viewport }) {
         <span>{likeCount}</span>
       </div>
       <div className={styles.seeWork}>
-        <Link href={isAdmin ? `/work/${id}/edit` : `/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
+        <Link href={`/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
       </div>
+      {isAdmin && <div>
+        <Link href={`/work/${id}/edit`}>편집</Link>
+      </div>}
     </div>
   );
 }

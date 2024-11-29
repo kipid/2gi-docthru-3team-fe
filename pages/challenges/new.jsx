@@ -6,11 +6,11 @@ import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/new.module.css"
 import instance from "@/apis/instance";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 
 function NewChallenge() {
   const router = useRouter();
-  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
+  const fields = ["Next", "API", "Career", "Modern", "Web"];
   const doctypes = ["Blog", "Document"];
 
 

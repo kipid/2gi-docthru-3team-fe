@@ -1,32 +1,19 @@
 import { useState } from "react";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import instance from "@/apis/instance";
+import { fetchFeedbacks, deleteFeedback, updateFeedback } from "@/apis/feedbackService";
 import TextareaItem from "./TextareaItem";
 import menu from "@/public/images/feedback_menu.png";
 import styles from "./FeedbackList.module.css";
-
-const fetchFeedbacks = async ({ pageParam = 1, queryKey }) => {
-  const [_, workId] = queryKey;
-  const { data } = await instance.get(`/works/${workId}/feedbacks`, {
-    params: { page: pageParam, limit: 3 },
-  });
-  return data;
-};
-
-const deleteFeedback = async (feedbackId) => {
-  await instance.delete(`/feedbacks/${feedbackId}`);
-};
-
-const updateFeedback = async ({ feedbackId, content }) => {
-  const { data } = await instance.put(`/feedbacks/${feedbackId}`, { content });
-  return data;
-};
+import Image from "next/image";
+import { format } from "date-fns";
+import { useUser } from "@/context/UserProvider";
 
 const FeedbackItem = ({ feedback }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(feedback.content);
 
+  const user = useUser();
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -40,7 +27,7 @@ const FeedbackItem = ({ feedback }) => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: () => updateFeedback( {feedbackId: feedback.id, content}),
+    mutationFn: () => updateFeedback({feedbackId: feedback.id, content}),
     onSuccess: () => {
       queryClient.invalidateQueries(["feedbacks", feedback.workId]);
       setIsEditing(false);
@@ -67,33 +54,41 @@ const FeedbackItem = ({ feedback }) => {
 
   return (
     <div className={styles.feedbackItem}>
+      <p>
+        {feedback?.user?.nickname}
+      </p>
       <small>
-        {feedback.author} · {feedback.createdAt}
+        {format(new Date(feedback.createdAt), "yyyy/MM/dd HH:mm")}
       </small>
       {isEditing ? (
         <div className={styles.editFeedback}>
-          <TextareaItem
-            id="editfeedback"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
           <div>
             <button onClick={() => setIsEditing(false)}>취소</button>
             <button onClick={handleUpdate} disabled={updateMutation.isLoading}>
               {updateMutation.isLoading ? "수정 중..." : "수정 완료"}
             </button>
           </div>
+          <TextareaItem
+            id="editfeedback"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          
         </div>
       ) : (
         <>
           <p>{feedback.content}</p>
           <div className={styles.menuContainer}>
-            <button className={styles.menuButton} onClick={handleMenuToggle}>
-              <img
-                src={menu}
-                alt="더보기"
-              />
-            </button>
+            {feedback.userId === user?.id && (
+              <button className={styles.menuButton} onClick={handleMenuToggle}>
+                <Image
+                  src={menu}
+                  alt="더보기"
+                  width={16}
+                  height={16}
+                />
+              </button>
+            )}
             {isMenuOpen && (
               <div className={styles.dropdownMenu}>
                 <button onClick={() => setIsEditing(true)}>수정하기</button>
@@ -116,23 +111,33 @@ const FeedbackList = ({ workId }) => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    querykey: ["feedbacks", workId],
+    queryKey: ["feedbacks", workId],
     queryFn: fetchFeedbacks,
-    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextPage : undefined),
-    }
-  );
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.hasMore) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+  });
 
   return (
-    <div>
+    <div className={styles.feedbackList}>
       {data?.pages.map((page) =>
-        page.feedbacks.map((feedback) => (
+        page.list.map((feedback) => (
           <FeedbackItem key={feedback.id} feedback={feedback} />
         ))
       )}
       {hasNextPage && (
-        <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-          {isFetchingNextPage ? "로딩 중..." : "더보기"}
-        </button>
+        <div className={styles.loadMoreContainer}>
+          <button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className={styles.loadMoreButton}
+          >
+            {isFetchingNextPage ? "로딩 중..." : "더보기"}
+          </button>
+        </div>
       )}
     </div>
   );

@@ -6,7 +6,8 @@ export async function getApplications(query) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
-		return err?.response?.data || err;
+		// return err?.response?.data || err;
+		throw err;
 	}
 }
 

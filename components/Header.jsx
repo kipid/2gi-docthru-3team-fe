@@ -57,6 +57,7 @@ const Header = () => {
                 <button className={styles.userDropDownItem} onClick={() => {
                   setUser(null);
                   localStorage.removeItem("user");
+                  router.push("/");
                 }}>로그아웃</button>
               </div>}
             </div>

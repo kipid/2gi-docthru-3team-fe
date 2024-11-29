@@ -7,12 +7,20 @@ import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/editChallenge.module.css";
+import PopUp from "@/components/PopUp";
+import { useUser } from "@/context/UserProvider";
+import { useState } from "react";
 
 function updateChallenge() {
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
   const doctypes = ["Blog", "Document"];
-
+  const user = useUser();
   const router = useRouter();
+  const [error, setError] = useState(null);
+
+  if (!user) {
+    return <PopUp onlyCancel={true} error={{ message: "로그인이 필요합니다.", onCancel: () => router.push('/login') }} setError={setError} />;
+  }
 
   const { handleSubmit, control, watch } = useForm({
     defaultValues: {

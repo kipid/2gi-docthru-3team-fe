@@ -9,9 +9,14 @@ import styles from "@/styles/Manage.module.css";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import PopUp from "@/components/PopUp";
+import { useRouter } from "next/router";
 
 function Manage() {
   const viewport = useViewport();
+  const router = useRouter();
+  const [error, setError] = useState(null);
+  const [isUnauthorized, setIsUnauthorized] = useState(false);
   // const [sort, setSort] = useState("");
   const [keyword, setKeyword] = useState("");
   const [input, setInput] = useState("");
@@ -26,16 +31,28 @@ function Manage() {
   const {
     data: applications,
     isPending,
-    isError
+    isError,
+    error: queryError,
   } = useQuery({
     queryKey: ['applications', { ...query, page, keyword, }, page, keyword],
     queryFn: () => getApplications({ ...query, page, keyword }),
     staleTime: 5 * 60 * 1000,
+    retry: false,
   });
   console.log("/admin/manage applications", applications);
 
+  console.log("queryError: ", queryError);
+
+  useEffect(() => {
+    if (queryError?.response?.status === 403 || queryError?.response?.status === 401) {
+      setIsUnauthorized(true);
+    } else {
+      setIsUnauthorized(false);
+    }
+  }, [queryError]);
+
   if (isPending) return <Loading />;
-  if (isError) return <Error />;
+  if (isUnauthorized) return <PopUp onlyCancel={true} error={{ message: "권한이 없습니다.", onCancel: () => router.push('/login') }} setError={setError} />;
 
   const handleSortChange = (e) => {
     setPage(1);

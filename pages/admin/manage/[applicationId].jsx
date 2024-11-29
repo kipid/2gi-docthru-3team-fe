@@ -9,11 +9,14 @@ import moment, { invalid } from "moment";
 import Image from "next/image";
 import { useRouter } from 'next/router';
 import Modal from "@/components/Modal.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import PopUp from "@/components/PopUp";
 
 function ManageApp() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [invalidMessage, setInvalidMessage] = useState("");
+	const [error, setError] = useState(null);
+	const [isUnauthorized, setIsUnauthorized] = useState(false);
 	const viewport = useViewport();
 	const router = useRouter();
 	const { applicationId } = router.query;
@@ -38,8 +41,16 @@ function ManageApp() {
 		}
 	})
 
+	useEffect(() => {
+	  if (application === "Unauthorized" || (application && application.message?.includes("ForbiddenError"))) {
+		setIsUnauthorized(true);
+	  } else {
+		setIsUnauthorized(false);
+	  }
+	}, [application]);
+  
 	if (isPending) return <Loading />;
-	if (isError) return <Error />;
+	if (isUnauthorized) return <PopUp onlyCancel={true} error={{ message: "권한이 없습니다.", onCancel: () => router.push('/login') }} setError={setError} />;
 
 	const { id, challenge } = application;
 
@@ -54,6 +65,8 @@ function ManageApp() {
 	};
 
 	return (
+		<>
+		{application && challenge && (
 		<main className={styles.main}>
 			<div className={styles.challengeInfoContainer}>
 				<div className={styles.headContainer}>
@@ -121,6 +134,8 @@ function ManageApp() {
 				/>
 			)}
 		</main>
+		)}
+		</>
 	);
 }
 

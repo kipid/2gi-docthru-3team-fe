@@ -1,5 +1,6 @@
 .likeButton {
     border: none;
+    background-color: transparent;
 }
 
 .meta {
@@ -8,6 +9,12 @@
     padding: 10px;
     border-top: 1px solid #E5E5E5;
     border-bottom: 1px solid #E5E5E5;
+    align-items: center;
+}
+
+.information {
+    display: flex;
+    align-items: center;
 }
 
 .workDetail {
@@ -18,4 +25,27 @@
 
 .container {
     max-width: 55.625rem;
+}
+.tag {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 0.75rem;
+}
+
+.type {
+    border-radius: 10px;
+    background-color: #72B2EE;
+    padding: 0 0.75rem 0 0.75rem;
+}
+
+.field {
+    border: 1px solid #E5E5E5;
+    border-radius: 10px;
+    padding: 0 0.75rem 0 0.75rem;
+}
+
+.content {
+    max-width: 890px;
+    white-space: pre-line;
+    margin: 2rem 0 2rem 0;
 }

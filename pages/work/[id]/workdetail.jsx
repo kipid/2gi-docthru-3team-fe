@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getWorkById, toggleLike } from "@/apis/workService";
 import styles from "@/styles/WorkDetail.module.css";
-import moment from "moment";
 import likeIconActive from "@/public/images/ic_heart.png";
 import likeIconInactive from "@/public/images/ic_inactiveheart.png";
 import FeedbackForm from "@/components/FeedbackInput";
 import FeedbackList from "@/components/FeedbackList";
 import Image from "next/image";
+import { format } from "date-fns";
 
 const WorkDetail = () => {
   const router = useRouter();
@@ -20,17 +20,22 @@ const WorkDetail = () => {
     queryFn: () => getWorkById(workId),
     enabled: !!workId,
   });
-  console.log("WorkDetail data", data);
-    const likeMutation = useMutation({
-      mutationFn: () => toggleLike(workId),
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["workDetail", workId] });
-      },
-      onError: (error) => {
-        console.error("좋아요 처리 중 에러:", error);
-      },
 
-    });
+  console.log("WorkDetail data", data);
+    
+  const likeMutation = useMutation({
+    mutationFn: () => toggleLike(workId),
+    onSuccess: (updatedData) => {
+      queryClient.setQueryData(["workDetail", workId], (oldData) => ({
+        ...oldData,
+        isLiked: updatedData.isLiked,
+        likeCount: updatedData.likeCount,
+      }));
+    },
+    onError: (error) => {
+      console.error("좋아요 처리 중 에러:", error);
+    },
+  });
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -50,13 +55,13 @@ const WorkDetail = () => {
   return (
     <div className={styles.container}>
       <div className={styles.workDetail}>
-        <h1 style={{ fontSize: "24px"}}>{data?.challenge?.title || "제목 없음"}</h1>
-        <div>
-          <span className={styles.type}>{data?.challenge?.type || "문서 타입 없음"}</span>
+        <h1 style={{ fontSize: "24px", padding: "1rem 0 1rem"}}>{data?.challenge?.title || "제목 없음"}</h1>
+        <div className={styles.tag}>
+          <span className={styles.type}>{data?.challenge?.docType || "문서 타입 없음"}</span>
           <span className={styles.field}>{data?.challenge?.field || "카테고리 없음"}</span>
         </div>
         <div className={styles.meta}>
-          <div>
+          <div className={styles.information}>
             <span className={styles.nickname}>{data?.user?.nickname || "작성자 없음"}</span>
             <button
               className={styles.likeButton}
@@ -75,11 +80,11 @@ const WorkDetail = () => {
           </div>
           <span className={styles.date}>
           {data?.submittedAt
-              ? moment(new Date(data.submittedAt), "yyyy-MM-dd")
+              ? format(new Date(data.submittedAt), "yyyy-MM-dd")
               : "날짜 정보 없음"}
           </span>
         </div>
-        <p style={{maxWidth: "890px"}}>{data?.content || "내용 없음"}</p>
+        <p className={styles.content}>{data?.content || "내용 없음"}</p>
       </div>
       <FeedbackForm workId={workId} />
       <FeedbackList workId={workId} />

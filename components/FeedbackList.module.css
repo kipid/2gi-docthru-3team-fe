@@ -1,6 +1,10 @@
 .feedbackItem {
   padding: 10px 0;
   position: relative;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
 }
 
 .feedbackItem small {
@@ -9,7 +13,6 @@
 
 .dropdownMenu {
     position: absolute;
-    top: 30px;
     right: 0;
     background: white;
     border: 1px solid #ccc;
@@ -25,6 +28,7 @@
     background: none;
     text-align: left;
     cursor: pointer;
+    white-space: nowrap;
   }
 
   .dropdownMenu button:hover {
@@ -41,4 +45,5 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    z-index: 100;
   }

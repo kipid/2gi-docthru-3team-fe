@@ -5,7 +5,7 @@ import TextareaItem from "./TextareaItem";
 import menu from "@/public/images/feedback_menu.png";
 import styles from "./FeedbackList.module.css";
 import Image from "next/image";
-import moment from "moment";
+import { format } from "date-fns";
 
 const FeedbackItem = ({ feedback }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,7 +56,7 @@ const FeedbackItem = ({ feedback }) => {
         {feedback.userId}
       </p>
       <small>
-        {moment(new Date(lastModifiedAt)).format("YYYY/MM/DD hh:mm")}
+        {format(new Date(feedback.createdAt), "yyyy/MM/dd HH:mm")}
       </small>
       {isEditing ? (
         <div className={styles.editFeedback}>

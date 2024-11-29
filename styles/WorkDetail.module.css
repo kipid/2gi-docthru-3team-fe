@@ -11,9 +11,11 @@
 }
 
 .workDetail {
+    display: flex;
+    flex-direction: column;
     border-bottom: 1px solid #E5E5E5;
 }
 
 .container {
-    max-width: 890px;
+    max-width: 55.625rem;
 }

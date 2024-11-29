@@ -55,7 +55,7 @@ const FeedbackItem = ({ feedback }) => {
   return (
     <div className={styles.feedbackItem}>
       <p>
-        {feedback.nickname}
+        {feedback?.user?.nickname}
       </p>
       <small>
         {format(new Date(feedback.createdAt), "yyyy/MM/dd HH:mm")}
@@ -79,7 +79,6 @@ const FeedbackItem = ({ feedback }) => {
         <>
           <p>{feedback.content}</p>
           <div className={styles.menuContainer}>
-
             {feedback.userId === user?.id && (
               <button className={styles.menuButton} onClick={handleMenuToggle}>
                 <Image

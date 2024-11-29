@@ -26,6 +26,13 @@
 .container {
     max-width: 55.625rem;
 }
+
+.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .tag {
     display: flex;
     margin-bottom: 0.625rem;
@@ -48,3 +55,35 @@
     white-space: pre-line;
     margin: 2rem 0 2rem 0;
 }
+
+.dropdownMenu {
+    position: absolute;
+    top: 140px;
+    right: 570px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdownMenu button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .dropdownMenu button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .menuButton {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }

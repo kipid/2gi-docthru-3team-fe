@@ -1,2 +1,9 @@
 POST http://localhost:3100/api/works/1/likes
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzMyODYwODM2LCJleHAiOjE3MzI4NjQ0MzZ9.Dwg9E4MzBhvC0EFNfKGMB0ong7IZ1WTVrbK7-_WUaGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzMyODY4NDMwLCJleHAiOjE3MzI4NzIwMzB9.bWYZ3VaJXipkHL8qKE3f9u2Az2sedJoZSdBEdcWQ47E
+
+###
+
+GET http://localhost:3100/api/works/1/feedbacks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzMyODY4NDMwLCJleHAiOjE3MzI4NzIwMzB9.bWYZ3VaJXipkHL8qKE3f9u2Az2sedJoZSdBEdcWQ47E
+
+

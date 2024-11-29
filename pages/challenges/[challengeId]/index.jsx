@@ -2,7 +2,7 @@ import { deleteChallenge, doChallenge, getChallengeWithId } from "@/apis/challen
 import { GRADE } from "@/apis/translate.js";
 import { getWorkById, toggleLike } from "@/apis/workService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
-import DelModal from "@/components/DelModal";
+import DelModal from "@/components/DelModal.jsx";
 import Loading from "@/components/Loading.jsx";
 import PopUp from "@/components/PopUp.jsx";
 import { useUser } from "@/context/UserProvider.jsx";
@@ -24,7 +24,9 @@ function padNumber(number) {
 const PAGE_SIZE = 5;
 
 export function Work({ work, viewport }) {
+  const user = useUser();
   const { id, grade, nickname, likeCount, rank, isLiked } = work;
+  const isAdmin = user?.role === "Admin";
 
   return (
     <div className={styles.work} key={id}>
@@ -41,7 +43,7 @@ export function Work({ work, viewport }) {
         <span>{likeCount}</span>
       </div>
       <div className={styles.seeWork}>
-        <Link href={`/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
+        <Link href={isAdmin ? `/work/${id}/edit` : `/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import FeedbackForm from "@/components/FeedbackInput";
 import FeedbackList from "@/components/FeedbackList";
 import Image from "next/image";
 import { format } from "date-fns";
+import { FIELD, TYPE } from "@/apis/translate";
 
 const WorkDetail = () => {
   const router = useRouter();
@@ -55,8 +56,8 @@ const WorkDetail = () => {
       <div className={styles.workDetail}>
         <h1 style={{ fontSize: "24px", padding: "1rem 0 1rem"}}>{data?.challenge?.title || "제목 없음"}</h1>
         <div className={styles.tag}>
-          <span className={styles.type}>{data?.challenge?.docType || "문서 타입 없음"}</span>
-          <span className={styles.field}>{data?.challenge?.field || "카테고리 없음"}</span>
+          <span className={styles.type}>{TYPE[data?.challenge?.docType] || "문서 타입 없음"}</span>
+          <span className={styles.field}>{FIELD[data?.challenge?.field] || "카테고리 없음"}</span>
         </div>
         <div className={styles.meta}>
           <div className={styles.information}>
@@ -77,8 +78,8 @@ const WorkDetail = () => {
             <span className={styles.likes}>{data?.likeCount}</span>
           </div>
           <span className={styles.date}>
-          {data?.submittedAt
-              ? format(new Date(data.submittedAt), "yyyy-MM-dd")
+          {data?.lastModifiedAt
+              ? format(new Date(data.lastModifiedAt), "yyyy-MM-dd")
               : "날짜 정보 없음"}
           </span>
         </div>

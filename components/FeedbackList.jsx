@@ -55,7 +55,7 @@ const FeedbackItem = ({ feedback }) => {
   return (
     <div className={styles.feedbackItem}>
       <p>
-        {feedback.userId}
+        {feedback.nickname}
       </p>
       <small>
         {format(new Date(feedback.createdAt), "yyyy/MM/dd HH:mm")}

@@ -47,3 +47,21 @@
     right: 10px;
     z-index: 100;
   }
+
+  .loadMoreButton {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    color: #737373;
+  }
+
+  .loadMoreContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .feedbackList {
+    display: flex;
+    flex-direction: column;
+  }

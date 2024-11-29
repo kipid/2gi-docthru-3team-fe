@@ -6,12 +6,14 @@ import menu from "@/public/images/feedback_menu.png";
 import styles from "./FeedbackList.module.css";
 import Image from "next/image";
 import { format } from "date-fns";
+import { useUser } from "@/context/UserProvider";
 
 const FeedbackItem = ({ feedback }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(feedback.content);
 
+  const user = useUser();
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -25,7 +27,7 @@ const FeedbackItem = ({ feedback }) => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: () => updateFeedback( {feedbackId: feedback.id, content}),
+    mutationFn: () => updateFeedback({feedbackId: feedback.id, content}),
     onSuccess: () => {
       queryClient.invalidateQueries(["feedbacks", feedback.workId]);
       setIsEditing(false);
@@ -60,30 +62,34 @@ const FeedbackItem = ({ feedback }) => {
       </small>
       {isEditing ? (
         <div className={styles.editFeedback}>
-          <TextareaItem
-            id="editfeedback"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
           <div>
             <button onClick={() => setIsEditing(false)}>취소</button>
             <button onClick={handleUpdate} disabled={updateMutation.isLoading}>
               {updateMutation.isLoading ? "수정 중..." : "수정 완료"}
             </button>
           </div>
+          <TextareaItem
+            id="editfeedback"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          
         </div>
       ) : (
         <>
           <p>{feedback.content}</p>
           <div className={styles.menuContainer}>
-            <button className={styles.menuButton} onClick={handleMenuToggle}>
-              <Image
-                src={menu}
-                alt="더보기"
-                width={16}
-                height={16}
-              />
-            </button>
+
+            {feedback.userId === user?.id && (
+              <button className={styles.menuButton} onClick={handleMenuToggle}>
+                <Image
+                  src={menu}
+                  alt="더보기"
+                  width={16}
+                  height={16}
+                />
+              </button>
+            )}
             {isMenuOpen && (
               <div className={styles.dropdownMenu}>
                 <button onClick={() => setIsEditing(true)}>수정하기</button>
@@ -108,21 +114,31 @@ const FeedbackList = ({ workId }) => {
   } = useInfiniteQuery({
     queryKey: ["feedbacks", workId],
     queryFn: fetchFeedbacks,
-    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextPage : undefined),
-    }
-  );
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.hasMore) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+  });
 
   return (
-    <div>
+    <div className={styles.feedbackList}>
       {data?.pages.map((page) =>
         page.list.map((feedback) => (
           <FeedbackItem key={feedback.id} feedback={feedback} />
         ))
       )}
       {hasNextPage && (
-        <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-          {isFetchingNextPage ? "로딩 중..." : "더보기"}
-        </button>
+        <div className={styles.loadMoreContainer}>
+          <button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className={styles.loadMoreButton}
+          >
+            {isFetchingNextPage ? "로딩 중..." : "더보기"}
+          </button>
+        </div>
       )}
     </div>
   );

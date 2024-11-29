@@ -18,6 +18,7 @@ export const deleteFeedback = async (feedbackId) => {
     await instance.delete(`/feedbacks/${feedbackId}`);
   };
   
+
 export  const updateFeedback = async ({ feedbackId, content }) => {
     const { data } = await instance.patch(`/feedbacks/${feedbackId}`, { content });
     return data;

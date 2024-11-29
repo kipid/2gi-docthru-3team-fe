@@ -20,15 +20,13 @@ const WorkDetail = () => {
     queryFn: () => getWorkById(workId),
     enabled: !!workId,
   });
-
-  console.log("WorkDetail data", data);
-    
+  console.log(data)  
   const likeMutation = useMutation({
     mutationFn: () => toggleLike(workId),
     onSuccess: (updatedData) => {
       queryClient.setQueryData(["workDetail", workId], (oldData) => ({
         ...oldData,
-        isLiked: updatedData.isLiked,
+        isLiked: !oldData.isLiked,
         likeCount: updatedData.likeCount,
       }));
     },
@@ -76,7 +74,7 @@ const WorkDetail = () => {
                 className={styles.likeIcon}
               />
             </button>
-            <span className={styles.likes}>{data?.likes || 0}</span>
+            <span className={styles.likes}>{data?.likeCount}</span>
           </div>
           <span className={styles.date}>
           {data?.submittedAt

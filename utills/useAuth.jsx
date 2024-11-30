@@ -14,7 +14,7 @@ export default function useAuth(required ) {
         }
 
         else if (required && allowedUser.role !== required) {
-            setErrorMessage({ message: "관리자만 접근할 수 있습니다. 다시 로그인 해주세요.", onCancel: () => router.push('/login')});
+            setErrorMessage({ message: "관리자만 접근할 수 있습니다.", onCancel: () => router.push('/')});
             // router.push('/');
         }
 

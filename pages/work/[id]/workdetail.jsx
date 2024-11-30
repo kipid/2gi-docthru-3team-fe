@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getWorkById, deleteWorkById, toggleLike } from "@/apis/workService";
@@ -20,8 +20,8 @@ const WorkDetail = () => {
   const { id: workId } = router.query;
   const queryClient = useQueryClient();
   const user = useUser();
+  const kebabRef = useRef();
   const { errorMessage, setErrorMessage } = useAuth();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
@@ -57,6 +57,16 @@ const WorkDetail = () => {
     },
   });
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const { target } = e;
+      if (kebabRef.current && !kebabRef.current.contains(target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
+
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
@@ -68,10 +78,9 @@ const WorkDetail = () => {
     return <div>오류가 발생했습니다: {error.message}</div>;
   }
 
-  
-
   const handleMenuToggle = () => {
     setIsMenuOpen((prev) => !prev);
+    console.log(!isMenuOpen);
   };
 
   const handleEdit = () => {
@@ -93,6 +102,7 @@ const WorkDetail = () => {
       <div className={styles.workDetail}>
         <div className={styles.head}>
           <h1 style={{ fontSize: "24px", padding: "1rem 0 1rem"}}>{data?.challenge?.title || "제목 없음"}</h1>
+          <div ref={kebabRef} className={styles.kebab}>
           {data?.user?.id === user?.id && (
                 <button className={styles.menuButton} onClick={handleMenuToggle}>
                   <Image
@@ -111,6 +121,7 @@ const WorkDetail = () => {
                   </button>
                 </div>
               )}
+              </div>
         </div>
         <div className={styles.tag}>
           <span className={styles.type}>{TYPE[data?.challenge?.docType] || "문서 타입 없음"}</span>

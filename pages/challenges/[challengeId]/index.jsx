@@ -15,7 +15,7 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import sanitizeHtml from 'sanitize-html';
 
 function padNumber(number) {
@@ -111,6 +111,7 @@ function ChallengeDetail() {
   const viewport = useViewport();
   const router = useRouter();
   const { challengeId } = router.query;
+  const kebabRef = useRef();
   const queryClient = useQueryClient();
   const { data: challenge, isPending, isError, error: queryError } = useQuery({
     queryKey: ["challenges", challengeId],
@@ -153,6 +154,16 @@ function ChallengeDetail() {
 
     updateData();
   }, [challenge]);
+  
+  useEffect(() => {
+    const outSideClick = (e) => {
+      const { target } = e;
+      if (isKebabOpen && kebabRef.current && !kebabRef.current.contains(target)) {
+        setIsKebabOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", outSideClick);
+  }, [isKebabOpen]);
 
   if (isPending) return <Loading />;
   if (!maxLikeWorks) return <Loading />;
@@ -172,11 +183,11 @@ function ChallengeDetail() {
                 <Type type={challenge?.docType} />
               </div>
             </div>
-            {(isAdmin || user?.id === challenge?.applications?.user?.id) && <div className={styles.kebabMenu}>
+            {(isAdmin || user?.id === challenge?.applications?.user?.id) && <div ref={kebabRef} className={styles.kebabMenu}>
               <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_kebab_menu.png" alt="Kebab menu" onClick={() => setIsKebabOpen(prev => !prev)} />
               {isKebabOpen && <div className={styles.kebabMenuItems}>
                 <div className={styles.kebabMenuItem} onClick={() => router.push(`/challenges/${challengeId}/editChallenge`)}>수정하기</div>
-                <div className={styles.kebabMenuItem} onClick={() => {
+                {isAdmin && <div className={styles.kebabMenuItem} onClick={() => {
                   if (isAdmin) {
                     setIsDelModalOpen(true);
                     setErrorDel({ onClose: () => {
@@ -187,7 +198,7 @@ function ChallengeDetail() {
                   } else {
                     setError({ message: "승인된 챌린지는 관리자만 삭제 가능합니다." });
                   }
-                }}>삭제하기</div>
+                }}>삭제하기</div>}
               </div>}
               {isDelModalOpen && <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />}
             </div>}

@@ -8,12 +8,13 @@ import { useViewport } from "@/context/ViewportProvider.jsx";
 import styles from "@/styles/Manage.module.css";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import PopUp from "@/components/PopUp";
 import useAuth from "@/utills/useAuth";
 
 function Manage() {
   const viewport = useViewport();
+  const sortRef = useRef();
   // const [sort, setSort] = useState("");
   const [keyword, setKeyword] = useState("");
   const [input, setInput] = useState("");
@@ -77,7 +78,7 @@ function Manage() {
           <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_search.png" alt="Search" onClick={handleSearchIconClick} />
         </div>
         <div className={styles.sort}>
-          <Sort currentValue={currentSort} onChange={handleSortChange}/>
+          <Sort ref={sortRef} currentValue={currentSort} onChange={handleSortChange}/>
           {/* <select value={sort} onChange={(e) => {
             setSort(e.target.value);
             setPage(1);

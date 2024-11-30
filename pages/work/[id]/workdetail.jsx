@@ -12,13 +12,15 @@ import { format } from "date-fns";
 import { FIELD, TYPE } from "@/apis/translate";
 import { useUser } from "@/context/UserProvider";
 import menu from "@/public/images/feedback_menu.png"
-
+import useAuth from "@/utills/useAuth";
+import PopUp from "@/components/PopUp";
 
 const WorkDetail = () => {
   const router = useRouter();
   const { id: workId } = router.query;
   const queryClient = useQueryClient();
   const user = useUser();
+  const { errorMessage, setErrorMessage } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -87,6 +89,7 @@ const WorkDetail = () => {
 
   return (
     <div className={styles.container}>
+      {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
       <div className={styles.workDetail}>
         <div className={styles.head}>
           <h1 style={{ fontSize: "24px", padding: "1rem 0 1rem"}}>{data?.challenge?.title || "제목 없음"}</h1>

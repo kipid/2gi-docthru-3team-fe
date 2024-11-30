@@ -7,18 +7,14 @@ import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/new.module.css"
 import instance from "@/apis/instance";
 import { useRouter } from "next/router"
-import { useUser } from "@/context/UserProvider";
 import PopUp from "@/components/PopUp";
+import useAuth from "@/utills/useAuth";
 
 function NewChallenge() {
   const router = useRouter();
-  const user = useUser();
+  const { errorMessgae, setErrorMessage } = useAuth();
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
   const doctypes = ["Blog", "Document"];
-
-  if (!user) {
-    return <PopUp onlyCancel={true} error={{ message: "로그인이 필요합니다.", onCancel: () => router.push('/login') }} setError={setError} />;
-  }
 
   const { handleSubmit, control, watch} = useForm({
     defaultValues: {
@@ -48,6 +44,7 @@ function NewChallenge() {
 
   return (
     <div className={styles.Container}>
+      {errorMessgae && <PopUp onlyCancel={true} error={errorMessgae} setError={setErrorMessage} />}
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2>신규 챌린지 신청</h2>
           <div>

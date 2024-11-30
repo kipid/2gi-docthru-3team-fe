@@ -9,17 +9,17 @@ import moment, { invalid } from "moment";
 import Image from "next/image";
 import { useRouter } from 'next/router';
 import Modal from "@/components/Modal.jsx";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PopUp from "@/components/PopUp";
+import useAuth from "@/utills/useAuth";
 
 function ManageApp() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [invalidMessage, setInvalidMessage] = useState("");
-	const [error, setError] = useState(null);
-	const [isUnauthorized, setIsUnauthorized] = useState(false);
 	const viewport = useViewport();
 	const router = useRouter();
 	const { applicationId } = router.query;
+	const { errorMessage, setErrorMessage } = useAuth("Admin");
 
 	const queryClient = useQueryClient();
 
@@ -41,16 +41,7 @@ function ManageApp() {
 		}
 	})
 
-	useEffect(() => {
-	  if (application === "Unauthorized" || (application && application.message?.includes("ForbiddenError"))) {
-		setIsUnauthorized(true);
-	  } else {
-		setIsUnauthorized(false);
-	  }
-	}, [application]);
-  
 	if (isPending) return <Loading />;
-	if (isUnauthorized) return <PopUp onlyCancel={true} error={{ message: "권한이 없습니다.", onCancel: () => router.push('/login') }} setError={setError} />;
 
 	const { id, challenge } = application;
 
@@ -66,6 +57,7 @@ function ManageApp() {
 
 	return (
 		<>
+		{errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
 		{application && challenge && (
 		<main className={styles.main}>
 			<div className={styles.challengeInfoContainer}>

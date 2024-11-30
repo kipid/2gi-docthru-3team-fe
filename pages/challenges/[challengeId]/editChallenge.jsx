@@ -8,20 +8,13 @@ import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/editChallenge.module.css";
 import PopUp from "@/components/PopUp";
-import { useUser } from "@/context/UserProvider";
-import { useState } from "react";
+import useAuth from "@/utills/useAuth";
 
 function updateChallenge() {
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
   const doctypes = ["Blog", "Document"];
-  const user = useUser();
   const router = useRouter();
-  const [error, setError] = useState(null);
-
-  if (!user) {
-    return <PopUp onlyCancel={true} error={{ message: "로그인이 필요합니다.", onCancel: () => router.push('/login') }} setError={setError} />;
-  }
-
+  const { errorMessage, setErrorMessage } = useAuth();
   const { handleSubmit, control, watch } = useForm({
     defaultValues: {
       title: "",
@@ -62,6 +55,7 @@ function updateChallenge() {
 
   return (
     <div className={styles.Container}>
+      {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>챌린지 수정</h1>
         <div>

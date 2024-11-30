@@ -5,7 +5,7 @@ import { Field, Type } from "@/components/Challenge.jsx";
 import DelModal from "@/components/DelModal";
 import Loading from "@/components/Loading.jsx";
 import PopUp from "@/components/PopUp.jsx";
-import useAuth from "@/components/useAuth";
+import useAuth from "@/utills/useAuth";
 import { useUser } from "@/context/UserProvider.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import { SANITIZE_OPTIONS } from "@/pages/work/[id]/edit.jsx";
@@ -96,7 +96,7 @@ export function WorkDetail({ work, viewport }) {
 
 function ChallengeDetail() {
   const user = useUser();
-  const { allowedUser, errorMessage, setErrorMessage } = useAuth();
+  const { errorMessage, setErrorMessage } = useAuth();
   const [error, setError] = useState(null);
   const [errorDel, setErrorDel] = useState(null);
   const [isDelModalOpen, setIsDelModalOpen] = useState(false);
@@ -116,12 +116,6 @@ function ChallengeDetail() {
     staleTime: 5 * 60 * 1000,
     enabled: !!challengeId,
     retry: false,
-    // onError: (error) => {
-    //   console.error("Challnege Detaill error: ", error);
-    //   if (error.response?.status === 401) {
-    //     setError({ message: "로그인이 필요한 서비스입니다.", onCancel: () => router.push("/login") });
-    //   }
-    // }
   });
   // console.log("ChallengeDetail challenge", challenge);
   // console.log("ChallengeDetail user", user);

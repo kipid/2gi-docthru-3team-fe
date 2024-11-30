@@ -16,8 +16,8 @@ export async function getChallengeWithId(id) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
-		throw err;
-		// return err?.response?.data || err;
+		// throw err;
+		return err?.response?.data || err;
 	}
 }
 
@@ -27,8 +27,8 @@ export async function getMyChallsOngoing(query) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
-		throw err;
-		// return err?.response?.data || err;
+		// throw err;
+		return err?.response?.data || err;
 	}
 }
 
@@ -38,8 +38,8 @@ export async function getMyChallsCompleted(query) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
-		throw err;
-		// return err?.response?.data || err;
+		// throw err;
+		return err?.response?.data || err;
 	}
 }
 
@@ -49,8 +49,8 @@ export async function getMyChallsApplied(query) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
-		throw err;
-		// return err?.response?.data || err;
+		// throw err;
+		return err?.response?.data || err;
 	}
 }
 

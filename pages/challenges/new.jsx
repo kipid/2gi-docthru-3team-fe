@@ -12,7 +12,7 @@ import useAuth from "@/utills/useAuth";
 
 function NewChallenge() {
   const router = useRouter();
-  const { errorMessgae, setErrorMessage } = useAuth();
+  const { errorMessage, setErrorMessage } = useAuth();
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
   const doctypes = ["Blog", "Document"];
 
@@ -44,7 +44,7 @@ function NewChallenge() {
 
   return (
     <div className={styles.Container}>
-      {errorMessgae && <PopUp onlyCancel={true} error={errorMessgae} setError={setErrorMessage} />}
+      {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2>신규 챌린지 신청</h2>
           <div>

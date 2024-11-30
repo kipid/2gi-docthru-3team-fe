@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Label from "./Label";
 import styles from "./Dropdown.module.css"
+import { FIELD, TYPE } from "@/apis/translate";
 
 const Dropdown = ({ id, label, options, placeholder, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,7 @@ const Dropdown = ({ id, label, options, placeholder, value, onChange }) => {
         <ul>
           {options.map((option, index) => (
             <li key={index} onClick={() => handleSelect(option)}>
-              {option}
+              {FIELD[option] || TYPE[option]}
             </li>
           ))}
         </ul>

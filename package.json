@@ -19,6 +19,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
     "react-quill": "^2.0.0",
+    "react-swipeable": "^7.0.2",
     "sanitize-html": "^2.13.1"
   },
   "devDependencies": {

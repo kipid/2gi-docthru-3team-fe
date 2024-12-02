@@ -197,6 +197,8 @@
   border-radius: var(--16px);
   background-color: var(--gray-800);
   margin: 1rem 0;
+  max-height: 400px;
+  overflow: auto;
 }
 
 .head0 {

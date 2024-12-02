@@ -4,6 +4,7 @@ import { getWorkById, toggleLike } from "@/apis/workService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
 import DelModal from "@/components/DelModal.jsx";
 import Loading from "@/components/Loading.jsx";
+import LoopSlider from "@/components/LoopSlider";
 import PopUp from "@/components/PopUp.jsx";
 import { useUser } from "@/context/UserProvider.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
@@ -220,9 +221,7 @@ function ChallengeDetail() {
       </main>
       <div className={styles.maxLikeWorksContainer}>
         {maxLikeWorks?.length > 1
-        ? <div className={styles.works}>
-            {maxLikeWorks.map(work => <WorkDetail work={work} viewport={viewport} key={work.id} />)}
-          </div>
+        ? <LoopSlider pages={maxLikeWorks} />
         : maxLikeWorks?.length === 1
         && <WorkDetail work={maxLikeWorks[0]} viewport={viewport} />}
       </div>

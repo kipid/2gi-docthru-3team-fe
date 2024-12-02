@@ -7,13 +7,14 @@ import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/editChallenge.module.css";
+import PopUp from "@/components/PopUp";
+import useAuth from "@/utills/useAuth";
 
 function updateChallenge() {
   const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
   const doctypes = ["Blog", "Document"];
-
   const router = useRouter();
-
+  const { errorMessage, setErrorMessage } = useAuth();
   const { handleSubmit, control, watch } = useForm({
     defaultValues: {
       title: "",
@@ -54,6 +55,7 @@ function updateChallenge() {
 
   return (
     <div className={styles.Container}>
+      {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>챌린지 수정</h1>
         <div>

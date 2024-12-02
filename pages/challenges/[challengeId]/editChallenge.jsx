@@ -14,8 +14,6 @@ function editChallenge() {
   const [initialData, setInitialData] = useState(null);
   const fields = ["Next", "API", "Career", "Modern", "Web"];
   const docTypes = ["Blog", "Document"];
-
-
   const router = useRouter();
   const { challengeId } = router.query;
 
@@ -72,12 +70,15 @@ function editChallenge() {
         return;
       }
       console.log("수정된 데이터:", updatedFields);
-      const result = await updateChallenge(challengeId, updatedFields);
-      router.push(`/`);
+
+      await updateChallenge(challengeId, updatedFields);
+
+      router.push(`/challenges/${challengeId}`);
     } catch (error) {
       console.error("챌린지 수정 중 오류:", error);
-    }
+    } 
   };
+
 
   const allFields = watch();
 

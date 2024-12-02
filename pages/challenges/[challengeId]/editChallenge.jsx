@@ -1,7 +1,7 @@
-import instance from "@/apis/instance";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
+import { getChallengeWithId, updateChallenge } from "@/apis/challengeService";
 import InputItem from "@/components/InputItem";
 import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
@@ -10,42 +10,61 @@ import styles from "@/styles/editChallenge.module.css";
 import PopUp from "@/components/PopUp";
 import useAuth from "@/utills/useAuth";
 
-function updateChallenge() {
-  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
-  const doctypes = ["Blog", "Document"];
+function editChallenge() {
+  const [initialData, setInitialData] = useState(null);
+  const fields = ["Next", "API", "Career", "Modern", "Web"];
+  const docTypes = ["Blog", "Document"];
+
+
   const router = useRouter();
+  const { challengeId } = router.query;
+
   const { errorMessage, setErrorMessage } = useAuth();
-  const { handleSubmit, control, watch } = useForm({
+  const { handleSubmit, control, watch, reset } = useForm({
     defaultValues: {
       title: "",
       docUrl: "",
       field: "",
-      type: "",
-      deadline: null,
+      docType: "",
+      deadLine: null,
       maxParticipants: "",
       description: "",
     },
   });
 
-  const updateChallenge = async (challengeid, data) => {
-    try {
-      const response = await instance.patch(`/challenges/${challengeid}`, data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("챌린지 수정 실패:", error);
-      throw error;
+  useEffect(() => {
+    if (challengeId) {
+      getChallengeWithId(challengeId)
+        .then((data) => {
+          console.log(data);
+          setInitialData(data);
+          reset(data);
+          
+        })
+        .catch((error) => {
+          console.error("데이터 불러오기 실패:", error);
+        });
     }
-  };
+  }, [challengeId, reset]);
+
+  
 
   const onSubmit = async (data) => {
     try {
-      const challengeId = router.query.id;
-      const result = await updateChallenge(challengeId, data);
-      router.push(`/challenges/${result.id}`);
+      if (!initialData) return;
+      const updatedFields = Object.keys(data).reduce((acc, key) => {
+        if (data[key] !== initialData[key]) {
+          acc[key] = data[key];
+        }
+        return acc;
+      }, {});
+      if (Object.keys(updatedFields).length === 0) {
+        alert("수정된 항목이 없습니다.");
+        return;
+      }
+      console.log("수정된 데이터:", updatedFields);
+      const result = await updateChallenge(challengeId, updatedFields);
+      router.push(`/challenges/${result.challengeId}`);
     } catch (error) {
       console.error("챌린지 수정 중 오류:", error);
     }
@@ -56,7 +75,7 @@ function updateChallenge() {
   return (
     <div className={styles.Container}>
       {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <h1>챌린지 수정</h1>
         <div>
           <Controller
@@ -100,13 +119,14 @@ function updateChallenge() {
           />
 
           <Controller
-            name="type"
+            name="docType"
             control={control}
             render={({ field }) => (
               <Dropdown
-                id="type"
+                id="docType"
                 label="문서 타입"
-                options={doctypes}
+                options={docTypes}
+                onChange={(e) => field.onChange(e.target.value)}
                 placeholder="문서 타입"
                 {...field}
               />
@@ -114,13 +134,12 @@ function updateChallenge() {
           />
 
           <Controller
-            name="deadline"
+            name="deadLine"
             control={control}
             render={({ field }) => (
               <CustomDatePicker
-                id="deadline"
+                id="deadLine"
                 label="마감일"
-                selected={field.value || null}
                 onChange={(date) => field.onChange(date)}
                 placeholder="YYYY/MM/DD"
                 {...field}
@@ -156,13 +175,13 @@ function updateChallenge() {
         </div>
         <button
           className={styles.button}
-          type="submit"
+          docType="submit"
           disabled={
             !allFields.title ||
             !allFields.docUrl ||
             !allFields.field ||
-            !allFields.type ||
-            !allFields.deadline ||
+            !allFields.docType ||
+            !allFields.deadLine ||
             !allFields.maxParticipants ||
             !allFields.description
           }
@@ -174,4 +193,4 @@ function updateChallenge() {
   );
 }
 
-export default updateChallenge;
+export default editChallenge;

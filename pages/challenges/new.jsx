@@ -13,7 +13,7 @@ import useAuth from "@/utills/useAuth";
 function NewChallenge() {
   const router = useRouter();
   const { errorMessage, setErrorMessage } = useAuth();
-  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
+  const fields = ["Next", "API", "Career", "Modern", "Web"];
   const doctypes = ["Blog", "Document"];
 
   const { handleSubmit, control, watch} = useForm({
@@ -45,7 +45,7 @@ function NewChallenge() {
   return (
     <div className={styles.Container}>
       {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <h2>신규 챌린지 신청</h2>
           <div>
             <Controller
@@ -109,7 +109,6 @@ function NewChallenge() {
                 <CustomDatePicker 
                     id="deadLine"
                     label="마감일"
-                    selected={field.value || null}
                     onChange={(date) => field.onChange(date)}
                     placeholder="YYYY/MM/DD"
                     {...field}

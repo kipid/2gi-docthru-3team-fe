@@ -36,7 +36,7 @@ const WorkDetail = () => {
     mutationFn: () => deleteWorkById(workId),
     onSuccess: () => {
       queryClient.invalidateQueries(["workDetail"]);
-      router.push("/challenges");
+      router.push("/");
     },
     onError: (error) => {
       console.error("삭제 처리 중 에러:", error);
@@ -87,8 +87,8 @@ const WorkDetail = () => {
   }
 
   const handleDelete = () => {
-    deleteMutation.mutate(data.id);
-    setIsMenuOpen(false);
+      deleteMutation.mutateAsync(data.id);
+      setIsMenuOpen(false);
   };
 
   const handleLikeClick = () => {

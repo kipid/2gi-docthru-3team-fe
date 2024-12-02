@@ -24,7 +24,7 @@
 }
 
 .container {
-    max-width: 55.625rem;
+    width: 100%;
 }
 
 .head {
@@ -99,4 +99,10 @@
     background: none;
     border: none;
     cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
   }

@@ -10,8 +10,3 @@
     font-family: inherit;
     resize: none;
 }
-
-.textareaContainer {
-    flex-shrink: 1;
-    width: 90%;
-}

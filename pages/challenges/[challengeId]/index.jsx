@@ -4,6 +4,7 @@ import { getWorkById, toggleLike } from "@/apis/workService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
 import DelModal from "@/components/DelModal.jsx";
 import Loading from "@/components/Loading.jsx";
+import LoopSlider from "@/components/LoopSlider";
 import PopUp from "@/components/PopUp.jsx";
 import useAuth from "@/utills/useAuth";
 import { useUser } from "@/context/UserProvider.jsx";
@@ -44,8 +45,11 @@ export function Work({ work, viewport }) {
         <span>{likeCount}</span>
       </div>
       <div className={styles.seeWork}>
-        <Link href={isAdmin ? `/work/${id}/edit` : `/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
+        <Link href={`/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
       </div>
+      {isAdmin && <div>
+        <Link href={`/work/${id}/edit`}>편집</Link>
+      </div>}
     </div>
   );
 }
@@ -233,9 +237,7 @@ function ChallengeDetail() {
       </main>
       <div className={styles.maxLikeWorksContainer}>
         {maxLikeWorks?.length > 1
-        ? <div className={styles.works}>
-            {maxLikeWorks.map(work => <WorkDetail work={work} viewport={viewport} key={work.id} />)}
-          </div>
+        ? <LoopSlider pages={maxLikeWorks} />
         : maxLikeWorks?.length === 1
         && <WorkDetail work={maxLikeWorks[0]} viewport={viewport} />}
       </div>

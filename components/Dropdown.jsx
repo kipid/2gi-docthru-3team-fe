@@ -20,7 +20,7 @@ const Dropdown = ({ id, label, options, placeholder, value, onChange }) => {
           id={id}
           type="text"
           readOnly
-          value={value || ""}
+          value={FIELD[value] || TYPE[value]}
           placeholder={placeholder}
           onClick={() => setIsOpen(!isOpen)}
         >

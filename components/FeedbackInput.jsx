@@ -29,7 +29,7 @@ const FeedbackForm = ({ workId }) => {
   return (
     <form onSubmit={handleSubmit} className={styles.feedbackForm}>
       <TextareaItem
-      id="feedback"
+        id="feedback"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="피드백을 남겨주세요"

@@ -52,7 +52,16 @@ function editChallenge() {
   const onSubmit = async (data) => {
     try {
       if (!initialData) return;
-      const updatedFields = Object.keys(data).reduce((acc, key) => {
+      const allowedFields = [
+        "title",
+        "docUrl",
+        "field",
+        "docType",
+        "deadLine",
+        "maxParticipants",
+        "description",
+      ];
+      const updatedFields = allowedFields.reduce((acc, key) => {
         if (data[key] !== initialData[key]) {
           acc[key] = data[key];
         }
@@ -64,7 +73,7 @@ function editChallenge() {
       }
       console.log("수정된 데이터:", updatedFields);
       const result = await updateChallenge(challengeId, updatedFields);
-      router.push(`/challenges/${result.challengeId}`);
+      router.push(`/`);
     } catch (error) {
       console.error("챌린지 수정 중 오류:", error);
     }

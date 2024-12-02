@@ -113,7 +113,7 @@ function ChallengeDetail() {
   const { challengeId } = router.query;
   const kebabRef = useRef();
   const queryClient = useQueryClient();
-  const { data: challenge, isPending, isError, error: queryError } = useQuery({
+  const { data: challenge, isPending, isError } = useQuery({
     queryKey: ["challenges", challengeId],
     queryFn: () => getChallengeWithId(challengeId),
     staleTime: 5 * 60 * 1000,

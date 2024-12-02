@@ -80,7 +80,6 @@ const WorkDetail = () => {
 
   const handleMenuToggle = () => {
     setIsMenuOpen((prev) => !prev);
-    console.log(!isMenuOpen);
   };
 
   const handleEdit = () => {

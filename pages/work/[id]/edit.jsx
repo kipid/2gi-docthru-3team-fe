@@ -154,7 +154,7 @@ function TextEditor() {
           hidden={!isIframeOpen}
         />
         <button className={styles.closeButton} onClick={() => setIsIframeOpen(false)}>
-          닫기
+          <X width={viewport.size} height={viewport.size} />
         </button>
         <button className={styles.newOpen} onClick={() => window.open(work?.challenge?.docUrl)}>
           링크 열기
@@ -169,7 +169,7 @@ function TextEditor() {
           placeholder="번역 시작하기..."
         />
       </div>
-      <button className={styles.openButton} onClick={() => setIsIframeOpen(true)}>원문</button>
+      <button className={styles.openButton} onClick={() => setIsIframeOpen(true)}><Image width={viewport.size} height={viewport.size} src="/images/ic_list.svg" alt="See original document" />원문</button>
       <PopUp error={error} setError={setError} />
       <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />
     </>

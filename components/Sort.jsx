@@ -1,5 +1,5 @@
 import styles from './Sort.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import toggle from '@/public/images/ic_toggle_down.png';
 import Image from 'next/image';
 
@@ -13,7 +13,7 @@ const sortOptions = [
   { label: '마감 기한 느린순', value: 'sort=desc,deadLine' },
 ];
 
-export default function Sort({ currentValue, onChange }) {
+const Sort = forwardRef(({ currentValue, onChange }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(currentValue, sortOptions[0].value);
   const selectedLabel = sortOptions.find((option) => option.value === selected)?.label || '';
@@ -24,8 +24,19 @@ export default function Sort({ currentValue, onChange }) {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const { target } = e;
+      if (isOpen && ref.current && !ref.current.contains(target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, ref]);
+
   return (
-    <div className={styles.sort}>
+    <div className={styles.sort} ref={ref}>
       <div className={styles.selected} onClick={() => setIsOpen((prev) => !prev)}>
         <p>
           {selectedLabel}
@@ -47,4 +58,6 @@ export default function Sort({ currentValue, onChange }) {
       )}
     </div>
   );
-}
+});
+
+export default Sort;

@@ -10,6 +10,8 @@ import Image from "next/image";
 import { useRouter } from 'next/router';
 import Modal from "@/components/Modal.jsx";
 import { useState } from "react";
+import PopUp from "@/components/PopUp";
+import useAuth from "@/utills/useAuth";
 
 function ManageApp() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +19,7 @@ function ManageApp() {
 	const viewport = useViewport();
 	const router = useRouter();
 	const { applicationId } = router.query;
+	const { errorMessage, setErrorMessage } = useAuth("Admin");
 
 	const queryClient = useQueryClient();
 
@@ -39,7 +42,6 @@ function ManageApp() {
 	})
 
 	if (isPending) return <Loading />;
-	if (isError) return <Error />;
 
 	const { id, challenge } = application;
 
@@ -54,6 +56,9 @@ function ManageApp() {
 	};
 
 	return (
+		<>
+		{errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
+		{application && challenge && (
 		<main className={styles.main}>
 			<div className={styles.challengeInfoContainer}>
 				<div className={styles.headContainer}>
@@ -121,6 +126,8 @@ function ManageApp() {
 				/>
 			)}
 		</main>
+		)}
+		</>
 	);
 }
 

@@ -9,6 +9,8 @@ import { getMyChallsOngoing } from "@/apis/challengeService.js";
 import Challenge from "@/components/Challenge.jsx";
 import Loading from "@/components/Loading.jsx";
 import Pagination from "@/components/Pagination";
+import useAuth from "@/utills/useAuth";
+import PopUp from "@/components/PopUp";
 
 const PAGE_SIZE = 5;
 
@@ -17,6 +19,7 @@ function Ongoing() {
 	const user = useUser();
 	const viewport = useViewport();
 	const [search, setSearch] = useState("");
+	const { errorMessage, setErrorMessage } = useAuth();
 	const [query, setQuery] = useState({
 		page,
 		limit: 5,
@@ -27,13 +30,12 @@ function Ongoing() {
 		staleTime: 5 * 60 * 1000,
 	});
 	console.log("Ongoing challenges", challenges);
-
-	if (isPending) {
-		return <Loading />;
-	}
+  
+	if (isPending) return <Loading />;
 
 	return (
 		<main className={styles.main}>
+			{errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
 			<MyChallHeader progress="ongoing" />
 			<div className={styles.search}>
 				<input type="text" placeholder="챌린지 이름을 검색해보세요." value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={(e) => {

@@ -121,6 +121,7 @@
   justify-content: space-between;
   padding: 1rem 2rem;
   width: 100%;
+  min-width: 343px;
   height: 48px;
   background-color: var(--prime-yellow);
   border: none;

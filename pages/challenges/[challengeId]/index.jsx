@@ -4,7 +4,9 @@ import { getWorkById, toggleLike } from "@/apis/workService.js";
 import { Field, Type } from "@/components/Challenge.jsx";
 import DelModal from "@/components/DelModal.jsx";
 import Loading from "@/components/Loading.jsx";
+import LoopSlider from "@/components/LoopSlider";
 import PopUp from "@/components/PopUp.jsx";
+import useAuth from "@/utills/useAuth";
 import { useUser } from "@/context/UserProvider.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import { SANITIZE_OPTIONS } from "@/pages/work/[id]/edit.jsx";
@@ -14,7 +16,7 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import sanitizeHtml from 'sanitize-html';
 
 function padNumber(number) {
@@ -43,8 +45,11 @@ export function Work({ work, viewport }) {
         <span>{likeCount}</span>
       </div>
       <div className={styles.seeWork}>
-        <Link href={isAdmin ? `/work/${id}/edit` : `/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
+        <Link href={`/work/${id}/workdetail`}>작업물 보기 &gt;</Link>
       </div>
+      {isAdmin && <div>
+        <Link href={`/work/${id}/edit`}>편집</Link>
+      </div>}
     </div>
   );
 }
@@ -97,6 +102,7 @@ export function WorkDetail({ work, viewport }) {
 
 function ChallengeDetail() {
   const user = useUser();
+  const { errorMessage, setErrorMessage } = useAuth();
   const [error, setError] = useState(null);
   const [errorDel, setErrorDel] = useState(null);
   const [isDelModalOpen, setIsDelModalOpen] = useState(false);
@@ -109,12 +115,14 @@ function ChallengeDetail() {
   const viewport = useViewport();
   const router = useRouter();
   const { challengeId } = router.query;
+  const kebabRef = useRef();
   const queryClient = useQueryClient();
   const { data: challenge, isPending, isError } = useQuery({
     queryKey: ["challenges", challengeId],
     queryFn: () => getChallengeWithId(challengeId),
     staleTime: 5 * 60 * 1000,
     enabled: !!challengeId,
+    retry: false,
   });
   // console.log("ChallengeDetail challenge", challenge);
   // console.log("ChallengeDetail user", user);
@@ -150,6 +158,16 @@ function ChallengeDetail() {
 
     updateData();
   }, [challenge]);
+  
+  useEffect(() => {
+    const outSideClick = (e) => {
+      const { target } = e;
+      if (isKebabOpen && kebabRef.current && !kebabRef.current.contains(target)) {
+        setIsKebabOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", outSideClick);
+  }, [isKebabOpen]);
 
   if (isPending) return <Loading />;
   if (!maxLikeWorks) return <Loading />;
@@ -157,21 +175,23 @@ function ChallengeDetail() {
 
   return (
     <>
+    {!errorMessage ? (
+    <>
       <main className={styles.main}>
         <div className={styles.challengeInfoContainer}>
           <div className={styles.headContainer}>
             <div className={styles.head}>
-              <h1>{challenge.title}</h1>
+              <h1>{challenge?.title}</h1>
               <div className={styles.subHead}>
-                <Field field={challenge.field} />
-                <Type type={challenge.docType} />
+                <Field field={challenge?.field} />
+                <Type type={challenge?.docType} />
               </div>
             </div>
-            {(isAdmin || user?.id === challenge?.applications?.user?.id) && <div className={styles.kebabMenu}>
+            {(isAdmin || user?.id === challenge?.applications?.user?.id) && <div ref={kebabRef} className={styles.kebabMenu}>
               <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_kebab_menu.png" alt="Kebab menu" onClick={() => setIsKebabOpen(prev => !prev)} />
               {isKebabOpen && <div className={styles.kebabMenuItems}>
                 <div className={styles.kebabMenuItem} onClick={() => router.push(`/challenges/${challengeId}/editChallenge`)}>수정하기</div>
-                <div className={styles.kebabMenuItem} onClick={() => {
+                {isAdmin && <div className={styles.kebabMenuItem} onClick={() => {
                   if (isAdmin) {
                     setIsDelModalOpen(true);
                     setErrorDel({ onClose: () => {
@@ -182,13 +202,13 @@ function ChallengeDetail() {
                   } else {
                     setError({ message: "승인된 챌린지는 관리자만 삭제 가능합니다." });
                   }
-                }}>삭제하기</div>
+                }}>삭제하기</div>}
               </div>}
               {isDelModalOpen && <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />}
             </div>}
           </div>
           <div className={styles.content}>
-            <div className={styles.description}>{challenge.description}</div>
+            <div className={styles.description}>{challenge?.description}</div>
             <div className={styles.writerContainer}>
               <Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_profile.png" alt="Profile" />
               <span>{challenge?.applications?.user.nickname}</span>
@@ -197,11 +217,11 @@ function ChallengeDetail() {
         </div>
         <div className={styles.buttonContainer}>
           <div className={styles.challengeDateAndParti}>
-            <div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" />{moment(new Date(challenge.deadLine)).format("YYYY년 M월 D일 마감")}</div>
-            <div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" />{challenge.participants}/{challenge.maxParticipants}</div>
+            <div className={styles.challengeDeadLine}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_alarm.svg" alt="Alarm" />{moment(new Date(challenge?.deadLine)).format("YYYY년 M월 D일 마감")}</div>
+            <div className={styles.challengeParticipants}><Image width={1.5 * viewport.size} height={1.5 * viewport.size} src="/images/ic_participants.svg" alt="Alarm" />{challenge?.participants}/{challenge?.maxParticipants}</div>
           </div>
           <div className={styles.buttons}>
-            <button className={`${styles.button} ${styles.seeOriginal}`} type="button" onClick={() => window.open(challenge.docUrl)}>원문 보기</button>
+            <button className={`${styles.button} ${styles.seeOriginal}`} type="button" onClick={() => window.open(challenge?.docUrl)}>원문 보기</button>
             <button className={styles.button} type="button" onClick={async () => {
               const { workId, message } = await doChallenge(challengeId);
               setError({ message, onClose:() => {
@@ -210,16 +230,14 @@ function ChallengeDetail() {
                   router.push(`/work/${workId}/edit`);
                 }
               } })
-            }} disabled={new Date(challenge.deadLine).getTime() < Date.now()}>작업 도전하기</button>
+            }} disabled={new Date(challenge?.deadLine).getTime() < Date.now()}>작업 도전하기</button>
             {/* {challenge.participants >= challenge.maxParticipants ||} */}
           </div>
         </div>
       </main>
       <div className={styles.maxLikeWorksContainer}>
         {maxLikeWorks?.length > 1
-        ? <div className={styles.works}>
-            {maxLikeWorks.map(work => <WorkDetail work={work} viewport={viewport} key={work.id} />)}
-          </div>
+        ? <LoopSlider pages={maxLikeWorks} />
         : maxLikeWorks?.length === 1
         && <WorkDetail work={maxLikeWorks[0]} viewport={viewport} />}
       </div>
@@ -239,6 +257,11 @@ function ChallengeDetail() {
         : <div className={styles.noWorks}>아직 참여한 도전자가 없어요.<br />지금 바로 도전해보세요!</div>}
       </div>
       <PopUp error={error} setError={setError} />
+      </>
+    ) : (
+      <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />
+      // <PopUp onlyCancel={true} error={{ message: "권한이 없습니다." , onCancel: () => router.push('/login')}} setError={setError} />
+    )}
     </>
   );
 }

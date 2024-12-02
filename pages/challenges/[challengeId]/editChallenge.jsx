@@ -1,20 +1,24 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
+import { getChallengeWithId, updateChallenge } from "@/apis/challengeService";
 import InputItem from "@/components/InputItem";
 import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/editChallenge.module.css";
-import { getChallengeWithId, updateChallenge } from "@/apis/challengeService";
+import PopUp from "@/components/PopUp";
+import useAuth from "@/utills/useAuth";
 
 function editChallenge() {
-  const fields = ["Next", "API", "Career", "Modern", "Web"];
+  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
   const docTypes = ["Blog", "Document"];
+
 
   const router = useRouter();
   const { challengeId } = router.query;
 
+  const { errorMessage, setErrorMessage } = useAuth();
   const { handleSubmit, control, watch, reset } = useForm({
     defaultValues: {
       title: "",
@@ -57,7 +61,8 @@ function editChallenge() {
 
   return (
     <div className={styles.Container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <h1>챌린지 수정</h1>
         <div>
           <Controller
@@ -94,7 +99,6 @@ function editChallenge() {
                 id="field"
                 label="카테고리"
                 options={fields}
-                value={field.value}
                 placeholder="카테고리"
                 {...field}
               />
@@ -109,7 +113,6 @@ function editChallenge() {
                 id="docType"
                 label="문서 타입"
                 options={docTypes}
-                value={field.value}
                 onChange={(e) => field.onChange(e.target.value)}
                 placeholder="문서 타입"
                 {...field}

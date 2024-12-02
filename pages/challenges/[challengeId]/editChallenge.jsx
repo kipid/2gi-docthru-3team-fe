@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
 import { getChallengeWithId, updateChallenge } from "@/apis/challengeService";
@@ -11,6 +11,7 @@ import PopUp from "@/components/PopUp";
 import useAuth from "@/utills/useAuth";
 
 function editChallenge() {
+  const [initialData, setInitialData] = useState(null);
   const fields = ["Next", "API", "Career", "Modern", "Web"];
   const docTypes = ["Blog", "Document"];
 
@@ -36,6 +37,7 @@ function editChallenge() {
       getChallengeWithId(challengeId)
         .then((data) => {
           console.log(data);
+          setInitialData(data);
           reset(data);
           
         })
@@ -49,8 +51,19 @@ function editChallenge() {
 
   const onSubmit = async (data) => {
     try {
-      console.log("보내는 데이터:", data);
-      const result = await updateChallenge(challengeId, data);
+      if (!initialData) return;
+      const updatedFields = Object.keys(data).reduce((acc, key) => {
+        if (data[key] !== initialData[key]) {
+          acc[key] = data[key];
+        }
+        return acc;
+      }, {});
+      if (Object.keys(updatedFields).length === 0) {
+        alert("수정된 항목이 없습니다.");
+        return;
+      }
+      console.log("수정된 데이터:", updatedFields);
+      const result = await updateChallenge(challengeId, updatedFields);
       router.push(`/challenges/${result.challengeId}`);
     } catch (error) {
       console.error("챌린지 수정 중 오류:", error);
@@ -127,7 +140,6 @@ function editChallenge() {
               <CustomDatePicker
                 id="deadLine"
                 label="마감일"
-                selected={field.value ? new Date(field.value) : null}
                 onChange={(date) => field.onChange(date)}
                 placeholder="YYYY/MM/DD"
                 {...field}

@@ -11,3 +11,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvb
 
 GEt http://localhost:3100/api/challenges/15
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzMzMTA1MDA4LCJleHAiOjE3MzMxMDg2MDh9.zO7LxKyXLAlyAc0sQ_1cFxFPdSF8WSczVStUZ8qmlfw
+
+
+###
+
+PATCH http://localhost:3100/api/challenges/15
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzMzMTE2MTA1LCJleHAiOjE3MzMxMTk3MDV9.pbJuWtZHSlq74U9tc37bNY2VZCvCl4s2VfRXHgoaNfE

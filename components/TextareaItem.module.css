@@ -11,5 +11,6 @@
 }
 
 .container {
-    width: 100%
+    width: 90%;
+    flex-shrink: 1;
 }

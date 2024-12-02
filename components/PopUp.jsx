@@ -9,12 +9,12 @@ function PopUp({ error, setError, onlyCancel=false }) {
 				</div>
 				<div className={styles.buttons}>
 					{!onlyCancel && (<button id="popup-button-ok" className={styles.popup_button_ok} onClick={() => {
-						setError(null);
 						error?.onClose?.();
+						setError(null);
 					}}>확인</button>)}
 					<button id="popup-button-cancel" className={styles.popup_button_cancel} onClick={() => {
-						setError(null);
 						error?.onCancel?.();
+						setError(null);
 					}}>닫기</button>
 				</div>
 			</div>

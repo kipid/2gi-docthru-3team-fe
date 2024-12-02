@@ -14,6 +14,7 @@ import { deleteWorkById, getWorkById, patchWorkById } from '@/apis/workService.j
 import PopUp from '@/components/PopUp.jsx';
 import { useUser } from '@/context/UserProvider.jsx';
 import DelModal from '@/components/DelModal';
+import useAuth from '@/utills/useAuth';
 
 const MODULES = {
   toolbar: [
@@ -46,6 +47,7 @@ function TextEditor() {
   const [reasonDel, setReasonDel] = useState("");
   const user = useUser();
   const router = useRouter();
+  const { errorMessage, setErrorMessage } = useAuth();
   const viewport = useViewport();
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [hasDraft, setHasDraft] = useState(false);
@@ -91,6 +93,7 @@ function TextEditor() {
 
   return (
     <>
+    {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
       <div className={styles.head}>
         <h1>{work?.challenge?.title}</h1>
         <div className={styles.buttons}>

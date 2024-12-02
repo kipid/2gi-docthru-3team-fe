@@ -5,15 +5,20 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyChallsApplied } from "@/apis/challengeService.js";
 import Table from "@/components/Table.jsx";
 import Pagination from "@/components/Pagination.jsx";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Loading from "@/components/Loading.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import Image from "next/image";
+import useAuth from "@/utills/useAuth";
+import PopUp from "@/components/PopUp";
+import Sort from "@/components/Sort";
 
 function Applied() {
 	const viewport = useViewport();
 	const [search, setSearch] = useState("");
-	const [sort, setSort] = useState("");
+	const [currentSort, setCurrentSort] = useState("status=Waiting");
+	const { errorMessage, setErrorMessage } = useAuth();
+	const sortRef = useRef();
 	const [query, setQuery] = useState({
 		page: 1,
 		limit: 10
@@ -26,13 +31,22 @@ function Applied() {
 		staleTime: 5 * 60 * 1000,
 	});
 	console.log("Applied applications", applications);
+  
+	if (isPending) return <Loading />;
 
-	if (isPending) {
-		return <Loading />;
-	}
+	console.log(search);
+
+	const handleSortChange = (e) => {
+		setPage(1);
+		setCurrentSort(e.target.value);
+		const [key, value] = e.target.value.split('=');
+		const [sort, order] = value.split(",");
+		setQuery(prev => ({ ...prev, status: undefined, sort: undefined, page, [key]: sort, order }));
+	  }
 
 	return (
 		<main className={styles.main}>
+			{errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
 			<MyChallHeader progress="applied" />
 			<div className={styles.searchAndSort}>
 				<div className={styles.search}>
@@ -49,7 +63,8 @@ function Applied() {
 					}} />
 				</div>
 				<div className={styles.sort}>
-					<select value={sort} onChange={(e) => {
+					<Sort ref={sortRef} currentValue={currentSort} onChange={handleSortChange}/>
+					{/* <select value={sort} onChange={(e) => {
 						setSort(e.target.value);
 						setPage(1);
 						const [key, value] = e.target.value.split('=');
@@ -63,7 +78,7 @@ function Applied() {
 						<option value="sort=desc,appliedAt">신청 시간 느린순</option>
 						<option value="sort=asc,deadLine">마감 기한 빠른순</option>
 						<option value="sort=desc,deadLine">마감 기한 느린순</option>
-					</select>
+					</select> */}
 				</div>
 			</div>
 			<Table applications={applications?.list} me={true} />

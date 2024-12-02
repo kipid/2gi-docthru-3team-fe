@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSetUser } from '@/context/UserProvider';
+import Loading from '@/components/Loading';
 
 export default function GoogleCallback() {
   const router = useRouter();
@@ -10,7 +11,6 @@ export default function GoogleCallback() {
     const handleGoogleLogin = async () => {
       // URL에서 쿼리 파라미터 추출
       const query = new URLSearchParams(window.location.search);
-      // console.log(query.toString());
       const accessToken = query.get('accessToken');
       const refreshToken = query.get('refreshToken');
       const user = query.get('user');
@@ -33,12 +33,12 @@ export default function GoogleCallback() {
         }
       } else {
         console.error('구글 로그인 실패: 데이터가 없습니다.');
-        router.push('/login'); // 로그인 페이지로 리다이렉트
+        router.push('/login'); 
       }
     };
 
     handleGoogleLogin();
   }, [router, setUser]);
 
-  return <p>구글 로그인 처리 중...</p>;
+  return <Loading />;
 }

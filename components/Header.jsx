@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from './Header.module.css';
 import { useSetUser, useUser } from "@/context/UserProvider.jsx";
 import { useRouter } from 'next/router';
@@ -16,6 +16,26 @@ const Header = () => {
   const [isNotiOpen, setIsNotiOpen] = useState(false);
   const [isUserDDOpen, setIsUserDDOpen] = useState(false);
   const currentPath = router.pathname;
+  const dropdownRef = useRef();
+  const notiRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const { target } = e;
+      if (isUserDDOpen && dropdownRef.current && !dropdownRef.current.contains(target)) {
+        setIsUserDDOpen(false);
+      }
+      if (isNotiOpen && notiRef.current && !notiRef.current.contains(target)) {
+        setIsNotiOpen(false);
+      }
+    };
+    const handleRouterChange = () => {
+      setIsUserDDOpen(false);
+      setIsNotiOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    router.events.on("routeChangeStart", handleRouterChange);
+  }, [isUserDDOpen, isNotiOpen, router.events]);
 
 	return (
 	<nav className={styles.navbar}>
@@ -35,14 +55,14 @@ const Header = () => {
           </button>
         ) : (
           <>
-            <div className={styles.notiContainer}>
+            <div ref={notiRef} className={styles.notiContainer}>
               <Image width={24} height={24} src="/images/ic_noti.png" alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
               {isNotiOpen && <div className={styles.notiDropDown}>
                 <h3>알림</h3>
                 {/* TODO: notifications.map... */}
               </div>}
             </div>
-            <div className={styles.userContainer}>
+            <div className={styles.userContainer} ref={dropdownRef} >
                 <Image width={32} height={32} src="/images/ic_profile.png" className={styles.userButton} alt="Profile" onClick={() => setIsUserDDOpen(prev => !prev)} />
               {isUserDDOpen && <div className={styles.userDropDown}>
                 <div className={styles.user}>
@@ -57,6 +77,7 @@ const Header = () => {
                 <button className={styles.userDropDownItem} onClick={() => {
                   setUser(null);
                   localStorage.removeItem("user");
+                  router.push("/");
                 }}>로그아웃</button>
               </div>}
             </div>

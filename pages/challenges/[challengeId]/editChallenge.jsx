@@ -11,7 +11,7 @@ import PopUp from "@/components/PopUp";
 import useAuth from "@/utills/useAuth";
 
 function editChallenge() {
-  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
+  const fields = ["Next", "API", "Career", "Modern", "Web"];
   const docTypes = ["Blog", "Document"];
 
 

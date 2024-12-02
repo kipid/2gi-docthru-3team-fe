@@ -13,7 +13,7 @@ import useAuth from "@/utills/useAuth";
 function NewChallenge() {
   const router = useRouter();
   const { errorMessage, setErrorMessage } = useAuth();
-  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
+  const fields = ["Next", "API", "Career", "Modern", "Web"];
   const doctypes = ["Blog", "Document"];
 
   const { handleSubmit, control, watch} = useForm({

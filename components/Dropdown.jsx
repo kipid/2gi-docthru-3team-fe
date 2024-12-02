@@ -20,7 +20,7 @@ const Dropdown = ({ id, label, options, placeholder, value, onChange }) => {
           id={id}
           type="text"
           readOnly
-          value={value || ""}
+          value={FIELD?.[value] || TYPE?.[value] || ""}
           placeholder={placeholder}
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -31,7 +31,7 @@ const Dropdown = ({ id, label, options, placeholder, value, onChange }) => {
         <ul>
           {options.map((option, index) => (
             <li key={index} onClick={() => handleSelect(option)}>
-              {FIELD[option] || TYPE[option]}
+              {FIELD?.[option] || TYPE?.[option]}
             </li>
           ))}
         </ul>

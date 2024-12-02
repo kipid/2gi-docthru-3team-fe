@@ -1,50 +1,53 @@
-import instance from "@/apis/instance";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import InputItem from "@/components/InputItem";
 import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/editChallenge.module.css";
+import { getChallengeWithId, updateChallenge } from "@/apis/challengeService";
 
-function updateChallenge() {
-  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
-  const doctypes = ["Blog", "Document"];
+function editChallenge() {
+  const fields = ["Next", "API", "Career", "Modern", "Web"];
+  const docTypes = ["Blog", "Document"];
 
   const router = useRouter();
+  const { challengeId } = router.query;
 
-  const { handleSubmit, control, watch } = useForm({
+  const { handleSubmit, control, watch, reset } = useForm({
     defaultValues: {
       title: "",
       docUrl: "",
       field: "",
-      type: "",
-      deadline: null,
+      docType: "",
+      deadLine: null,
       maxParticipants: "",
       description: "",
     },
   });
 
-  const updateChallenge = async (challengeid, data) => {
-    try {
-      const response = await instance.patch(`/challenges/${challengeid}`, data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("챌린지 수정 실패:", error);
-      throw error;
+  useEffect(() => {
+    if (challengeId) {
+      getChallengeWithId(challengeId)
+        .then((data) => {
+          console.log(data);
+          reset(data);
+          
+        })
+        .catch((error) => {
+          console.error("데이터 불러오기 실패:", error);
+        });
     }
-  };
+  }, [challengeId, reset]);
+
+  
 
   const onSubmit = async (data) => {
     try {
-      const challengeId = router.query.id;
+      console.log("보내는 데이터:", data);
       const result = await updateChallenge(challengeId, data);
-      router.push(`/challenges/${result.id}`);
+      router.push(`/challenges/${result.challengeId}`);
     } catch (error) {
       console.error("챌린지 수정 중 오류:", error);
     }
@@ -91,6 +94,7 @@ function updateChallenge() {
                 id="field"
                 label="카테고리"
                 options={fields}
+                value={field.value}
                 placeholder="카테고리"
                 {...field}
               />
@@ -98,13 +102,15 @@ function updateChallenge() {
           />
 
           <Controller
-            name="type"
+            name="docType"
             control={control}
             render={({ field }) => (
               <Dropdown
-                id="type"
+                id="docType"
                 label="문서 타입"
-                options={doctypes}
+                options={docTypes}
+                value={field.value}
+                onChange={(e) => field.onChange(e.target.value)}
                 placeholder="문서 타입"
                 {...field}
               />
@@ -112,13 +118,13 @@ function updateChallenge() {
           />
 
           <Controller
-            name="deadline"
+            name="deadLine"
             control={control}
             render={({ field }) => (
               <CustomDatePicker
-                id="deadline"
+                id="deadLine"
                 label="마감일"
-                selected={field.value || null}
+                selected={field.value ? new Date(field.value) : null}
                 onChange={(date) => field.onChange(date)}
                 placeholder="YYYY/MM/DD"
                 {...field}
@@ -154,13 +160,13 @@ function updateChallenge() {
         </div>
         <button
           className={styles.button}
-          type="submit"
+          docType="submit"
           disabled={
             !allFields.title ||
             !allFields.docUrl ||
             !allFields.field ||
-            !allFields.type ||
-            !allFields.deadline ||
+            !allFields.docType ||
+            !allFields.deadLine ||
             !allFields.maxParticipants ||
             !allFields.description
           }
@@ -172,4 +178,4 @@ function updateChallenge() {
   );
 }
 
-export default updateChallenge;
+export default editChallenge;

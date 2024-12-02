@@ -7,3 +7,7 @@ GET http://localhost:3100/api/works/1/feedbacks
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzMyODY4NDMwLCJleHAiOjE3MzI4NzIwMzB9.bWYZ3VaJXipkHL8qKE3f9u2Az2sedJoZSdBEdcWQ47E
 
 
+###
+
+GEt http://localhost:3100/api/challenges/15
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzMzMTA1MDA4LCJleHAiOjE3MzMxMDg2MDh9.zO7LxKyXLAlyAc0sQ_1cFxFPdSF8WSczVStUZ8qmlfw

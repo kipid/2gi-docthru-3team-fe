@@ -58,6 +58,8 @@
     background-color: var(--brand-white);
     border-radius: var(--8px);
     z-index: 1000;
+    max-height: 30rem;
+    overflow: auto;
 
     & h3 {
       font-size: var(--16px);

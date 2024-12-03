@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from './Header.module.css';
 import { useSetUser, useUser } from "@/context/UserProvider.jsx";
 import { useRouter } from 'next/router';
@@ -6,19 +6,59 @@ import Image from "next/image";
 import Link from "next/link";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import { GRADE } from "@/apis/translate.js";
+import Notis from "@/components/notis.jsx";
+import { useQuery } from "@tanstack/react-query";
+import { getNotis } from "@/apis/notisService.js";
 
 const Header = () => {
   const viewport = useViewport();
   const user = useUser();
-  const isAdmin = user?.role === "Admin";
   const setUser = useSetUser();
+  const isAdmin = user?.role === "Admin";
   const router = useRouter();
   const [isNotiOpen, setIsNotiOpen] = useState(false);
   const [isUserDDOpen, setIsUserDDOpen] = useState(false);
   const currentPath = router.pathname;
+  const dropdownRef = useRef();
+  const notiRef = useRef();
+  const [gotNotis, setGotNotis] = useState(false);
+  const { data: notis, isPending, isError } = useQuery({
+    queryKey: ["gotNotis", user?.id],
+    queryFn: () => getNotis({ page: 1, limit: 1, is_read: false }),
+    enabled: user?.id !== undefined,
+  });
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const { target } = e;
+      if (isUserDDOpen && dropdownRef.current && !dropdownRef.current.contains(target)) {
+        setIsUserDDOpen(false);
+      }
+      if (isNotiOpen && notiRef.current && !notiRef.current.contains(target)) {
+        setIsNotiOpen(false);
+      }
+    };
+    const handleRouterChange = () => {
+      setIsUserDDOpen(false);
+      setIsNotiOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    router.events.on("routeChangeStart", handleRouterChange);
+  }, [isUserDDOpen, isNotiOpen, router.events]);
+
+  useEffect(() => {
+    if (notis?.user) {
+      setUser(notis.user);
+    }
+    if (notis?.notifications?.totalCount > 0) {
+      setGotNotis(true);
+    } else {
+      setGotNotis(false);
+    }
+  }, [notis]);
 
 	return (
-	<nav className={styles.navbar}>
+	  <nav className={styles.navbar}>
       <div className={styles.left}>
         <Link href="/"><Image width={120} height={27} src="/images/img_logo.png" alt="Logo" className={styles.logo} priority /></Link>
         {user?.role === "Admin" && (
@@ -35,14 +75,14 @@ const Header = () => {
           </button>
         ) : (
           <>
-            <div className={styles.notiContainer}>
-              <Image width={24} height={24} src="/images/ic_noti.png" alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
+            <div ref={notiRef} className={styles.notiContainer}>
+                <Image width={24} height={24} src={gotNotis ? `/images/ic_noti.png` : `/images/ic_noti_empty.png`} alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
               {isNotiOpen && <div className={styles.notiDropDown}>
                 <h3>알림</h3>
-                {/* TODO: notifications.map... */}
+                <Notis />
               </div>}
             </div>
-            <div className={styles.userContainer}>
+            <div className={styles.userContainer} ref={dropdownRef} >
                 <Image width={32} height={32} src="/images/ic_profile.png" className={styles.userButton} alt="Profile" onClick={() => setIsUserDDOpen(prev => !prev)} />
               {isUserDDOpen && <div className={styles.userDropDown}>
                 <div className={styles.user}>
@@ -57,6 +97,7 @@ const Header = () => {
                 <button className={styles.userDropDownItem} onClick={() => {
                   setUser(null);
                   localStorage.removeItem("user");
+                  router.push("/");
                 }}>로그아웃</button>
               </div>}
             </div>

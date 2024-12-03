@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import PopUp from './PopUp';
 import { useSetUser } from '@/context/UserProvider';
 import google from '@/public/images/google.webp';
+import kakao from '@/public/images/kakao.png';
 
 function LoginForm() {
   const router = useRouter();
@@ -95,12 +96,24 @@ function LoginForm() {
         <button type="submit" className={styles.loginButton}>
           로그인
         </button>
-        <button className={styles.googleLogin} onClick={() => {
-          window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`;
-        }} >
-          <p>구글 로그인</p>
-          <Image width={24} height={24} src={google} alt="구글 로그인" className={styles.google} priority />
-        </button>
+        <div className={styles.socialLogin}>
+          <p>소셜 로그인</p>
+          <div className={styles.loginBtn}>
+            <Image 
+              src={google} 
+              alt="구글 로그인" 
+              className={styles.googleLogin} 
+              priority 
+              onClick={() => { window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google` }}
+            />
+            <Image
+              src={kakao}
+              alt="카카오 로그인"
+              className={styles.kakaoLogin}
+              onClick={() => {window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/kakao`}}
+            />
+          </div>
+        </div>
         <div className={styles.signupLink}>
           회원이 아니신가요?
           <Link href="/signup" style={{ color: '#262626', style: 'solid', textDecorationLine: 'underline' }}>

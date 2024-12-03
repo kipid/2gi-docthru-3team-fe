@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ic_kebab from '@/public/images/ic_kebab_menu.png';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useUser } from '@/context/UserProvider';
 import Modal from '@/components/Modal.jsx';
 import { deleteChallenge } from '@/apis/challengeService';
@@ -25,6 +25,7 @@ function Challenge({ challenge, status }) {
   const viewport = useViewport();
   const router = useRouter();
   const user = useUser();
+  const kebabRef = useRef();
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invalidMessage, setInvalidMessage] = useState('');
@@ -41,12 +42,21 @@ function Challenge({ challenge, status }) {
     },
   });
 
+  useEffect(() => {
+    const handleClickOutside = e => {
+      if (kebabRef.current && !kebabRef.current.contains(e.target)) {
+        setIsKebabOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+  }, [isKebabOpen]);
+
   const toggleMenu = () => {
     setIsKebabOpen(!isKebabOpen);
   };
 
   const handleEdit = () => {
-    router.push(`/challenges/${challenge.id}/edit`);
+    router.push(`/challenges/${challenge.id}/editChallenge`);
   };
 
   const handleDelete = () => {
@@ -71,14 +81,14 @@ function Challenge({ challenge, status }) {
             <span>모집이 완료된 상태에요.</span>
           </div>
         )}
-        <Link href={`/challenges/${challengeId}`}>
-          <h2 className={styles.challengeTitle}>{title}</h2>
-        </Link>
+        <h2 className={styles.challengeTitle}>
+          <Link href={`/challenges/${challengeId}`}>{title}</Link>
+        </h2>
         {(user?.id === challenge?.applications?.userId || user?.role === 'Admin') && (
           <Image className={styles.kebab} src={ic_kebab} alt="Kebab menu" onClick={toggleMenu} />
         )}
         {isKebabOpen && (
-          <div className={styles.kebabMenu}>
+          <div ref={kebabRef} className={styles.kebabMenu}>
             <button type="button" onClick={handleEdit}>
               수정하기
             </button>

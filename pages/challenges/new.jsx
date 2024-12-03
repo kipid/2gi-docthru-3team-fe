@@ -7,12 +7,14 @@ import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/new.module.css"
 import instance from "@/apis/instance";
 import { useRouter } from "next/router"
+import PopUp from "@/components/PopUp";
+import useAuth from "@/utills/useAuth";
 
 function NewChallenge() {
   const router = useRouter();
-  const fields = ["Next.js", "API", "Career", "Modern JS", "Web"];
+  const { errorMessage, setErrorMessage } = useAuth();
+  const fields = ["Next", "API", "Career", "Modern", "Web"];
   const doctypes = ["Blog", "Document"];
-
 
   const { handleSubmit, control, watch} = useForm({
     defaultValues: {
@@ -42,7 +44,8 @@ function NewChallenge() {
 
   return (
     <div className={styles.Container}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+      {errorMessage && <PopUp onlyCancel={true} error={errorMessage} setError={setErrorMessage} />}
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <h2>신규 챌린지 신청</h2>
           <div>
             <Controller
@@ -106,7 +109,6 @@ function NewChallenge() {
                 <CustomDatePicker 
                     id="deadLine"
                     label="마감일"
-                    selected={field.value || null}
                     onChange={(date) => field.onChange(date)}
                     placeholder="YYYY/MM/DD"
                     {...field}

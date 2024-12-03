@@ -115,12 +115,13 @@
   gap: 8px;
 }
 
-.googleLogin {
+.socialLogin {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
   width: 100%;
+  min-width: 343px;
   height: 48px;
   background-color: var(--prime-yellow);
   border: none;
@@ -134,9 +135,16 @@
   }
 }
 
-.google {
+.loginBtn {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.googleLogin,
+.kakaoLogin {
   width: 24px;
   height: 24px;
+  cursor: pointer;
 }
 
 /***** Mobile *****/

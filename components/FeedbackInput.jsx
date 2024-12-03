@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import instance from "@/apis/instance";
+import { postFeedback } from "@/apis/feedbackService";
 import styles from "./FeedbackInput.module.css";
 import inactiveImage from "@/public/images/ic_inactivedown.png";
 import activeImage from "@/public/images/ic_activedown.png";
 import TextareaItem from "./TextareaItem";
 import Image from "next/image";
-
-
-const postFeedback = async ({ workId, content }) => {
-  const { data } = await instance.post(`/works/${workId}/feedbacks`, { content });
-  return data;
-};
 
 const FeedbackForm = ({ workId }) => {
   const [content, setContent] = useState("");
@@ -35,7 +29,7 @@ const FeedbackForm = ({ workId }) => {
   return (
     <form onSubmit={handleSubmit} className={styles.feedbackForm}>
       <TextareaItem
-      id="feedback"
+        id="feedback"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="피드백을 남겨주세요"

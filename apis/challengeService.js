@@ -16,6 +16,7 @@ export async function getChallengeWithId(id) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
+		// throw err;
 		return err?.response?.data || err;
 	}
 }
@@ -26,6 +27,7 @@ export async function getMyChallsOngoing(query) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
+		// throw err;
 		return err?.response?.data || err;
 	}
 }
@@ -36,6 +38,7 @@ export async function getMyChallsCompleted(query) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
+		// throw err;
 		return err?.response?.data || err;
 	}
 }
@@ -46,6 +49,7 @@ export async function getMyChallsApplied(query) {
 		return result?.data;
 	} catch (err) {
 		console.error(err);
+		// throw err;
 		return err?.response?.data || err;
 	}
 }
@@ -81,3 +85,17 @@ export async function deleteChallengeByUser(challengeId) {
 		return err?.response?.data || err;
 	}
 }
+
+export const updateChallenge = async (challengeId, data) => {
+    try {
+      const response = await instance.patch(`/challenges/${challengeId}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("챌린지 수정 실패:", error);
+      throw error;
+    }
+  };

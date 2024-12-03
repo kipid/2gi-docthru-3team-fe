@@ -13,8 +13,8 @@ import { getNotis } from "@/apis/notisService.js";
 const Header = () => {
   const viewport = useViewport();
   const user = useUser();
-  const isAdmin = user?.role === "Admin";
   const setUser = useSetUser();
+  const isAdmin = user?.role === "Admin";
   const router = useRouter();
   const [isNotiOpen, setIsNotiOpen] = useState(false);
   const [isUserDDOpen, setIsUserDDOpen] = useState(false);
@@ -47,13 +47,15 @@ const Header = () => {
   }, [isUserDDOpen, isNotiOpen, router.events]);
 
   useEffect(() => {
+    if (notis?.user) {
+      setUser(notis.user);
+    }
     if (notis?.notifications?.totalCount > 0) {
       setGotNotis(true);
     } else {
       setGotNotis(false);
     }
   }, [notis]);
-  console.log("notis", notis);
 
 	return (
 	  <nav className={styles.navbar}>

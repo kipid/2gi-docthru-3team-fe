@@ -14,7 +14,7 @@
 .loopSliderPage {
   flex: 0 0 100%;
   display: flex;
-	max-height: 400px;
+	height: 400px;
 	margin-bottom: 30px;
 	overflow: hidden;
   justify-content: center;

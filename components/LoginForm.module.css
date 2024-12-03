@@ -115,7 +115,7 @@
   gap: 8px;
 }
 
-.googleLogin {
+.socialLogin {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -135,9 +135,21 @@
   }
 }
 
-.google {
+.loginBtn {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.googleLogin {
   width: 24px;
   height: 24px;
+  cursor: pointer;
+}
+
+.kakaoLogin {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 /***** Mobile *****/

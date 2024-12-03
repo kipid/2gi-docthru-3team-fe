@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import { GRADE } from "@/apis/translate.js";
-import Notis from "@/pages/users/me/notis.jsx";
+import Notis from "@/components/notis.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { getNotis } from "@/apis/notisService.js";
 

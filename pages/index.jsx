@@ -1,6 +1,5 @@
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import Home from "./home.jsx";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export async function getServerSideProps() {
 	const queryClient = new QueryClient();
@@ -22,7 +21,6 @@ export default function HomeRoute({ dehydratedState }) {
 	return (
 		<HydrationBoundary state = { dehydratedState }>
 			<Home />
-			<ReactQueryDevtools initialIsOpen={false} />
 		</HydrationBoundary>
 	);
 }

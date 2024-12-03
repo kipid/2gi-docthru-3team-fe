@@ -15,6 +15,7 @@ import { useUser } from '@/context/UserProvider';
 function AppliedChallenge() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invalidMessage, setInvalidMessage] = useState('');
+  const viewport = useViewport();
   const router = useRouter();
   const user = useUser();
   const { applicationId } = router.query;
@@ -42,6 +43,10 @@ function AppliedChallenge() {
     },
   });
 
+  const handleInvalidate = () => {
+    mutation.mutate({ status: 'Invalidated' });
+  };
+
   if (isPending) return <Loading />;
   if (isError) return <Error />;
 
@@ -53,40 +58,46 @@ function AppliedChallenge() {
         <div className={styles.headContainer}>
           <div className={styles.head}>
             <div className={styles.number}>No.&nbsp;{id}</div>
-            {application.status !== 'Waiting' && (
-              <div className={styles.pending}>
-                <div className={`${styles.status} ${styles[application.status]}`}>
-                  <p>
-                    {application.status === 'Rejected'
-                      ? '신청이 거절된 챌린지입니다.'
+            <div className={styles.pending}>
+              <div className={`${styles.status} ${styles[application.status]}`}>
+                <p>
+                  {application.status === 'Rejected'
+                    ? '신청이 거절된 챌린지입니다.'
+                    : application.status === 'Accepted'
+                      ? '신청이 승인된 챌린지입니다.'
                       : application.status === 'Waiting'
                         ? '승인 대기 중입니다.'
                         : '삭제된 챌린지 입니다.'}
-                  </p>
-                </div>
-                {application.status === 'Rejected' && (
-                  <div className={styles.comment}>
-                    <h1>신청 거절 사유</h1>
-                    <p className={styles.commentContent}> {application.invalidationComment}</p>
-                    <p className={styles.date}>{application.invalidatedAt}</p>
-                  </div>
-                )}
-                {application.status === 'Invalidated' && application.invalidationComment && (
-                  <div className={styles.comment}>
-                    <h1>삭제 사유</h1>
-                    <p className={styles.commentContent}>{application.invalidationComment}</p>
-                    <p className={styles.date}>{moment(new Date(application.invalidatedAt)).format('YYYY-MM-DD hh:mm')}</p>
-                  </div>
-                )}
+                </p>
               </div>
-            )}
+              {application.status === 'Rejected' && (
+                <div className={styles.comment}>
+                  <h1>신청 거절 사유</h1>
+                  <p className={styles.commentContent}> {application.invalidationComment}</p>
+                  <p className={styles.date}>{application.invalidatedAt}</p>
+                </div>
+              )}
+              {application.status === 'Invalidated' && application.invalidationComment && (
+                <div className={styles.comment}>
+                  <h1>삭제 사유</h1>
+                  <p className={styles.commentContent}>{application.invalidationComment}</p>
+                  <p className={styles.date}>{moment(new Date(application.invalidatedAt)).format('YYYY-MM-DD hh:mm')}</p>
+                </div>
+              )}
+            </div>
             <h1>{challenge.title}</h1>
             <div className={styles.subHead}>
               <div>
                 <Field field={challenge.field} />
                 <Type type={challenge.doctype} />
               </div>
-              <button>취소하기</button>
+              {application.status === 'Waiting' && (
+                <div className={styles.buttons}>
+                  <button className={`${styles.button} ${styles.invalidate}`} type="button" onClick={handleInvalidate}>
+                    취소하기
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

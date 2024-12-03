@@ -23,7 +23,7 @@ export default function KakaoCallback() {
         if (parsedUser.role === 'Admin') {
           router.push('/admin/manage');
         } else {
-          router.push('/');
+          router.push('/'); 
         }
       } else {
         console.error('카카오 로그인 실패: 데이터가 없습니다.');

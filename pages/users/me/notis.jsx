@@ -12,12 +12,12 @@ let timeout;
 
 export function Noti({ noti }) {
 	const user = useUser();
-	const [isRead, setIsRead] = useState(noti.isRead);
+	const [isRead, setIsRead] = useState(noti?.isRead);
 	const queryClient = useQueryClient();
 	const readMutation = useMutation({
 		mutationFn: () => {
 			if (user) {
-				return readNoti(noti.id)
+				return readNoti(noti?.id)
 			}
 		},
 		onSuccess: (result) => {
@@ -58,7 +58,7 @@ function Notis() {
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ["notis", user.id],
+		queryKey: ["notis", user?.id],
 		initialPageParam: 1,
 		queryFn: ({ pageParam }) => getNotis({ page: pageParam, limit: PAGE_LIMIT }),
 		getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => lastPage.notifications.hasMore ? lastPageParam + 1 : undefined,

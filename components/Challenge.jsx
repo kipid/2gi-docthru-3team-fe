@@ -85,7 +85,7 @@ function Challenge({ challenge, status }) {
 				<Image width={viewport.size} height={viewport.size} src="/images/ic_participants.svg" alt="Participants" />
 				<span>모집이 완료된 상태에요.</span>
 			</div>}
-			<Link href={`/challenges/${challengeId}`}><h2 className={styles.challengeTitle}>{title}</h2></Link>
+				<h2 className={styles.challengeTitle}><Link href={`/challenges/${challengeId}`}>{title}</Link></h2>
 			{(user?.id === challenge?.applications?.userId || user?.role === "Admin") && <Image className={styles.kebab} src={ic_kebab} alt="Kebab menu" onClick={toggleMenu} />}
 			{isKebabOpen && (
 				<div ref={kebabRef} className={styles.kebabMenu}>

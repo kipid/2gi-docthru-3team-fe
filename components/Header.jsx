@@ -6,6 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import { GRADE } from "@/apis/translate.js";
+import Notis from "@/pages/users/me/notis.jsx";
+import { useQuery } from "@tanstack/react-query";
+import { getNotis } from "@/apis/notisService.js";
 
 const Header = () => {
   const viewport = useViewport();
@@ -18,6 +21,12 @@ const Header = () => {
   const currentPath = router.pathname;
   const dropdownRef = useRef();
   const notiRef = useRef();
+  const [gotNotis, setGotNotis] = useState(false);
+  const { data: notis, isPending, isError } = useQuery({
+    queryKey: ["gotNotis", user?.id],
+    queryFn: () => getNotis({ page: 1, limit: 1, is_read: false }),
+    enabled: user?.id !== undefined,
+  });
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -37,8 +46,17 @@ const Header = () => {
     router.events.on("routeChangeStart", handleRouterChange);
   }, [isUserDDOpen, isNotiOpen, router.events]);
 
+  useEffect(() => {
+    if (notis?.notifications?.totalCount > 0) {
+      setGotNotis(true);
+    } else {
+      setGotNotis(false);
+    }
+  }, [notis]);
+  console.log("notis", notis);
+
 	return (
-	<nav className={styles.navbar}>
+	  <nav className={styles.navbar}>
       <div className={styles.left}>
         <Link href="/"><Image width={120} height={27} src="/images/img_logo.png" alt="Logo" className={styles.logo} priority /></Link>
         {user?.role === "Admin" && (
@@ -56,10 +74,10 @@ const Header = () => {
         ) : (
           <>
             <div ref={notiRef} className={styles.notiContainer}>
-              <Image width={24} height={24} src="/images/ic_noti.png" alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
+                <Image width={24} height={24} src={gotNotis ? `/images/ic_noti.png` : `/images/ic_noti_empty.png`} alt="noti" className={styles.notificationButton} onClick={() => setIsNotiOpen(prev => !prev)} />
               {isNotiOpen && <div className={styles.notiDropDown}>
                 <h3>알림</h3>
-                {/* TODO: notifications.map... */}
+                <Notis />
               </div>}
             </div>
             <div className={styles.userContainer} ref={dropdownRef} >

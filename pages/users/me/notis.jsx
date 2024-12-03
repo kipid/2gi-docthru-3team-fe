@@ -8,6 +8,7 @@ import { useViewport } from "@/context/ViewportProvider.jsx";
 import Image from "next/image";
 
 const PAGE_LIMIT = 10;
+let timeout;
 
 export function Noti({ noti }) {
 	const user = useUser();
@@ -25,7 +26,7 @@ export function Noti({ noti }) {
 			}
 			queryClient.invalidateQueries({ queryKey: ["gotNotis", user?.id] });
 			clearTimeout(timeout);
-			let timeout = setTimeout(() => {
+			timeout = setTimeout(() => {
 				queryClient.invalidateQueries({ queryKey: ["notis", user?.id] });
 			}, 3000);
 		},

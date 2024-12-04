@@ -45,7 +45,7 @@ function LoginForm() {
       delete query.error;
       router.replace({ pathname, query }, undefined, { shallow: true });
     }
-  }, [router]);
+  }, []);
 
   const onSubmit = async ({ email, password }) => {
     try {

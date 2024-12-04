@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import PopUp from "@/components/PopUp";
-import useAuth from "@/utills/useAuth";
+import useAuth from "@/hooks/useAuth";
 
 function Manage() {
   const viewport = useViewport();
@@ -26,7 +26,7 @@ function Manage() {
     limit: 10,
     keyword,
   });
-  
+
   const {
     data: applications,
     isPending,

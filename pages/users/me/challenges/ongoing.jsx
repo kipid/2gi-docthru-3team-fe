@@ -9,7 +9,7 @@ import { getMyChallsOngoing } from "@/apis/challengeService.js";
 import Challenge from "@/components/Challenge.jsx";
 import Loading from "@/components/Loading.jsx";
 import Pagination from "@/components/Pagination";
-import useAuth from "@/utills/useAuth";
+import useAuth from "@/hooks/useAuth";
 import PopUp from "@/components/PopUp";
 
 const PAGE_SIZE = 5;
@@ -30,7 +30,7 @@ function Ongoing() {
 		staleTime: 5 * 60 * 1000,
 	});
 	console.log("Ongoing challenges", challenges);
-  
+
 	if (isPending) return <Loading />;
 
 	return (

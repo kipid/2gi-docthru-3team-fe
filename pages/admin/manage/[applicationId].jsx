@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import Modal from "@/components/Modal.jsx";
 import { useState } from "react";
 import PopUp from "@/components/PopUp";
-import useAuth from "@/utills/useAuth";
+import useAuth from "@/hooks/useAuth";
 
 function ManageApp() {
 	const [isModalOpen, setIsModalOpen] = useState(false);

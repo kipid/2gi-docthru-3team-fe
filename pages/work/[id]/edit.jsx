@@ -14,7 +14,7 @@ import { deleteWorkById, getWorkById, patchWorkById } from '@/apis/workService.j
 import PopUp from '@/components/PopUp.jsx';
 import { useUser } from '@/context/UserProvider.jsx';
 import DelModal from '@/components/DelModal';
-import useAuth from '@/utills/useAuth';
+import useAuth from '@/hooks/useAuth';
 
 const MODULES = {
   toolbar: [

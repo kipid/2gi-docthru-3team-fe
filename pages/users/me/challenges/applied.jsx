@@ -9,7 +9,7 @@ import { useState, useRef } from 'react';
 import Loading from "@/components/Loading.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import Image from "next/image";
-import useAuth from "@/utills/useAuth";
+import useAuth from "@/hooks/useAuth";
 import PopUp from "@/components/PopUp";
 import Sort from "@/components/Sort";
 
@@ -31,7 +31,7 @@ function Applied() {
 		staleTime: 5 * 60 * 1000,
 	});
 	console.log("Applied applications", applications);
-  
+
 	if (isPending) return <Loading />;
 
 	console.log(search);

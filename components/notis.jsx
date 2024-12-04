@@ -61,7 +61,7 @@ function Notis() {
 		queryKey: ["notis", user?.id],
 		initialPageParam: 1,
 		queryFn: ({ pageParam }) => getNotis({ page: pageParam, limit: PAGE_LIMIT }),
-		getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => lastPage.notifications.hasMore ? lastPageParam + 1 : undefined,
+		getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => lastPage?.notifications?.hasMore ? lastPageParam + 1 : undefined,
 	});
 	console.log("notisData", notisData);
 

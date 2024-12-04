@@ -9,8 +9,8 @@ import styles from "@/styles/Manage.module.css";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import PopUp from "@/components/PopUp";
-import useAuth from "@/hooks/useAuth";
+import PopUp from "@/components/PopUp.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
 
 function Manage() {
   const viewport = useViewport();

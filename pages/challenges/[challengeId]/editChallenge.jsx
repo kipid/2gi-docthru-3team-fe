@@ -7,8 +7,8 @@ import TextareaItem from "@/components/TextareaItem";
 import Dropdown from "@/components/Dropdown";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import styles from "@/styles/editChallenge.module.css";
-import PopUp from "@/components/PopUp";
-import useAuth from "@/hooks/useAuth";
+import PopUp from "@/components/PopUp.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
 
 function editChallenge() {
   const [initialData, setInitialData] = useState(null);

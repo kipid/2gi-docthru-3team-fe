@@ -9,9 +9,9 @@ import { useState, useRef } from 'react';
 import Loading from "@/components/Loading.jsx";
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import Image from "next/image";
-import useAuth from "@/hooks/useAuth";
-import PopUp from "@/components/PopUp";
-import Sort from "@/components/Sort";
+import useAuth from "@/hooks/useAuth.jsx";
+import PopUp from "@/components/PopUp.jsx";
+import Sort from "@/components/Sort.jsx";
 
 function Applied() {
 	const viewport = useViewport();

@@ -8,9 +8,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyChallsOngoing } from "@/apis/challengeService.js";
 import Challenge from "@/components/Challenge.jsx";
 import Loading from "@/components/Loading.jsx";
-import Pagination from "@/components/Pagination";
-import useAuth from "@/hooks/useAuth";
-import PopUp from "@/components/PopUp";
+import Pagination from "@/components/Pagination.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
+import PopUp from "@/components/PopUp.jsx";
 
 const PAGE_SIZE = 5;
 

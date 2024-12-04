@@ -107,7 +107,7 @@ function LoginForm() {
               width={24}
               height={24}
               className={styles.pwToggle}
-              src={pwIsVisible ? '/images/vector.png' : '/images/btn_visibility_off_24px.png'}
+              src={pwIsVisible ? '/images/btn_visibility_on.png' : '/images/btn_visibility_off_24px.png'}
               alt="비밀번호 보기"
               onClick={() => setPwIsVisible(prev => !prev)}
               priority
@@ -120,11 +120,11 @@ function LoginForm() {
         <div className={styles.socialLogin}>
           <p>소셜 로그인</p>
           <div className={styles.loginBtn}>
-            <Image 
-              src={google} 
-              alt="구글 로그인" 
-              className={styles.googleLogin} 
-              priority 
+            <Image
+              src={google}
+              alt="구글 로그인"
+              className={styles.googleLogin}
+              priority
               onClick={() => { window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google` }}
             />
             <Image

@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { FIELD, TYPE } from "@/apis/translate.js";
 import { useUser } from "@/context/UserProvider.jsx";
 import menu from "@/public/images/feedback_menu.png"
-import useAuth from "@/utills/useAuth.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
 import PopUp from "@/components/PopUp.jsx";
 import Loading from "@/components/Loading.jsx";
 import sanitizeHtml from 'sanitize-html';

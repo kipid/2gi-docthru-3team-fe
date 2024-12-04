@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useViewport } from "@/context/ViewportProvider.jsx";
 import Image from "next/image";
 
-const PAGE_LIMIT = 10;
+const PAGE_LIMIT = 5;
 let timeout;
 
 export function Noti({ noti }) {

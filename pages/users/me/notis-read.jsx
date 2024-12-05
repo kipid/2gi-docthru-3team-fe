@@ -33,9 +33,9 @@ function NotisRead() {
 	return (
 		<div className={styles.notisRead}>
 			<h2>읽은 알림들</h2>
-			{notisReadData?.pages?.map((page) => page?.notifications?.list?.map((noti) => <NotiRead key={noti.id} noti={noti} />))
-			|| <div className={styles.noMoreNotis}>읽은 알림이 없습니다.</div>}
-			{hasNextPage && <button onClick={fetchNextPage} disabled={isFetchingNextPage}>더보기<Image width={viewport.size} height={viewport.size} src="/images/ic_arrow_down.png" alt="See more" /></button>}
+			{notisReadData?.pages?.map((page) => page?.notifications?.list?.map((noti) => <NotiRead key={noti.id} noti={noti} />))}
+			{hasNextPage ? <button onClick={fetchNextPage} disabled={isFetchingNextPage}>더보기<Image width={viewport.size} height={viewport.size} src="/images/ic_arrow_down.png" alt="See more" /></button>
+			: <div className={styles.noMoreNotis}>더이상 읽은 알림이 없습니다.</div>}
 		</div>
 	);
 }

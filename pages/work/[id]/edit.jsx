@@ -59,7 +59,6 @@ function TextEditor() {
   const { data: work, isPending, isError } = useQuery({
     queryKey: ["works", id],
     queryFn: () => getWorkById(id),
-    staleTime: 5 * 60 * 1000,
     enabled: !!id,
   });
   console.log("WorkDetail edit work", work);
@@ -133,7 +132,7 @@ function TextEditor() {
             setError({
               message: "작업을 제출하시겠습니까? 이전 작업은 덮어씌워집니다.", onClose: () => {
                 patchWorkById(id, content);
-                queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+                queryClient.invalidateQueries({ queryKey: ["challenges"] });
                 queryClient.invalidateQueries({ queryKey: ["works", id] });
                 router.push(`/challenges/${work?.challenge?.id}`);
               }

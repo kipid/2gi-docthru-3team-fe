@@ -17,6 +17,10 @@
     align-items: center;
 }
 
+.profileImg {
+    margin-right: 0.5rem;
+}
+
 .workDetail {
     display: flex;
     flex-direction: column;

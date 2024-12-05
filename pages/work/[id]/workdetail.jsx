@@ -105,7 +105,7 @@ const WorkDetail = () => {
         <div className={styles.head}>
           <h1 style={{ fontSize: "24px", padding: "1rem 0 1rem"}}>{data?.challenge?.title || "제목 없음"}</h1>
           <div ref={kebabRef} className={styles.kebab}>
-          {(data?.user?.id === user?.id || data?.user === "Admin") && (
+          {(data?.user?.id === user?.id || user?.role === "Admin") && (
                 <button className={styles.menuButton} onClick={handleMenuToggle}>
                   <Image
                     src={menu}

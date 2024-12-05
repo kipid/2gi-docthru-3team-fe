@@ -113,7 +113,7 @@ BE: Express, Prisma, PostgreSQL, Render
     - 피드백 남기기
     - 더보기 기능
 
-- ### 작업물 페이지(Admin)
+- #### 작업물 페이지(Admin)
 
     - 피드백 수정
     - 작업물 수정
@@ -123,22 +123,22 @@ BE: Express, Prisma, PostgreSQL, Render
 
 ### **김은효**
 
-- ### 비회원 페이지
+- #### 비회원 페이지
 
     - 로그인 기능
     - 회원가입 기능
 
-- ### 나의 챌린지 신청한 챌린지 상세보기
+- #### 나의 챌린지 신청한 챌린지 상세보기
 
     - 승인 대기
     - 승인 취소 확인 모달
     - 승인 거절
 
-- ### 푸터
+- #### 푸터
 
 ### **서지우**
 
-- ### 헤더
+- #### 헤더
 
 ## 파일 구조
 
@@ -201,7 +201,7 @@ jsx
 ├─hooks
 │		 useAuth.jsx
 ├─pages
-│    │  home.jsx
+│	 │  home.jsx
 │	 │  index.jsx
 │	 │  login.jsx
 │	 │  profile.jsx
@@ -229,7 +229,7 @@ jsx
 │	 │
 │	 ├─users
 │	 │  └─me
-│    │      └─challenges
+│	 │      └─challenges
 │	 │          │  applied.jsx
 │	 │          │  completed.jsx
 │	 │          │  ongoing.jsx

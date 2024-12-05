@@ -24,10 +24,11 @@ const WorkDetail = () => {
   const { id: workId } = router.query;
   const queryClient = useQueryClient();
   const user = useUser();
+  const reasonDelRef = useRef("");
   const kebabRef = useRef();
   const { errorMessage, setErrorMessage } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDelModalOpen, setIsDelModalOpen] = useState(false);
   const [errorDel, setErrorDel] = useState(null);
   const [reasonDel, setReasonDel] = useState("");
 
@@ -35,19 +36,6 @@ const WorkDetail = () => {
     queryKey: ["workDetail", workId],
     queryFn: () => getWorkById(workId),
     enabled: !!workId,
-  });
-
-  console.log(data);
-
-  const deleteMutation = useMutation({
-    mutationFn: () => deleteWorkById(workId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["workDetail"]);
-      router.push("/");
-    },
-    onError: (error) => {
-      console.error("삭제 처리 중 에러:", error);
-    },
   });
 
   const likeMutation = useMutation({
@@ -74,6 +62,10 @@ const WorkDetail = () => {
     document.addEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    reasonDelRef.current = reasonDel;
+  }, [reasonDel]);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -94,8 +86,40 @@ const WorkDetail = () => {
   }
 
   const handleDelete = () => {
-      deleteMutation.mutateAsync(data.id);
-      setIsMenuOpen(false);
+    if (user?.role === "Admin") {
+      setIsDelModalOpen(true);
+      setErrorDel({
+        onClose: () => {
+
+          const latestReasonDel = reasonDelRef.current;
+          if (!latestReasonDel.trim()) {
+            alert("삭제 사유를 입력해주세요.");
+            return;
+          }
+          deleteWorkById(workId, latestReasonDel)
+            .then(() => {
+              queryClient.invalidateQueries(["workDetail"]);
+              router.push(`/challenges/${data.challenge.id}`);
+            })
+            .catch((error) => {
+              console.error("삭제 중 오류:", error);
+            });
+          setIsDelModalOpen(false);
+        },
+        onCancel: () => {
+          setIsDelModalOpen(false);
+        },
+      });
+    } else {
+      deleteWorkById(workId)
+        .then(() => {
+          queryClient.invalidateQueries(["workDetail"]);
+          router.push(`/challenges/${data.challenge.id}`);
+        })
+        .catch((error) => {
+          console.error("삭제 중 오류:", error);
+        });
+    }
   };
 
   const handleLikeClick = () => {
@@ -122,22 +146,13 @@ const WorkDetail = () => {
               {isMenuOpen && (
                 <div className={styles.dropdownMenu}>
                   <button onClick={handleEdit}>수정하기</button>
-                  <button onClick={() => {
-                  if (user?.role === "Admin") {
-                    setIsModalOpen(true);
-                    setErrorDel({ onClose: () => {
-                      deleteChallenge(challengeId, reasonDel);
-                      queryClient.invalidateQueries({ queryKey: ["challenges", "*"] });
-                      router.push("/");
-                    } });
-                  } else {handleDelete}}}
-                  disabled={deleteMutation.isLoading}>
-                    {deleteMutation.isLoading ? "삭제 중..." : "삭제하기"}
+                  <button onClick={handleDelete}>
+                    삭제하기
                   </button>
                 </div>
               )}
+              {isDelModalOpen && <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />}
           </div>
-          {isModalOpen && <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />}
         </div>
         <div className={styles.tag}>
           <span className={styles.field}>{FIELD[data?.challenge?.field] || "카테고리 없음"}</span>

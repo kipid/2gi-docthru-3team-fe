@@ -201,7 +201,7 @@ jsx
 ├─hooks
 │		 useAuth.jsx
 ├─pages
-│    │  home.jsx
+│	 │  home.jsx
 │	 │  index.jsx
 │	 │  login.jsx
 │	 │  profile.jsx
@@ -229,7 +229,7 @@ jsx
 │	 │
 │	 ├─users
 │	 │  └─me
-│    │      └─challenges
+│	 │      └─challenges
 │	 │          │  applied.jsx
 │	 │          │  completed.jsx
 │	 │          │  ongoing.jsx

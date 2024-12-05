@@ -131,6 +131,7 @@ const WorkDetail = () => {
         </div>
         <div className={styles.meta}>
           <div className={styles.information}>
+            <Image className={styles.profileImg} width={24} height={24} src="/images/ic_profile.png" alt="프로필" />
             <span className={styles.nickname}>{data?.user?.nickname || "작성자 없음"}</span>
             <button
               className={styles.likeButton}

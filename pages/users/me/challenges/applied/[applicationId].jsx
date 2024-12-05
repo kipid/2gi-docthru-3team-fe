@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import moment, { invalid } from 'moment';
 import Image from 'next/image';
 import ic_kebab_menu from '@/public/images/ic_kebab_menu.png';
+import ic_open_link from '@/public/images/ic_open_link.png';
 import { useRouter } from 'next/router';
 import UserDelModal from '@/components/UserDelModal';
 import { useState } from 'react';
@@ -54,6 +55,8 @@ function AppliedChallenge() {
     try {
       const applicationData = await deleteApplication(applicationId);
       console.log('취소 성공', applicationData);
+      queryClient.setQueryData(['applications', applicationId], null);
+      queryClient.invalidateQueries({ queryKey: ['applications', '*'] });
       router.push('/users/me/challenges/applied');
     } catch (error) {
       console.log('취소 실패', error);
@@ -141,6 +144,9 @@ function AppliedChallenge() {
         <h2>원문 링크</h2>
         <div className={styles.iframeContainer}>
           <iframe src={challenge.docUrl} width="100%" height="100%" />
+          <a href={challenge.docUrl} target="_blank" rel="noopener noreferrer" className={styles.linkButton}>
+            <Image src={ic_open_link} height={26} width={79} alt="원문 링크 열기" />
+          </a>
         </div>
       </div>
       {isModalOpen && (

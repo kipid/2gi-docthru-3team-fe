@@ -104,11 +104,13 @@ function TextEditor() {
                   queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
                   if (result?.message) {
                     setError({ message: result.message, onClose: () => {
+                      queryClient.invalidateQueries({ queryKey: ["challenges"] });
                       queryClient.invalidateQueries({ queryKey: ["works", id] });
                       router.push(`/challenges/${work?.challenge?.id}`);
                     }});
                     return;
                   }
+                  queryClient.invalidateQueries({ queryKey: ["challenges"] });
                   queryClient.invalidateQueries({ queryKey: ["works", id] });
                   router.push(`/challenges/${work?.challenge?.id}`);
                 }

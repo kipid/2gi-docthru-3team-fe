@@ -17,6 +17,7 @@ import PopUp from "@/components/PopUp.jsx";
 import Loading from "@/components/Loading.jsx";
 import sanitizeHtml from 'sanitize-html';
 import { SANITIZE_OPTIONS } from "./edit.jsx";
+import DelModal from "@/components/DelModal.jsx";
 
 const WorkDetail = () => {
   const router = useRouter();
@@ -26,6 +27,9 @@ const WorkDetail = () => {
   const kebabRef = useRef();
   const { errorMessage, setErrorMessage } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorDel, setErrorDel] = useState(null);
+  const [reasonDel, setReasonDel] = useState("");
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["workDetail", workId],
@@ -118,12 +122,22 @@ const WorkDetail = () => {
               {isMenuOpen && (
                 <div className={styles.dropdownMenu}>
                   <button onClick={handleEdit}>수정하기</button>
-                  <button onClick={handleDelete} disabled={deleteMutation.isLoading}>
+                  <button onClick={() => {
+                  if (user?.role === "Admin") {
+                    setIsModalOpen(true);
+                    setErrorDel({ onClose: () => {
+                      deleteChallenge(challengeId, reasonDel);
+                      queryClient.invalidateQueries({ queryKey: ["challenges", "*"] });
+                      router.push("/");
+                    } });
+                  } else {handleDelete}}}
+                  disabled={deleteMutation.isLoading}>
                     {deleteMutation.isLoading ? "삭제 중..." : "삭제하기"}
                   </button>
                 </div>
               )}
-              </div>
+          </div>
+          {isModalOpen && <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />}
         </div>
         <div className={styles.tag}>
           <span className={styles.field}>{FIELD[data?.challenge?.field] || "카테고리 없음"}</span>

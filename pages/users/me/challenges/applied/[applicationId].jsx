@@ -17,7 +17,6 @@ import { deleteApplication } from '@/apis/applicationService';
 
 function AppliedChallenge() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [invalidMessage, setInvalidMessage] = useState('');
   const viewport = useViewport();
   const router = useRouter();
   const user = useUser();

@@ -17,33 +17,25 @@ import PopUp from "@/components/PopUp.jsx";
 import Loading from "@/components/Loading.jsx";
 import sanitizeHtml from 'sanitize-html';
 import { SANITIZE_OPTIONS } from "./edit.jsx";
+import DelModal from "@/components/DelModal.jsx";
 
 const WorkDetail = () => {
   const router = useRouter();
   const { id: workId } = router.query;
   const queryClient = useQueryClient();
   const user = useUser();
+  const reasonDelRef = useRef("");
   const kebabRef = useRef();
   const { errorMessage, setErrorMessage } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDelModalOpen, setIsDelModalOpen] = useState(false);
+  const [errorDel, setErrorDel] = useState(null);
+  const [reasonDel, setReasonDel] = useState("");
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["workDetail", workId],
     queryFn: () => getWorkById(workId),
     enabled: !!workId,
-  });
-
-  console.log(data);
-
-  const deleteMutation = useMutation({
-    mutationFn: () => deleteWorkById(workId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["workDetail"]);
-      router.push("/");
-    },
-    onError: (error) => {
-      console.error("삭제 처리 중 에러:", error);
-    },
   });
 
   const likeMutation = useMutation({
@@ -70,6 +62,10 @@ const WorkDetail = () => {
     document.addEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    reasonDelRef.current = reasonDel;
+  }, [reasonDel]);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -90,8 +86,40 @@ const WorkDetail = () => {
   }
 
   const handleDelete = () => {
-      deleteMutation.mutateAsync(data.id);
-      setIsMenuOpen(false);
+    if (user?.role === "Admin") {
+      setIsDelModalOpen(true);
+      setErrorDel({
+        onClose: () => {
+
+          const latestReasonDel = reasonDelRef.current;
+          if (!latestReasonDel.trim()) {
+            alert("삭제 사유를 입력해주세요.");
+            return;
+          }
+          deleteWorkById(workId, latestReasonDel)
+            .then(() => {
+              queryClient.invalidateQueries(["workDetail"]);
+              router.push(`/challenges/${data.challenge.id}`);
+            })
+            .catch((error) => {
+              console.error("삭제 중 오류:", error);
+            });
+          setIsDelModalOpen(false);
+        },
+        onCancel: () => {
+          setIsDelModalOpen(false);
+        },
+      });
+    } else {
+      deleteWorkById(workId)
+        .then(() => {
+          queryClient.invalidateQueries(["workDetail"]);
+          router.push(`/challenges/${data.challenge.id}`);
+        })
+        .catch((error) => {
+          console.error("삭제 중 오류:", error);
+        });
+    }
   };
 
   const handleLikeClick = () => {
@@ -105,7 +133,7 @@ const WorkDetail = () => {
         <div className={styles.head}>
           <h1 style={{ fontSize: "24px", padding: "1rem 0 1rem"}}>{data?.challenge?.title || "제목 없음"}</h1>
           <div ref={kebabRef} className={styles.kebab}>
-          {data?.user?.id === user?.id && (
+          {(data?.user?.id === user?.id || user?.role === "Admin") && (
                 <button className={styles.menuButton} onClick={handleMenuToggle}>
                   <Image
                     src={menu}
@@ -118,19 +146,21 @@ const WorkDetail = () => {
               {isMenuOpen && (
                 <div className={styles.dropdownMenu}>
                   <button onClick={handleEdit}>수정하기</button>
-                  <button onClick={handleDelete} disabled={deleteMutation.isLoading}>
-                    {deleteMutation.isLoading ? "삭제 중..." : "삭제하기"}
+                  <button onClick={handleDelete}>
+                    삭제하기
                   </button>
                 </div>
               )}
-              </div>
+              {isDelModalOpen && <DelModal error={errorDel} setError={setErrorDel} reasonDel={reasonDel} setReasonDel={setReasonDel} />}
+          </div>
         </div>
         <div className={styles.tag}>
-          <span className={styles.type}>{TYPE[data?.challenge?.docType] || "문서 타입 없음"}</span>
           <span className={styles.field}>{FIELD[data?.challenge?.field] || "카테고리 없음"}</span>
+          <span className={styles.type}>{TYPE[data?.challenge?.docType] || "문서 타입 없음"}</span>
         </div>
         <div className={styles.meta}>
           <div className={styles.information}>
+            <Image className={styles.profileImg} width={24} height={24} src="/images/ic_profile.png" alt="프로필" />
             <span className={styles.nickname}>{data?.user?.nickname || "작성자 없음"}</span>
             <button
               className={styles.likeButton}

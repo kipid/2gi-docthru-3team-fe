@@ -116,7 +116,7 @@
     - 피드백 남기기
     - 더보기 기능
 
-- ### 작업물 페이지(Admin)
+- #### 작업물 페이지(Admin)
 
     - 피드백 수정
     - 작업물 수정
@@ -126,141 +126,141 @@
 
 ### **김은효**
 
-- ### 비회원 페이지
+- #### 비회원 페이지
 
     - 로그인 기능
     - 회원가입 기능
 
-- ### 나의 챌린지 신청한 챌린지 상세보기
+- #### 나의 챌린지 신청한 챌린지 상세보기
 
     - 승인 대기
     - 승인 취소 확인 모달
     - 승인 거절
 
-- ### 푸터
+- #### 푸터
 
 ### **서지우**
 
-- ### 헤더
+- #### 헤더
 
 ## 파일 구조
 
 ```
-📦jsx
-├─📂apis
-│    📜applicationService.js
-│    📜authService.js
-│    📜challengeService.js
-│    📜feedbackService.js
-│    📜instance.js
-│    📜notisService.js
-│    📜translate.js
-│    📜workService.js
-├─📂components
-│    📜Challenge.jsx
-│    📜Challenge.module.css
-│    📜CustomDatePicker.jsx
-│    📜CustomDatePicker.module.css
-│    📜DelModal.jsx
-│    📜DelModal.module.css
-│    📜Dropdown.jsx
-│    📜Dropdown.module.css
-│    📜Error.jsx
-│    📜FeedbackInput.jsx
-│    📜FeedbackInput.module.css
-│    📜FeedbackList.jsx
-│    📜FeedbackList.module.css
-│    📜Header.jsx
-│    📜Header.module.css
-│    📜InputItem.jsx
-│    📜Label.jsx
-│    📜Loading.jsx
-│    📜Loading.module.css
-│    📜LoginForm.jsx
-│    📜LoginForm.module.css
-│    📜LoopSlider.jsx
-│    📜LoopSlider.module.css
-│    📜Modal.jsx
-│    📜Modal.module.css
-│    📜MyChallHeader.jsx
-│    📜notis.jsx
-│    📜Pagination.jsx
-│    📜Pagination.module.css
-│    📜PopUp.jsx
-│    📜PopUp.module.css
-│    📜SignupForm.jsx
-│    📜SignupForm.module.css
-│    📜Sort.jsx
-│    📜Sort.module.css
-│    📜Table.jsx
-│    📜Table.module.css
-│    📜TextareaItem.jsx
-│    📜TextareaItem.module.css
-│    📜X.jsx
-│    📜X.module.css
-├─📂context
-│    📜UserProvider.jsx
-│    📜ViewportProvider.jsx
-├─📂hooks
-│    📜useAuth.jsx
-├─📂pages
-│    │  📜home.jsx
-│	 │  📜index.jsx
-│	 │  📜login.jsx
-│	 │  📜profile.jsx
-│	 │  📜signup.jsx
-│	 │  📜_app.js
-│	 │  📜_document.js
+jsx
+├─apis
+│    applicationService.js
+│    authService.js
+│    challengeService.js
+│    feedbackService.js
+│    instance.js
+│    notisService.js
+│    translate.js
+│    workService.js
+├─components
+│    Challenge.jsx
+│    Challenge.module.css
+│    CustomDatePicker.jsx
+│    CustomDatePicker.module.css
+│    DelModal.jsx
+│    DelModal.module.css
+│    Dropdown.jsx
+│    Dropdown.module.css
+│    Error.jsx
+│    FeedbackInput.jsx
+│    FeedbackInput.module.css
+│    FeedbackList.jsx
+│    FeedbackList.module.css
+│    Header.jsx
+│    Header.module.css
+│    InputItem.jsx
+│    Label.jsx
+│    Loading.jsx
+│    Loading.module.css
+│    LoginForm.jsx
+│    LoginForm.module.css
+│    LoopSlider.jsx
+│    LoopSlider.module.css
+│    Modal.jsx
+│    Modal.module.css
+│    MyChallHeader.jsx
+│    notis.jsx
+│    Pagination.jsx
+│    Pagination.module.css
+│    PopUp.jsx
+│    PopUp.module.css
+│    SignupForm.jsx
+│    SignupForm.module.css
+│    Sort.jsx
+│    Sort.module.css
+│    Table.jsx
+│    Table.module.css
+│    TextareaItem.jsx
+│    TextareaItem.module.css
+│    X.jsx
+│    X.module.css
+├─context
+│    UserProvider.jsx
+│    ViewportProvider.jsx
+├─hooks
+│		 useAuth.jsx
+├─pages
+│	 │  home.jsx
+│	 │  index.jsx
+│	 │  login.jsx
+│	 │  profile.jsx
+│	 │  signup.jsx
+│	 │  _app.js
+│	 │  _document.js
 │	 │
-│	 ├─📂admin
-│	 │  └─📂manage
-│	 │          📜index.jsx
-│	 │          📜[applicationId].jsx
+│	 ├─admin
+│	 │  └─manage
+│	 │          index.jsx
+│	 │          [applicationId].jsx
 │	 │
-│	 ├─📂challenges
-│	 │  │  📜new.jsx
+│	 ├─challenges
+│	 │  │  new.jsx
 │	 │  │
-│	 │  └─📂[challengeId]
-│	 │          📜editChallenge.jsx
-│	 │          📜index.jsx
+│	 │  └─[challengeId]
+│	 │          editChallenge.jsx
+│	 │          index.jsx
 │	 │
-│	 ├─📂google
-│	 │      📜callback.js
+│	 ├─google
+│	 │      callback.js
 │	 │
-│	 ├─📂kakao
-│	 │      📜callback.js
+│	 ├─kakao
+│	 │      callback.js
 │	 │
-│	 ├─📂users
-│	 │  └─📂me
-│    │      └─📂challenges
-│	 │          │  📜applied.jsx
-│	 │          │  📜completed.jsx
-│	 │          │  📜ongoing.jsx
+│	 ├─users
+│	 │  └─me
+│	 │      └─challenges
+│	 │          │  applied.jsx
+│	 │          │  completed.jsx
+│	 │          │  ongoing.jsx
 │	 │          │
-│	 │          └─📂applied
-│	 │                  📜[applicationId].jsx
+│	 │          └─applied
+│	 │                  [applicationId].jsx
 │	 │
-│	 └─📂work
-│	     └─📂[id]
-│	             📜edit.jsx
-│	             📜workdetail.jsx
-├─📂public
-│  └─📜images
-└─📂styles
-     📜ChallengeDetail.module.css
-     📜editChallenge.module.css
-     📜globals.css
-     📜Home.module.css
-     📜InputItem.module.css
-     📜Label.module.css
-     📜login.module.css
-     📜Manage.module.css
-     📜ManageApp.module.css
-     📜MyChalls.module.css
-     📜new.module.css
-     📜Notis.module.css
-     📜TextEditor.module.css
-     📜WorkDetail.module.css
+│	 └─work
+│	     └─[id]
+│	             edit.jsx
+│	             workdetail.jsx
+├─public
+│  └─images
+└─styles
+     ChallengeDetail.module.css
+     editChallenge.module.css
+     globals.css
+     Home.module.css
+     InputItem.module.css
+     Label.module.css
+     login.module.css
+     Manage.module.css
+     ManageApp.module.css
+     MyChalls.module.css
+     new.module.css
+     Notis.module.css
+     TextEditor.module.css
+     WorkDetail.module.css
 ```
 
 

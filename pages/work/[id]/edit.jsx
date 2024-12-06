@@ -59,7 +59,6 @@ function TextEditor() {
   const { data: work, isPending, isError } = useQuery({
     queryKey: ["works", id],
     queryFn: () => getWorkById(id),
-    staleTime: 5 * 60 * 1000,
     enabled: !!id,
   });
   console.log("WorkDetail edit work", work);
@@ -105,11 +104,13 @@ function TextEditor() {
                   queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
                   if (result?.message) {
                     setError({ message: result.message, onClose: () => {
+                      queryClient.invalidateQueries({ queryKey: ["challenges"] });
                       queryClient.invalidateQueries({ queryKey: ["works", id] });
                       router.push(`/challenges/${work?.challenge?.id}`);
                     }});
                     return;
                   }
+                  queryClient.invalidateQueries({ queryKey: ["challenges"] });
                   queryClient.invalidateQueries({ queryKey: ["works", id] });
                   router.push(`/challenges/${work?.challenge?.id}`);
                 }
@@ -131,9 +132,9 @@ function TextEditor() {
           }}>임시저장</button>
           <button className={`${styles.button} ${styles.submit}`} type="button" onClick={() => {
             setError({
-              message: "작업을 제출하시겠습니까? 이전 작업은 덮어씌워집니다.", onClose: () => {
+              message: user?.role === "Admin" ? "작업물을 수정하시겠습니까? 이전 작업은 덮어씌워집니다." : "작업을 제출하시겠습니까? 이전 작업은 덮어씌워집니다.", onClose: () => {
                 patchWorkById(id, content);
-                queryClient.invalidateQueries({ queryKey: ["challenges", work?.challenge?.id] });
+                queryClient.invalidateQueries({ queryKey: ["challenges"] });
                 queryClient.invalidateQueries({ queryKey: ["works", id] });
                 router.push(`/challenges/${work?.challenge?.id}`);
               }

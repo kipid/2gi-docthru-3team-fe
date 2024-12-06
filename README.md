@@ -1,31 +1,22 @@
 # Codeit 풀스택 2기 part3 중급 프로젝트 3팀 - Docthru
 
 
-팀 협업문서 - [Notion](https://www.notion.so/128e951e3e618064a461c77c319274b2?v=128e951e3e6181e4a1ac000c923e8661)
 
-
+## 팀 협업문서
+<a href = "https://www.notion.so/128e951e3e618064a461c77c319274b2?v=128e951e3e6181e4a1ac000c923e8661">
+    <img src="https://bizlog.me/wp-content/uploads/2021/03/notion-logo.png" width="150">
+</a>
 
 ## 팀원 구성
 
-소재희 (팀장) - https://github.com/BuffSo
-
-신지원 (BE 장) - https://github.com/shinji530
-
-현준배 (BE) - https://github.com/junbaehyun
-
-이강수 (FE 장) - https://github.com/kipid
-
-천우승 (FE) - https://github.com/mingmungXD
-
-김은효 (FE) - https://github.com/kirinkiri
-
-서지우 (FE) - https://github.com/JiwooFS
-
-
+| 신지원 | 이강수 | 천우승 | 김은효 | 서지우 |
+|:-----:|:-----:|:-----:|:-----:|:-----:|
+| <image src = "https://avatars.githubusercontent.com/u/80625377?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/7779295?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/174844724?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/176313108?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/176551801?v=4" width = 150px> |
+| [shinji530](https://github.com/shinji530) | [kipid](https://github.com/kipid) | [mingmungXD](https://github.com/mingmungXD)| [kirinkiri](https://github.com/kirinkiri) | [JiwooFS](https://github.com/JiwooFS) |
 
 ## 프로젝트 소개
 
-대다수의 개발 시장 콘텐츠가 영어로 작성되어 있어, 영어를 잘하지 못하는 한국인들이 해당 기술을 습득하는데 어려움을 겪고 있습니다.
+대다수의 개발 시장 콘텐츠가 영어로 작성되어 있어, 영어에 익숙하지 않은 한국인들이 해당 기술을 습득하는데 어려움을 겪고 있습니다.
 
 따라서 개발 관련 영어 문서를 함께 번역하는 챌린지를 진행하고, 번역 작업 에디터에서 번역을 진행하며 번역문에 대한 피드백을 주고받을 수 있는 개발 문서 번역 챌린지 서비스를 제작합니다.
 
@@ -36,12 +27,24 @@
 
 ## 기술 스택
 
-FE: React, Next.js, React Query, React CSS module, Quill, Vercel
+### 프론트엔드
 
-BE: Express, Prisma, PostgreSQL, Render
+![Next.js](https://img.shields.io/badge/Next.js-%23000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-%2320232a?style=for-the-badge&logo=react&logoColor=61DAFB)
+![React Query](https://img.shields.io/badge/React_Query-%23FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
+![React CSS Modules](https://img.shields.io/badge/React_CSS_Modules-%23000000?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Quill](https://img.shields.io/badge/Quill-%23000000?style=for-the-badge&logo=quill&logoColor=white)
 
-공통 Tool: Git & Github, Discord, Zoom
+### 협업 방식
 
+![GitHub](https://img.shields.io/badge/GitHub-%23121011?style=for-the-badge&logo=github&logoColor=white)
+![Notion](https://img.shields.io/badge/Notion-%23000000?style=for-the-badge&logo=notion&logoColor=white)
+![Discord](https://img.shields.io/badge/Discord-%2392a8d1?style=for-the-badge&logo=discord&logoColor=white)
+![Zoom](https://img.shields.io/badge/Zoom-%23121841?style=for-the-badge&logo=zoom&logoColor=white)
+
+
+### 배포
+![Vercel](https://img.shields.io/badge/Vercel-%23000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 
 ## 팀원별 구현 기능 상세
@@ -143,121 +146,121 @@ BE: Express, Prisma, PostgreSQL, Render
 ## 파일 구조
 
 ```
-jsx
-├─apis
-│    applicationService.js
-│    authService.js
-│    challengeService.js
-│    feedbackService.js
-│    instance.js
-│    notisService.js
-│    translate.js
-│    workService.js
-├─components
-│    Challenge.jsx
-│    Challenge.module.css
-│    CustomDatePicker.jsx
-│    CustomDatePicker.module.css
-│    DelModal.jsx
-│    DelModal.module.css
-│    Dropdown.jsx
-│    Dropdown.module.css
-│    Error.jsx
-│    FeedbackInput.jsx
-│    FeedbackInput.module.css
-│    FeedbackList.jsx
-│    FeedbackList.module.css
-│    Header.jsx
-│    Header.module.css
-│    InputItem.jsx
-│    Label.jsx
-│    Loading.jsx
-│    Loading.module.css
-│    LoginForm.jsx
-│    LoginForm.module.css
-│    LoopSlider.jsx
-│    LoopSlider.module.css
-│    Modal.jsx
-│    Modal.module.css
-│    MyChallHeader.jsx
-│    notis.jsx
-│    Pagination.jsx
-│    Pagination.module.css
-│    PopUp.jsx
-│    PopUp.module.css
-│    SignupForm.jsx
-│    SignupForm.module.css
-│    Sort.jsx
-│    Sort.module.css
-│    Table.jsx
-│    Table.module.css
-│    TextareaItem.jsx
-│    TextareaItem.module.css
-│    X.jsx
-│    X.module.css
-├─context
-│    UserProvider.jsx
-│    ViewportProvider.jsx
-├─hooks
-│		 useAuth.jsx
-├─pages
-│    │  home.jsx
-│	 │  index.jsx
-│	 │  login.jsx
-│	 │  profile.jsx
-│	 │  signup.jsx
-│	 │  _app.js
-│	 │  _document.js
+📦jsx
+├─📂apis
+│    📜applicationService.js
+│    📜authService.js
+│    📜challengeService.js
+│    📜feedbackService.js
+│    📜instance.js
+│    📜notisService.js
+│    📜translate.js
+│    📜workService.js
+├─📂components
+│    📜Challenge.jsx
+│    📜Challenge.module.css
+│    📜CustomDatePicker.jsx
+│    📜CustomDatePicker.module.css
+│    📜DelModal.jsx
+│    📜DelModal.module.css
+│    📜Dropdown.jsx
+│    📜Dropdown.module.css
+│    📜Error.jsx
+│    📜FeedbackInput.jsx
+│    📜FeedbackInput.module.css
+│    📜FeedbackList.jsx
+│    📜FeedbackList.module.css
+│    📜Header.jsx
+│    📜Header.module.css
+│    📜InputItem.jsx
+│    📜Label.jsx
+│    📜Loading.jsx
+│    📜Loading.module.css
+│    📜LoginForm.jsx
+│    📜LoginForm.module.css
+│    📜LoopSlider.jsx
+│    📜LoopSlider.module.css
+│    📜Modal.jsx
+│    📜Modal.module.css
+│    📜MyChallHeader.jsx
+│    📜notis.jsx
+│    📜Pagination.jsx
+│    📜Pagination.module.css
+│    📜PopUp.jsx
+│    📜PopUp.module.css
+│    📜SignupForm.jsx
+│    📜SignupForm.module.css
+│    📜Sort.jsx
+│    📜Sort.module.css
+│    📜Table.jsx
+│    📜Table.module.css
+│    📜TextareaItem.jsx
+│    📜TextareaItem.module.css
+│    📜X.jsx
+│    📜X.module.css
+├─📂context
+│    📜UserProvider.jsx
+│    📜ViewportProvider.jsx
+├─📂hooks
+│    📜useAuth.jsx
+├─📂pages
+│    │  📜home.jsx
+│	 │  📜index.jsx
+│	 │  📜login.jsx
+│	 │  📜profile.jsx
+│	 │  📜signup.jsx
+│	 │  📜_app.js
+│	 │  📜_document.js
 │	 │
-│	 ├─admin
-│	 │  └─manage
-│	 │          index.jsx
-│	 │          [applicationId].jsx
+│	 ├─📂admin
+│	 │  └─📂manage
+│	 │          📜index.jsx
+│	 │          📜[applicationId].jsx
 │	 │
-│	 ├─challenges
-│	 │  │  new.jsx
+│	 ├─📂challenges
+│	 │  │  📜new.jsx
 │	 │  │
-│	 │  └─[challengeId]
-│	 │          editChallenge.jsx
-│	 │          index.jsx
+│	 │  └─📂[challengeId]
+│	 │          📜editChallenge.jsx
+│	 │          📜index.jsx
 │	 │
-│	 ├─google
-│	 │      callback.js
+│	 ├─📂google
+│	 │      📜callback.js
 │	 │
-│	 ├─kakao
-│	 │      callback.js
+│	 ├─📂kakao
+│	 │      📜callback.js
 │	 │
-│	 ├─users
-│	 │  └─me
-│    │      └─challenges
-│	 │          │  applied.jsx
-│	 │          │  completed.jsx
-│	 │          │  ongoing.jsx
+│	 ├─📂users
+│	 │  └─📂me
+│    │      └─📂challenges
+│	 │          │  📜applied.jsx
+│	 │          │  📜completed.jsx
+│	 │          │  📜ongoing.jsx
 │	 │          │
-│	 │          └─applied
-│	 │                  [applicationId].jsx
+│	 │          └─📂applied
+│	 │                  📜[applicationId].jsx
 │	 │
-│	 └─work
-│	     └─[id]
-│	             edit.jsx
-│	             workdetail.jsx
-├─public
-│  └─images
-└─styles
-     ChallengeDetail.module.css
-     editChallenge.module.css
-     globals.css
-     Home.module.css
-     InputItem.module.css
-     Label.module.css
-     login.module.css
-     Manage.module.css
-     ManageApp.module.css
-     MyChalls.module.css
-     new.module.css
-     Notis.module.css
-     TextEditor.module.css
-     WorkDetail.module.css
+│	 └─📂work
+│	     └─📂[id]
+│	             📜edit.jsx
+│	             📜workdetail.jsx
+├─📂public
+│  └─📜images
+└─📂styles
+     📜ChallengeDetail.module.css
+     📜editChallenge.module.css
+     📜globals.css
+     📜Home.module.css
+     📜InputItem.module.css
+     📜Label.module.css
+     📜login.module.css
+     📜Manage.module.css
+     📜ManageApp.module.css
+     📜MyChalls.module.css
+     📜new.module.css
+     📜Notis.module.css
+     📜TextEditor.module.css
+     📜WorkDetail.module.css
 ```
 
 

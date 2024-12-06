@@ -1,4 +1,4 @@
-# Codeit 풀스택 2기 part3 중급 프로젝트 3팀 - Docthru
+# FS 2기 중급 프로젝트 3팀 - Docthru(FE)
 
 
 

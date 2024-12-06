@@ -230,7 +230,7 @@ function ChallengeDetail() {
                   router.push(`/work/${workId}/edit`);
                 }
               } })
-            }} disabled={new Date(challenge?.deadLine).getTime() < Date.now()}>작업 도전하기</button>
+            }} disabled={new Date(challenge?.deadLine).getTime() < Date.now() || user?.role === "Admin"}>작업 도전하기</button>
             {/* {challenge.participants >= challenge.maxParticipants ||} */}
           </div>
         </div>

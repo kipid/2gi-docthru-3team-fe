@@ -9,10 +9,10 @@
 
 ## 팀원 구성
 
-| 신지원 | 이강수 | 천우승 | 김은효 | 서지우 |
-|:-----:|:-----:|:-----:|:-----:|:-----:|
-| <image src = "https://avatars.githubusercontent.com/u/80625377?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/7779295?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/174844724?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/176313108?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/176551801?v=4" width = 150px> |
-| [shinji530](https://github.com/shinji530) | [kipid](https://github.com/kipid) | [mingmungXD](https://github.com/mingmungXD)| [kirinkiri](https://github.com/kirinkiri) | [JiwooFS](https://github.com/JiwooFS) |
+| 소재희 | 신지원 | 이강수 | 천우승 | 김은효 | 서지우 | 현준배 |
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:------:|
+| <image src = "https://avatars.githubusercontent.com/u/135010826?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/80625377?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/7779295?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/174844724?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/176313108?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/176551801?v=4" width = 150px> | <image src = "https://avatars.githubusercontent.com/u/82556884?v=4" width = 150px> |
+| [BuffSo](https://github.com/BuffSo) | [shinji530](https://github.com/shinji530) | [kipid](https://github.com/kipid) | [mingmungXD](https://github.com/mingmungXD)| [kirinkiri](https://github.com/kirinkiri) | [JiwooFS](https://github.com/JiwooFS) | [junbaehyun](https://github.com/junbaehyun) |
 
 ## 프로젝트 소개
 
@@ -47,32 +47,9 @@
 ![Vercel](https://img.shields.io/badge/Vercel-%23000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 
-## 팀원별 구현 기능 상세
+## 팀원별 구현 기능 상세 및 담당 업무
 
-### **신지원**
-
-- #### 신청한 챌린지 목록 조회(Admin)
-
-    - 일부 css 수정
-    - Sort 컴포넌트화
-    - Search 기능
-
-- #### 신청한 챌린지 상세 조회(Admin)
-
-    - 승인 및 거절 기능
-    - 승인 및 거절 모달
-
-- #### 회원 및 관리자만 접근 가능한 페이지 리다이렉트 구현
-
-    - useAuth 훅
-
-- #### 반응형
-
-    - kebab, sort 모달 등 화면 다른 곳 클릭 시 닫히도록 구현
-
-
-
-### **이강수**
+### **이강수(FE리더)**
 
 - #### 번역 챌린지 조회
 
@@ -100,6 +77,28 @@
     - 참여 중인 챌린지 목록 조회
     - 완료한 챌린지 목록 조회
     - 신청한 챌린지 목록 조회
+
+
+### **신지원**
+
+- #### 신청한 챌린지 목록 조회(Admin)
+
+    - 일부 css 수정
+    - Sort 컴포넌트화
+    - Search 기능
+
+- #### 신청한 챌린지 상세 조회(Admin)
+
+    - 승인 및 거절 기능
+    - 승인 및 거절 모달
+
+- #### 회원 및 관리자만 접근 가능한 페이지 리다이렉트 구현
+
+    - useAuth 훅
+
+- #### 반응형
+
+    - kebab, sort 모달 등 화면 다른 곳 클릭 시 닫히도록 구현
 
 
 
@@ -142,6 +141,8 @@
 ### **서지우**
 
 - #### 헤더
+
+- #### Readme.md 작성
 
 ## 파일 구조
 

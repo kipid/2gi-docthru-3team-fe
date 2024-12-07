@@ -37,7 +37,6 @@ function Manage() {
     staleTime: 5 * 60 * 1000,
     retry: false,
   });
-  console.log("/admin/manage applications", applications);
 
   if (isPending) return <Loading />;
 
